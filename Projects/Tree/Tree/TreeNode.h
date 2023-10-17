@@ -367,14 +367,6 @@ public:
         this->Left()->AddToArrayRNL(arr, i);
     }
 
-    /// Удвоение значения всех узлов
-    template <class T>
-    void Double(TreeNode<T>* root) {
-        if (root == nullptr) return;
-        root->SetData(root->Data()*2);
-        root->Left()->Double(root->Left());
-        root->Right()->Double(root->Right());
-    }
 
     /// Копирование дерева
     TreeNode<T>* CopyTree()
@@ -393,22 +385,7 @@ public:
         return newRoot;
     }
 
-    // Функция для обхода дерева и применения функции к каждому элементу
-    template<typename T>
-    void apply(TreeNode<T>* root, T(*func)(T)) {
-        if (root != nullptr) {
-            // Применяем функцию к текущему элементу
-            root->Data() = func(root->Data());
-            // Рекурсивно обходим левое и правое поддеревья
-            apply(root->Left(), func);
-            apply(root->Right(), func);
-        }
-    }
-    // Функция для возведения числа в квадрат
-template<typename T>
-T square(T x) {
-    return x * x;
-}
+
 };
 
 

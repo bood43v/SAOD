@@ -123,8 +123,16 @@ public:
         return copiedTree;
     }
 
-    /// Удвоение значения всех узлов
-    void Double() {
-        root->Double(root);
+
+    // Функция для обхода дерева и применения функции к каждому элементу
+    template<typename T>
+    void apply(TreeNode<T>* root, T(*func)(T)) {
+        if (root != nullptr) {
+            // Применяем функцию к текущему элементу
+            root->SetData(func(root->Data()));
+            // Рекурсивно обходим левое и правое поддеревья
+            apply(root->Left(), func);
+            apply(root->Right(), func);
+        }
     }
 };
