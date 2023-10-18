@@ -110,7 +110,7 @@ public:
         return root->Remove(root, key);
     }
 
-    /// Добавит в массив LNR
+    /// Добавить в массив LNR
     void AddToArrayLNR(T arr[]) {
         int i = 0;
         root->AddToArrayLNR(arr,i);
@@ -124,15 +124,15 @@ public:
     }
 
 
-    // Функция для обхода дерева и применения функции к каждому элементу
-    template<typename T>
-    void apply(TreeNode<T>* root, T(*func)(T)) {
-        if (root != nullptr) {
-            // Применяем функцию к текущему элементу
-            root->SetData(func(root->Data()));
-            // Рекурсивно обходим левое и правое поддеревья
-            apply(root->Left(), func);
-            apply(root->Right(), func);
-        }
-    }
+    //// Функция для обхода дерева и применения функции к каждому элементу
+    //template<typename T>
+    //void apply(TreeNode<T>* root, T(*func)(T)) {
+    //    if (root != nullptr) {
+    //        // Применяем функцию к текущему элементу
+    //        root->SetData(func(root->Data()));
+    //        // Рекурсивно обходим левое и правое поддеревья
+    //        apply(root->Left(), func);
+    //        apply(root->Right(), func);
+    //    }
+    //}
 };
