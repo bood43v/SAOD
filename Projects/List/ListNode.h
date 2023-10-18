@@ -23,16 +23,10 @@ public:
 	/// Установить Next
 	void SetNext(ListNode<T>* newNext) {
 		next = newNext;
-		if (newNext != nullptr) {
-			newNext->prev = this;
-		}
 	}
 	/// Установить Prev
 	void SetPrev(ListNode<T>* newPrev) {
 		prev = newPrev;
-		if (newPrev != nullptr) {
-			newPrev->next = this;
-		}
 	}
 
 	/// вернуть next

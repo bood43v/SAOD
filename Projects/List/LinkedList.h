@@ -167,7 +167,7 @@ public:
     }
 
     // Получение размера списка
-    int getSize() const {
+    int Size() const {
         return size;
     }
 };
