@@ -153,7 +153,7 @@ public:
             return nullptr;
         }
 
-        T* array = new T[size+1];
+        T* array = new T[size];
         ListNode<T>* current = head;
         int i = 0;
 
