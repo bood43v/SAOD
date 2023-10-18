@@ -9,20 +9,20 @@
 template <class T>
 class LinkedList {
 private:
-    ListNode<T>* head;            // Указатель на головной узел списка
-    ListNode<T>* tail;            // Указатель на хвостовой узел списка
-    int size;               // Размер списка
+    ListNode<T>* head;            /// Указатель на головной узел списка
+    ListNode<T>* tail;            /// Указатель на хвостовой узел списка
+    int size;                     /// Размер списка
 
 public:
-    // Конструктор по умолчанию
+    /// Конструктор по умолчанию
     LinkedList() : head(nullptr), tail(nullptr), size(0) {}
 
-    // Деструктор
+    /// Деструктор
     ~LinkedList() {
         ClearList();
     }
 
-    // Вставка элемента в начало списка
+    /// Вставка элемента в начало списка
     void InsertAtHead(const T& value) {
         ListNode<T>* newNode = new ListNode<T>(value);
 
@@ -41,7 +41,7 @@ public:
         size++;
     }
 
-    // Вставка элемента в конец списка
+    /// Вставка элемента в конец списка
     void InsertAtTail(const T& value) {
         ListNode<T>* newNode = new ListNode<T>(value);
 
@@ -60,7 +60,7 @@ public:
         size++;
     }
 
-    // Поиск узла с указанным ключом
+    /// Поиск узла с указанным ключом
     ListNode<T>* Search(const T& key) {
         ListNode<T>* current = head;
 
@@ -75,7 +75,7 @@ public:
         return nullptr; // Узел с указанным ключом не найден
     }
 
-    // Вставка элемента после узла с указанным ключом
+    /// Вставка элемента после узла с указанным ключом
     void InsertAfter(const T& key, const T& value) {
         ListNode<T>* node = Search(key);
 
@@ -100,7 +100,7 @@ public:
         }
     }
    
-    // Удаление элемента с указанным ключом
+    /// Удаление элемента с указанным ключом
     void Remove(const T& key) {
         ListNode<T>* node = Search(key);
 
@@ -111,34 +111,34 @@ public:
 
         if (node == head) {
             // Если удаляемый узел является головным, обновляем головной узел
-            head = node->next;
+            head = node->Next();
             if (head != nullptr) {
-                head->prev = nullptr;
+                head->SetPrev(nullptr);
             }
         }
         else if (node == tail) {
             // Если удаляемый узел является хвостовым, обновляем хвостовой узел
-            tail = node->prev;
+            tail = node->Prev();
             if (tail != nullptr) {
-                tail->next = nullptr;
+                tail->SetNext(nullptr);
             }
         }
         else {
             // Иначе, связываем предыдущий узел с следующим узлом и обновляем ссылки
-            node->prev->next = node->next;
-            node->next->prev = node->prev;
+            node->Prev()->SetNext(node->Next());
+            node->Next()->SetPrev(node->Prev());
         }
-
         delete node;
+        node = nullptr;
         size--;
     }
 
-    // Очистка списка
+    /// Очистка списка
     void ClearList() {
         ListNode<T>* current = head;
         while (current != nullptr) {
             ListNode<T>* temp = current;
-            current = current->next;
+            current = current->Next();
             delete temp;
         }
 
@@ -147,7 +147,7 @@ public:
         size = 0;
     }
 
-    // Вывод списка в динамический массив
+    /// Вывод списка в динамический массив
     T* ToListArray() const {
         if (size == 0) {
             return nullptr;
@@ -166,8 +166,63 @@ public:
         return array;
     }
 
-    // Получение размера списка
+    /// Получение размера списка
     int Size() const {
         return size;
+    }
+
+
+    /// <summary>
+    /// шаблонный класс итератор в классе LinkedList, как в итерируемом
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    template<class T>
+    class Iterator {
+    private:
+        ListNode<T>* current; // Указатель на текущий узел
+
+    public:
+        /// Конструктор без параметров
+        Iterator(ListNode<T>* node) : current(node) {}
+
+        /// Оператор разыменования
+        T operator*() const {
+            return current->Data();
+        }
+
+        /// Оператор префиксного инкремента
+        /// *this возвращает ссылку на текущий объект итератора
+        Iterator<T>& operator++() {
+            current = current->Next();
+            return *this;
+        }
+
+        /// Оператор постфиксного инкремента
+        /// temp для сохранения состояния до перехода к следующему
+        Iterator<T> operator++(int) {
+            Iterator<T> temp = *this;
+            current = current->Next();
+            return temp;
+        }
+
+        /// Оператор "равно"
+        bool operator==(const Iterator<T>& it) const {
+            return current == it.current;
+        }
+
+        /// Оператора "не равно"
+        bool operator!=(const Iterator<T>& it) const {
+            return current != it.current;
+        }
+    };
+
+    /// Первый элемент списка
+    Iterator<T> Begin() const {
+        return Iterator<T>(head);
+    }
+
+    /// Элемент, следующий за последним элементом списка
+    Iterator<T> End() const {
+        return Iterator<T>(nullptr);
     }
 };

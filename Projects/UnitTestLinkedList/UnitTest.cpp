@@ -9,6 +9,7 @@ namespace UnitTestLinkedList
     TEST_CLASS(UnitTest1)
     {
     public:
+
         void Generate(LinkedList <int>* root_1, LinkedList<int>* root_2, LinkedList<int>* root_3, LinkedList<int>* root_4) {
 
             root_1->InsertAtTail(5);///  5 10 20 30 40
@@ -75,6 +76,7 @@ namespace UnitTestLinkedList
             Assert::IsTrue(arr4[3] == 4);
 
         }
+
         TEST_METHOD(Test_Search)
         {
             LinkedList<int>* L1 = new LinkedList<int>();
@@ -113,5 +115,27 @@ namespace UnitTestLinkedList
             Assert::IsTrue(L2->Search(222) == nullptr);
         }
 
+        TEST_METHOD(Test_ClearList)
+        {
+            LinkedList<int>* L1 = new LinkedList<int>();
+            LinkedList<int>* L2 = new LinkedList<int>();
+            LinkedList<int>* L3 = new LinkedList<int>();
+            LinkedList<int>* L4 = new LinkedList<int>();
+
+            Generate(L1, L2, L3, L4);
+
+            L1->ClearList();
+            Assert::IsTrue(L1->Search(5) == nullptr);
+            Assert::IsTrue(L1->Search(10) == nullptr);
+            Assert::IsTrue(L1->Search(20) == nullptr);
+            Assert::IsTrue(L1->Search(30) == nullptr);
+            Assert::IsTrue(L1->Search(40) == nullptr);
+            Assert::IsTrue(L1->Size() == 0);
+
+            L2->ClearList();
+            Assert::IsTrue(L2->Search(1) == nullptr);
+            Assert::IsTrue(L2->Search(222) == nullptr);
+            Assert::IsTrue(L2->Size() == 0);
+        }
     };
 }
