@@ -717,7 +717,7 @@ namespace TreeTest
         /// <summary>
         /// Тест копирование дерева
         /// </summary>
-        TEST_METHOD(Test_TreeDouble)
+        TEST_METHOD(Test_TreeRemove)
         {
             BSTree <int>* t1 = new BSTree<int>();
             BSTree <int>* t2 = new BSTree<int>();
@@ -726,52 +726,117 @@ namespace TreeTest
             BSTree <int>* t5 = new BSTree<int>();
             GenerateTrees(t1, t2, t3, t4, t5);
 
-            t1->Double();
-            t2->Double();
-            t3->Double();
-            t4->Double();
-            t5->Double();
-            
-            int* arr1 = new int[t1->Size()];
             int i = 0;
+
+            t1->Remove(5);
+            int* arr1 = new int[t1->Size()];
             t1->AddToArrayLNR(arr1);
             Assert::IsTrue(arr1[0] == 10);
             Assert::IsTrue(arr1[1] == 20);
-            Assert::IsTrue(arr1[2] == 40);
-            Assert::IsTrue(arr1[3] == 60);
-            Assert::IsTrue(arr1[4] == 80);
+            Assert::IsTrue(arr1[2] == 30);
+            Assert::IsTrue(arr1[3] == 40);
 
-
-            int* arr2 = new int[t2->Size()];
+            t3->Remove(5);
+            t3->Remove(15);
             i = 0;
-            t2->AddToArrayLNR(arr2);
-            Assert::IsTrue(arr2[0] == 2);
-
             int* arr3 = new int[t3->Size()];
-            i = 0;
             t3->AddToArrayLNR(arr3);
-            Assert::IsTrue(arr3[0] == 4);
-            Assert::IsTrue(arr3[1] == 10);
-            Assert::IsTrue(arr3[2] == 12);
-            Assert::IsTrue(arr3[3] == 20);
-            Assert::IsTrue(arr3[4] == 24);
-            Assert::IsTrue(arr3[5] == 30);
+            Assert::IsTrue(arr3[0] == 2);
+            Assert::IsTrue(arr3[1] == 6);
+            Assert::IsTrue(arr3[2] == 10);
+            Assert::IsTrue(arr3[3] == 12);
 
+            t4->Remove(2);
+            t4->Remove(5);
+            i = 0;
             int* arr4 = new int[t4->Size()];
-            i = 0;
             t4->AddToArrayLNR(arr4);
-            Assert::IsTrue(arr4[0] == 4);
-            Assert::IsTrue(arr4[1] == 10);
+            Assert::IsTrue(arr4[0] == 10);
+            Assert::IsTrue(arr4[1] == 15);
             Assert::IsTrue(arr4[2] == 20);
-            Assert::IsTrue(arr4[3] == 30);
-            Assert::IsTrue(arr4[4] == 40);
 
-            int* arr5 = new int[t5->Size()];
+            t5->Remove(0);
             i = 0;
+            int* arr5 = new int[t5->Size()];
             t5->AddToArrayLNR(arr5);
-            Assert::IsTrue(arr5[0] == 0);
-            Assert::IsTrue(arr5[1] == 2);
+            Assert::IsTrue(arr5[0] == 1);
+        }
 
+        /// <summary>
+        /// Тест копирование дерева
+        /// </summary>
+        TEST_METHOD(Test_TreeApply)
+        {
+            BSTree <int>* t1 = new BSTree<int>();
+            BSTree <int>* t2 = new BSTree<int>();
+            BSTree <int>* t3 = new BSTree<int>();
+            BSTree <int>* t4 = new BSTree<int>();
+            BSTree <int>* t5 = new BSTree<int>();
+            GenerateTrees(t1, t2, t3, t4, t5);
+
+            // Для первого дерева
+            apply(t1->Root(), double_);
+            int i = 0;
+            int* arr1 = new int[t1->Size()];
+            t1->AddToArrayLNR(arr1);
+            for (int i = 0; i < t1->Size(); i++)
+            {
+                Assert::IsTrue(arr1[0] == 10);
+                Assert::IsTrue(arr1[1] == 20);
+                Assert::IsTrue(arr1[2] == 40);
+                Assert::IsTrue(arr1[3] == 60);
+                Assert::IsTrue(arr1[4] == 80);
+            }
+            
+            // Для второго дерева
+            apply(t2->Root(), double_);
+            i = 0;
+            int* arr2 = new int[t2->Size()];
+            t2->AddToArrayLNR(arr2);
+            for (int i = 0; i < t2->Size(); i++)
+            {
+                Assert::IsTrue(arr2[0] == 2);
+            }
+
+            // Для третьего дерева
+            apply(t3->Root(), double_);
+            i = 0;
+            int* arr3 = new int[t3->Size()];
+            t3->AddToArrayLNR(arr3);
+            for (int i = 0; i < t3->Size(); i++)
+            {
+                Assert::IsTrue(arr3[0] == 4);
+                Assert::IsTrue(arr3[1] == 10);
+                Assert::IsTrue(arr3[2] == 12);
+                Assert::IsTrue(arr3[3] == 20);
+                Assert::IsTrue(arr3[4] == 24);
+                Assert::IsTrue(arr3[5] == 30);
+            }
+
+            // Для четвертого дерева
+            apply(t4->Root(), double_);
+            i = 0;
+            int* arr4 = new int[t4->Size()];
+            t4->AddToArrayLNR(arr4);
+            for (int i = 0; i < t4->Size(); i++)
+            {
+                Assert::IsTrue(arr4[0] == 4);
+                Assert::IsTrue(arr4[1] == 10);
+                Assert::IsTrue(arr4[2] == 20);
+                Assert::IsTrue(arr4[3] == 30);
+                Assert::IsTrue(arr4[4] == 40);
+            }
+
+            // Для пятого дерева
+            apply(t5->Root(), double_);
+            i = 0;
+            int* arr5 = new int[t5->Size()];
+            t5->AddToArrayLNR(arr5);
+            for (int i = 0; i < t5->Size(); i++)
+            {
+                Assert::IsTrue(arr5[0] == 0);
+                Assert::IsTrue(arr5[1] == 2); 
+            }
         }
     };
 

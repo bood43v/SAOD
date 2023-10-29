@@ -1,4 +1,6 @@
-﻿
+﻿/// Главная программа для работы с итератором списка
+/// @author Будаев Г.Б.
+
 #include "LinkedList.h"
 #include <iostream>
 

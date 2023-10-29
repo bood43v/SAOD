@@ -25,7 +25,10 @@ public:
     TreeNode(const T& data_, TreeNode<T>* left_ = nullptr, TreeNode<T>* right_ = nullptr) :
         data(data_), left(left_), right(right_) {};
 
-
+    //~TreeNode()
+    //{
+    //    DeleteTree(this);
+    //}
 
     /// Вернуть указатель на левого потомка
     TreeNode<T>* Left() const {
@@ -305,19 +308,7 @@ public:
 
 
 
-    ///// Удаление дерева
-    //void DeleteTree(TreeNode<T>* root) {
-    //    if (root == nullptr)
-    //        return;
 
-    //    if (root->Left() != nullptr)
-    //        DeleteTree(root->Left());
-
-    //    if (root->Right() != nullptr)
-    //        DeleteTree(root->Right());
-
-    //    delete root;
-    //}
 
     /// Печать 
     void PrintNodeData()
@@ -340,7 +331,6 @@ public:
             this->Left()->AddToArrayLNR(arr, i);
             arr[i] = this->Data();
             i++;
-
             this->Right()->AddToArrayLNR(arr, i);
         }
     }
@@ -432,23 +422,32 @@ public:
 
 
 
-/*/// Поиск узла в дереве с возвратом указателя на узел, если он есть
-TreeNode<T>* Search(const T& item, TreeNode<T>* root_)
-{
-    TreeNode<T>* t = root_;
-    root_ = nullptr;
-    while (t != nullptr)
-    {
-        if (item == t->Data())
-            break;
-        else
-        {
-            root_ = t;
-            if (item < t->Data())
-                t = t->Left();
-            else
-                t = t->Right();
-        }
+
+/// Удаление дерева
+template<typename T>
+void DeleteTree(TreeNode<T>* root) {
+    if (root) {
+        DeleteTree(root->Left());
+        DeleteTree(root->Right());
+        root = nullptr;
+        delete root;
     }
-    return t;
-}*/
+}
+
+
+// Функция для обхода дерева и применения функции к каждому элементу
+template<typename T>
+void apply(TreeNode<T>* root, T(*func)(T)) {
+    if (root != nullptr) {
+        // Применяем функцию к текущему элементу
+        root->SetData(func(root->Data()));
+        // Рекурсивно обходим левое и правое поддеревья
+        apply(root->Left(), func);
+        apply(root->Right(), func);
+    }
+}
+// Функция для возведения числа в квадрат
+template<typename T>
+T double_(T x) {
+    return 2 * x;
+}

@@ -22,6 +22,7 @@ private:
             delete node;                // Удаляем текущий узел
         }
     }
+
 public:
     /// Конструктор без параметров
     BSTree() {
@@ -29,6 +30,7 @@ public:
         curr = new TreeNode<T>();
     };
 
+    
     /// Конструктор с параметром - корень дерева
     BSTree(const T& node) {
         this->Insert(node);
@@ -49,10 +51,20 @@ public:
         return *this;                   /// Возвращаем ссылку на текущий объект
     }
 
+    /// todo: конструткор перемещения, оператор присваивания перемещения
+    
+
+
     /// Деструктор
     ~BSTree() {
         DeleteTree(root);   
     };
+
+    /// Очищение дерева
+    void ClearTree() {
+        DeleteTree(root);
+        root = nullptr;
+    }
 
     /// Вернуть данные
     T Data(TreeNode<T>* curr) const
@@ -106,8 +118,8 @@ public:
     }
 
     /// Удаление узла
-    TreeNode<T>* Remove(const T& key) {
-        return root->Remove(root, key);
+    void Remove(const T& key) {
+        root = root->Remove(root, key);
     }
 
     /// Добавить в массив LNR

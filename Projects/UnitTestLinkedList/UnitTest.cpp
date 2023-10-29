@@ -9,7 +9,13 @@ namespace UnitTestLinkedList
     TEST_CLASS(UnitTest1)
     {
     public:
-
+        /// <summary>
+        /// Генерация списков с разными вставками
+        /// </summary>
+        /// <param name="root_1"></param>
+        /// <param name="root_2"></param>
+        /// <param name="root_3"></param>
+        /// <param name="root_4"></param>
         void Generate(LinkedList <int>* root_1, LinkedList<int>* root_2, LinkedList<int>* root_3, LinkedList<int>* root_4) {
 
             root_1->InsertAtTail(5);///  5 10 20 30 40
@@ -77,6 +83,9 @@ namespace UnitTestLinkedList
 
         }
 
+        /// <summary>
+        /// Тест поиска в списке
+        /// </summary>
         TEST_METHOD(Test_Search)
         {
             LinkedList<int>* L1 = new LinkedList<int>();
@@ -94,6 +103,9 @@ namespace UnitTestLinkedList
             Assert::IsTrue(L2->Search(222) == nullptr);
         }
 
+        /// <summary>
+        /// Тест удаления из списка
+        /// </summary>
         TEST_METHOD(Test_Remove)
         {
             LinkedList<int>* L1 = new LinkedList<int>();
@@ -115,6 +127,9 @@ namespace UnitTestLinkedList
             Assert::IsTrue(L2->Search(222) == nullptr);
         }
 
+        /// <summary>
+        /// Тест очистки списка
+        /// </summary>
         TEST_METHOD(Test_ClearList)
         {
             LinkedList<int>* L1 = new LinkedList<int>();
@@ -136,6 +151,58 @@ namespace UnitTestLinkedList
             Assert::IsTrue(L2->Search(1) == nullptr);
             Assert::IsTrue(L2->Search(222) == nullptr);
             Assert::IsTrue(L2->Size() == 0);
+        }
+
+        /// <summary>
+        /// Тест работы итератора связного списка
+        /// </summary>
+        TEST_METHOD(Test_Iterator)
+        {
+            LinkedList<int>* L1 = new LinkedList<int>();
+            LinkedList<int>* L2 = new LinkedList<int>();
+            LinkedList<int>* L3 = new LinkedList<int>();
+            LinkedList<int>* L4 = new LinkedList<int>();
+
+            Generate(L1, L2, L3, L4);
+
+            /// Первый список
+            /// Создание массива
+            int* arr = new int[L1->Size()];
+            /// Заполнение массива
+            arr = L1->ToListArray();
+            /// Сравнение результата работы итератора с выводом из массива
+            int i = 0;
+            for (LinkedList<int>::Iterator<int> it = L1->Begin(); it != L1->End(); ++it) {
+                Assert::IsTrue(*it == arr[i]);
+                i++;
+            }
+
+            /// Итератор второго списка
+            int* arr2 = new int[L2->Size()];
+            arr2 = L2->ToListArray();
+            i = 0;
+            for (LinkedList<int>::Iterator<int> it = L2->Begin(); it != L2->End(); ++it) {
+                Assert::IsTrue(*it == arr2[i]);
+                i++;
+            }
+
+            /// Итератор третьего списка
+            int* arr3 = new int[L3->Size()];
+            arr3 = L3->ToListArray();
+            i = 0;
+            for (LinkedList<int>::Iterator<int> it = L3->Begin(); it != L3->End(); ++it) {
+                Assert::IsTrue(*it == arr3[i]);
+                i++;
+            }
+
+            /// Итератор четвертого списка
+            int* arr4 = new int[L4->Size()];
+            arr4 = L4->ToListArray();
+            i = 0;
+            for (LinkedList<int>::Iterator<int> it = L4->Begin(); it != L4->End(); ++it) {
+                Assert::IsTrue(*it == arr4[i]);
+                i++;
+            }
         }
     };
 }
