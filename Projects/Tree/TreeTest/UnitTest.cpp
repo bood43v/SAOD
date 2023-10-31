@@ -59,8 +59,8 @@ namespace TreeTest
             tree4->Insert(15);///           
             tree4->Insert(20);///  
 
-            tree5->Insert(1);///   0
-            tree5->Insert(0);///      1
+            tree5->Insert(1);///   1
+            tree5->Insert(0);/// 0
         }
 
         /// <summary>
@@ -855,7 +855,12 @@ namespace TreeTest
             /// Создание массива
             int* arr = new int[t1->Size()];
             /// Заполнение массива
-            t1->AddToArrayLNR(arr);
+            //t1->AddToArrayLNR(arr);
+            arr[0] = 5;///  5 10 20 30 40
+            arr[1] = 10;
+            arr[2] = 20;
+            arr[3] = 30;
+            arr[4] = 40;
             /// Сравнение результата работы итератора с выводом из массива
             int i = 0;
             for (BSTree<int>::Iterator<int> it = t1->Begin(); it != t1->End(); ++it) {
@@ -865,7 +870,8 @@ namespace TreeTest
 
             /// Итератор второго дерева
             int* arr2 = new int[t2->Size()];
-            t2->AddToArrayLNR(arr2);
+            //t2->AddToArrayLNR(arr2);
+            arr2[0] = 1;
             i = 0;
             for (BSTree<int>::Iterator<int> it = t2->Begin(); it != t2->End(); ++it) {
                 Assert::IsTrue(*it == arr2[i]);
@@ -874,21 +880,43 @@ namespace TreeTest
 
             /// Итератор третьего дерева
             int* arr3 = new int[t3->Size()];
-            t3->AddToArrayLNR(arr3);
+            //t3->AddToArrayLNR(arr3);
+            arr3[0] = 2;
+            arr3[1] = 5;
+            arr3[2] = 6;
+            arr3[3] = 10;
+            arr3[4] = 12;
+            arr3[5] = 15;
             i = 0;
             for (BSTree<int>::Iterator<int> it = t3->Begin(); it != t3->End(); ++it) {
                 Assert::IsTrue(*it == arr3[i]);
                 i++;
             }
 
-            ///// Итератор четвертого дерева
-            //int* arr4 = new int[t4->Size()];
-            //t4->AddToArrayLNR(arr4);
-            //i = 0;
-            //for (BSTree<int>::Iterator<int> it = t4->Begin(); it != t4->End(); ++it) {
-            //    Assert::IsTrue(*it == arr4[i]);
-            //    i++;
-            //}
+            /// Итератор четвертого дерева
+            int* arr4 = new int[t4->Size()];
+            //t3->AddToArrayLNR(arr3);
+            arr4[0] = 2;
+            arr4[1] = 5;
+            arr4[2] = 10;
+            arr4[3] = 15;
+            arr4[4] = 20;
+            i = 0;
+            for (BSTree<int>::Iterator<int> it = t4->Begin(); it != t4->End(); ++it) {
+                Assert::IsTrue(*it == arr4[i]);
+                i++;
+            }
+
+            /// Итератор пятого дерева
+            int* arr5 = new int[t5->Size()];
+            //t3->AddToArrayLNR(arr3);
+            arr5[0] = 0;
+            arr5[1] = 1;
+            i = 0;
+            for (BSTree<int>::Iterator<int> it = t5->Begin(); it != t5->End(); ++it) {
+                Assert::IsTrue(*it == arr5[i]);
+                i++;
+            }
         }
     };
 

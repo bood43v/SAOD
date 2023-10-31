@@ -73,7 +73,5 @@ int main()
         cout << value << " ";
     }
 
-
-
 }
 
