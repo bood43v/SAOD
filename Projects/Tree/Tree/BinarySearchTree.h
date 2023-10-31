@@ -2,6 +2,7 @@
 /// @author Будаев Г.Б.
 #pragma once
 #include "TreeNode.h"
+#include <stack>
 
 /// <summary>
 /// шаблонный класс бинарное дерево поиска, использующий класс узел дерева
@@ -136,15 +137,112 @@ public:
     }
 
 
-    //// Функция для обхода дерева и применения функции к каждому элементу
-    //template<typename T>
-    //void apply(TreeNode<T>* root, T(*func)(T)) {
-    //    if (root != nullptr) {
-    //        // Применяем функцию к текущему элементу
-    //        root->SetData(func(root->Data()));
-    //        // Рекурсивно обходим левое и правое поддеревья
-    //        apply(root->Left(), func);
-    //        apply(root->Right(), func);
-    //    }
-    //}
+    /// <summary>
+    /// шаблонный класс итератор в классе BinarySearchTree, как в итерируемом
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    template<class T>
+    class Iterator {
+    private:
+        TreeNode<T>* current; // Указатель на текущий узел
+        std::stack<TreeNode<T>*> nodeStack;  // Стек для обхода дерева
+
+        // Заполняет стек узлами левого поддерева, начиная с заданного узла
+        void FillStack(TreeNode<T>* node)
+        {
+            // пока указатель - не пустой узел
+            while (node) {
+                // добавляем в стек
+                nodeStack.push(node);
+                // переход к левому узлу
+                node = node->Left();
+            }
+        }
+    public:
+        /// Конструктор без параметров
+        Iterator(TreeNode<T>* node) : current(node) 
+        {
+            // Заполняем стек начальным состоянием
+            FillStack(current);
+            // Если стек не пустой, получаем следующий узел из стека
+            if (!nodeStack.empty()) {
+                current = nodeStack.top();
+                nodeStack.pop();
+            }
+            else
+                current = nullptr;
+        }
+
+        /// Оператор разыменования
+        T operator*() const {
+            return current->Data();
+        }
+
+        /// Оператор префиксного инкремента
+        /// *this возвращает ссылку на текущий объект итератора
+        Iterator<T>& operator++() {
+            // Если стек пустой - выход
+            if (nodeStack.empty()) {
+                current = nullptr;
+                return *this;
+            }
+            // Если стек не пустой, получаем следующий узел из стека
+            current = nodeStack.top();
+            nodeStack.pop();
+
+            // Заполняем стек правым поддеревом текущего узла
+            FillStack(current->Right());
+
+            return *this;
+        }
+
+        /// Оператор постфиксного инкремента
+        /// temp для сохранения состояния до перехода к следующему
+        Iterator<T> operator++(int) {
+            Iterator temp = *this;
+            ++(*this);
+            return temp;
+        }
+
+        /// Оператор "равно"
+        bool operator==(const Iterator<T>& it) const {
+            return current == it.current;
+        }
+
+        /// Оператора "не равно"
+        bool operator!=(const Iterator<T>& it) const {
+            return !(*this == it);
+        }
+    };
+
+    /// Первый элемент списка
+    Iterator<T> Begin() const {
+        return Iterator<T>(root);
+    }
+
+    /// Элемент, следующий за последним элементом списка
+    Iterator<T> End() const {
+        return Iterator<T>(nullptr);
+    }
 };
+
+
+
+
+
+
+
+
+
+
+//// Функция для обхода дерева и применения функции к каждому элементу
+//template<typename T>
+//void apply(TreeNode<T>* root, T(*func)(T)) {
+//    if (root != nullptr) {
+//        // Применяем функцию к текущему элементу
+//        root->SetData(func(root->Data()));
+//        // Рекурсивно обходим левое и правое поддеревья
+//        apply(root->Left(), func);
+//        apply(root->Right(), func);
+//    }
+//}

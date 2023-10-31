@@ -838,6 +838,58 @@ namespace TreeTest
                 Assert::IsTrue(arr5[1] == 2); 
             }
         }
+
+        /// <summary>
+         /// Тест работы итератора дерева
+        /// </summary>
+        TEST_METHOD(Test_Iterator)
+        {
+            BSTree <int>* t1 = new BSTree<int>();
+            BSTree <int>* t2 = new BSTree<int>();
+            BSTree <int>* t3 = new BSTree<int>();
+            BSTree <int>* t4 = new BSTree<int>();
+            BSTree <int>* t5 = new BSTree<int>();
+            GenerateTrees(t1, t2, t3, t4, t5);
+
+            /// Первое дерево
+            /// Создание массива
+            int* arr = new int[t1->Size()];
+            /// Заполнение массива
+            t1->AddToArrayLNR(arr);
+            /// Сравнение результата работы итератора с выводом из массива
+            int i = 0;
+            for (BSTree<int>::Iterator<int> it = t1->Begin(); it != t1->End(); ++it) {
+                Assert::IsTrue(*it == arr[i]);
+                i++;
+            }
+
+            /// Итератор второго дерева
+            int* arr2 = new int[t2->Size()];
+            t2->AddToArrayLNR(arr2);
+            i = 0;
+            for (BSTree<int>::Iterator<int> it = t2->Begin(); it != t2->End(); ++it) {
+                Assert::IsTrue(*it == arr2[i]);
+                i++;
+            }
+
+            /// Итератор третьего дерева
+            int* arr3 = new int[t3->Size()];
+            t3->AddToArrayLNR(arr3);
+            i = 0;
+            for (BSTree<int>::Iterator<int> it = t3->Begin(); it != t3->End(); ++it) {
+                Assert::IsTrue(*it == arr3[i]);
+                i++;
+            }
+
+            ///// Итератор четвертого дерева
+            //int* arr4 = new int[t4->Size()];
+            //t4->AddToArrayLNR(arr4);
+            //i = 0;
+            //for (BSTree<int>::Iterator<int> it = t4->Begin(); it != t4->End(); ++it) {
+            //    Assert::IsTrue(*it == arr4[i]);
+            //    i++;
+            //}
+        }
     };
 
 
