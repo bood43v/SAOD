@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include <vector>
 template <class T>
 class MaxHeap {
 private:
@@ -7,30 +7,7 @@ private:
 	unsigned int capacity; // куча емкости
 	unsigned int size;     // Текущий размер кучи
 
-public:
-
-	// Конструктор 
-	MaxHeap(int capacity_) : heap(0), capacity(capacity_), size(0) {
-		heap = new T[capacity];
-	}
-
-	// Деструктор
-	~MaxHeap() {
-		delete[] heap;
-	}
-
-	int Size() {
-		return size;
-	}
-
-	T Max() {
-		if (size == 0) throw std::out_of_range("Heap is empty");
-		T temp = heap[0];
-		this->remove(heap[0]);
-		return temp;
-	}
-
-	// Функция фильтрации вверх, используется при вставке элемента
+		// Функция фильтрации вверх, используется при вставке элемента
 	void filterup(int start) {
 		int curr = start;				// Текущая позиция, то есть конец массива
 		int parent = (curr - 1) / 2;    // Позиция родительского узла в текущей позиции
@@ -60,7 +37,7 @@ public:
 		while (left <= end) {
 			// Определение, какое поддерево больше - левое или правое
 			if (left < end && heap[left] < heap[left + 1])
-				left++;				
+				left++;
 			// Правое поддерево больше
 			if (temp >= heap[left])
 				// Если значение текущего узла больше или равно значению выбранного поддерева, выходим из цикла
@@ -74,6 +51,39 @@ public:
 		}
 		// Значение текущего узла устанавливается на свое место в куче
 		heap[curr] = temp;
+	}
+
+		
+	// Получение индекса элемента в куче
+	int getIndex(T data) {
+		for (int i = 0; i < size; i++)
+			if (data == heap[i])
+				return i;
+		// Если элемент не найден, возвращаем недопустимое значение
+		throw std::out_of_range("Element not found");
+	}
+
+public:
+
+	// Конструктор 
+	MaxHeap(int capacity_) : heap(0), capacity(capacity_), size(0) {
+		heap = new T[capacity];
+	}
+
+	// Деструктор
+	~MaxHeap() {
+		delete[] heap;
+	}
+
+	int Size() {
+		return size;
+	}
+
+	T Max() {
+		if (size == 0) throw std::out_of_range("Heap is empty");
+		T temp = heap[0];
+		this->remove(heap[0]);
+		return temp;
 	}
 
 	// Вставка элемента с использованием фильтрации вверх
@@ -109,15 +119,7 @@ public:
 			return 0;
 		}
 	}
-	
-	// Получение индекса элемента в куче
-	int getIndex(T data) {
-		for (int i = 0; i < size; i++)
-			if (data == heap[i])
-				return i;
-		// Если элемент не найден, возвращаем недопустимое значение
-		throw std::out_of_range("Element not found");
-	}
+
 
 	// Удаление элемента с использованием фильтрации вниз
 	int remove(T data) {
@@ -139,15 +141,29 @@ public:
 		std::cout << std::endl;
 	}
 
-	// Основная функция, выполняющая пирамидальную сортировку
-	void heapSort(int arr[], int size_)
+	// Вывод элементов кучи в вектор
+	std::vector<T> toVector()
 	{
-		
+		std::vector<T> vec;
+		for (int i = 0; i < size; i++)
+		{
+			vec.push_back(heap[i]);
+		}
+		return vec;
+	}
+
+	// Основная функция, выполняющая пирамидальную сортировку
+	//template <class T>
+	std::vector<T> heapSort()
+	{
+		std::vector<T> vec;
+		int size_ = size;
 		// Один за другим извлекаем элементы из кучи
 		for (int i = 0; i < size_; i++)
 		{
-			arr[i] = this->Max();
+			vec.push_back(this->Max());
 		}
+		return vec;
 	}
 };
 

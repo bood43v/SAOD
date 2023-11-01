@@ -1,7 +1,11 @@
 ﻿#include <iostream>
 #include "Heap.h"
-
+#include <vector>
+#include <algorithm>
 using namespace std;
+
+
+
 
 int main()
 {
@@ -14,20 +18,25 @@ int main()
 
     
     heap.print();
-    std::cout << "Size: " << heap.Size() << std::endl;
+    cout << "Size: " << heap.Size() << endl;
     heap.insert(52225);
     heap.print();
-    std::cout << "Size: " << heap.Size() << std::endl;
+    cout << "Size: " << heap.Size() << endl;
 
     heap.Max();
     heap.print();
-    std::cout << "Size: " << heap.Size() << endl;
+    cout << "Size: " << heap.Size() << endl;
 
-    int size = heap.Size();
-    int* arr = new int(size);
-    heap.heapSort(arr, size);
+    cout << "Sorted: " << endl;
+    vector<int> vec;
+    vec = heap.heapSort();
 
-    for (int i = 0; i < heap.Size(); i++) {
-        cout << arr[i] << endl;
+    for (int i = 0; i < vec.size(); i++)
+    {
+        cout << vec[i] << " ";
     }
+
+
+
+
 }
