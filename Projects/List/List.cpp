@@ -34,7 +34,7 @@ int main()
     cout << "Size = " << list1->Size() << endl;;
 
     cout << "Used iterator: " << endl;
-    for (LinkedList<int>::Iterator<int> it = list1->Begin(); it != list1->End(); ++it) {
+    for (LinkedList<int>::Iterator<int> it = list1->begin(); it != list1->end(); ++it) {
         cout << *it << " ";
     }
 }

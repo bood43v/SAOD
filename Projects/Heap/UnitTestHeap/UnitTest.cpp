@@ -36,6 +36,21 @@ namespace UnitTestHeap
 
             Assert::IsTrue(is_heap(vec.begin(), vec.end()));
             Assert::IsTrue(heap.Size() == 6);
+
+            // куча из одного элемента
+            MaxHeap<int> heap2(1);
+            heap2.insert(999);
+            Assert::IsTrue(heap2.Size() == 1);
+            heap2.insert(1);
+            Assert::IsTrue(heap2.Size() == 2);
+
+            // куча без элементов и вставка в неё
+            MaxHeap<int> heap3(0);
+            Assert::IsTrue(heap3.Size() == 0);
+            heap3.insert(22);
+            Assert::IsTrue(heap3.Size() == 1);
+
+
         }
 
         /// <summary>
@@ -65,6 +80,19 @@ namespace UnitTestHeap
             {
                 Assert::IsTrue(vec[i] == heap.Max());
             }
+
+            // куча из одного элемента
+            MaxHeap<int> heap2(1);
+            heap2.insert(999);
+            Assert::IsTrue(heap2.Size() == 1);
+            //heap2.Max();
+            //Assert::IsTrue(heap2.Size() == 0);
+
+            // куча без элементов и вставка в неё
+            MaxHeap<int> heap3(0);
+            Assert::IsTrue(heap3.Size() == 0);
+            //heap3.Max();
+            //Assert::IsTrue(heap3.Size() == 0);
         }
 
         /// <summary>

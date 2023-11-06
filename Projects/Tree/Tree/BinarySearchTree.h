@@ -139,6 +139,7 @@ public:
 
     /// <summary>
     /// шаблонный класс итератор в классе BinarySearchTree, как в итерируемом
+    /// с порядком обхода в глубину LNR
     /// </summary>
     /// <typeparam name="T"></typeparam>
     template<class T>
@@ -180,6 +181,7 @@ public:
 
         /// Оператор префиксного инкремента
         /// *this возвращает ссылку на текущий объект итератора
+        /// с обходом LNR
         Iterator<T>& operator++() {
             // Если стек пустой - выход
             if (nodeStack.empty()) {
@@ -198,6 +200,7 @@ public:
 
         /// Оператор постфиксного инкремента
         /// temp для сохранения состояния до перехода к следующему
+        /// с обходом LNR
         Iterator<T> operator++(int) {
             Iterator temp = *this;
             ++(*this);
@@ -216,12 +219,12 @@ public:
     };
 
     /// Первый элемент списка
-    Iterator<T> Begin() const {
+    Iterator<T> begin() const {
         return Iterator<T>(root);
     }
 
     /// Элемент, следующий за последним элементом списка
-    Iterator<T> End() const {
+    Iterator<T> end() const {
         return Iterator<T>(nullptr);
     }
 };

@@ -1,3 +1,5 @@
+/// Тестирование класса heap
+/// @author Будаев Г.Б.
 #include "pch.h"
 #include "CppUnitTest.h"
 #include "../List/LinkedList.h"
@@ -167,54 +169,34 @@ namespace UnitTestLinkedList
 
             /// Первый список
             /// Создание массива
-            int* arr = new int[L1->Size()];
-            /// Заполнение массива
-            //arr = L1->ToListArray();
-            arr[0] = 5;///  5 10 20 30 40
-            arr[1] = 10;
-            arr[2] = 20;
-            arr[3] = 30;
-            arr[4] = 40;
+            int* arr = new int[L1->Size()] { 5, 10, 20, 30, 40 };
             /// Сравнение результата работы итератора с выводом из массива
             int i = 0;
-            for (LinkedList<int>::Iterator<int> it = L1->Begin(); it != L1->End(); ++it) {
+            for (LinkedList<int>::Iterator<int> it = L1->begin(); it != L1->end(); ++it) {
                 Assert::IsTrue(*it == arr[i]);
                 i++;
             }
 
             /// Итератор второго списка
-            int* arr2 = new int[L2->Size()];
-            //arr2 = L2->ToListArray();
-            arr2[0] = 1;
+            int* arr2 = new int[L2->Size()] { 1 };
             i = 0;
-            for (LinkedList<int>::Iterator<int> it = L2->Begin(); it != L2->End(); ++it) {
+            for (LinkedList<int>::Iterator<int> it = L2->begin(); it != L2->end(); ++it) {
                 Assert::IsTrue(*it == arr2[i]);
                 i++;
             }
 
             /// Итератор третьего списка
-            int* arr3 = new int[L3->Size()];
-            //arr3 = L3->ToListArray();
-            arr3[0] = 11; /// 11 10 9 8 7
-            arr3[1] = 10;
-            arr3[2] = 9;
-            arr3[3] = 8;
-            arr3[4] = 7;
+            int* arr3 = new int[L3->Size()] { 11, 10, 9, 8, 7 };
             i = 0;
-            for (LinkedList<int>::Iterator<int> it = L3->Begin(); it != L3->End(); ++it) {
+            for (LinkedList<int>::Iterator<int> it = L3->begin(); it != L3->end(); ++it) {
                 Assert::IsTrue(*it == arr3[i]);
                 i++;
             }
 
             /// Итератор четвертого  списка
-            int* arr4 = new int[L4->Size()];
-            //arr4 = L4->ToListArray();
-            arr4[0] = 1; /// 1 2 3 4
-            arr4[1] = 2;
-            arr4[2] = 3;
-            arr4[3] = 4;
+            int* arr4 = new int[L4->Size()] { 1, 2, 3, 4 };
             i = 0;
-            for (LinkedList<int>::Iterator<int> it = L4->Begin(); it != L4->End(); ++it) {
+            for (LinkedList<int>::Iterator<int> it = L4->begin(); it != L4->end(); ++it) {
                 Assert::IsTrue(*it == arr4[i]);
                 i++;
             }

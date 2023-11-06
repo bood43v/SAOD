@@ -1,4 +1,9 @@
-﻿#pragma once
+﻿/// Шаблонный класс кучи
+/// Минимальный capacity для кучи при инициализации - 1.
+/// В случае, если параметром конструктора с одним параметром параметр <= 0 -> capacity автоматически приравнивается 1.
+/// @author Будаев Г.Б.
+
+#pragma once
 #include <vector>
 template <class T>
 class MaxHeap {
@@ -66,21 +71,26 @@ private:
 public:
 
 	// Конструктор 
-	MaxHeap(int capacity_) : heap(0), capacity(capacity_), size(0) {
+	MaxHeap(unsigned int capacity_) : heap(0), capacity(capacity_ < 0 ? capacity_ : 1), size(0) {
+		//if (capacity_ <= 0) capacity = 1;
 		heap = new T[capacity];
 	}
+
+	//todo: конструктор присваивания, копирования
 
 	// Деструктор
 	~MaxHeap() {
 		delete[] heap;
 	}
 
-	int Size() {
+
+	int Size() const {
 		return size;
 	}
 
+	// вывод наибольшего значения кучи 
 	T Max() {
-		if (size == 0) throw std::out_of_range("Heap is empty");
+		if (size == 0) throw "Heap is empty";
 		T temp = heap[0];
 		this->remove(heap[0]);
 		return temp;
@@ -106,6 +116,20 @@ public:
 			// Обновление указателя на новый блок памяти и максимального размера кучи
 			heap = newHeap;
 			capacity = newCapacity;
+		}
+		// Если куча была пуста и под её массив не выделена память
+		if (size == 0 && capacity == 0) {
+			// Максимальный размер кучи достигнут
+			int newCapacity = 1; // Размер 1
+			// перевыделение памяти
+			T* newHeap = new T[newCapacity];
+			// Освобождение старого блока памяти
+			delete[] heap;
+			// Обновление указателя на новый блок памяти и максимального размера кучи
+			heap = newHeap;
+			capacity = newCapacity;
+			heap[0] = data;
+			size = 1;
 		}
 		// Если куча была пуста
 		if (size == 0) {

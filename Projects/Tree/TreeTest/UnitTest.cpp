@@ -853,67 +853,45 @@ namespace TreeTest
 
             /// Первое дерево
             /// Создание массива
-            int* arr = new int[t1->Size()];
-            /// Заполнение массива
-            //t1->AddToArrayLNR(arr);
-            arr[0] = 5;///  5 10 20 30 40
-            arr[1] = 10;
-            arr[2] = 20;
-            arr[3] = 30;
-            arr[4] = 40;
+            int* arr = new int[t1->Size()]{ 5, 10, 20, 30, 40};
             /// Сравнение результата работы итератора с выводом из массива
             int i = 0;
-            for (BSTree<int>::Iterator<int> it = t1->Begin(); it != t1->End(); ++it) {
+            for (BSTree<int>::Iterator<int> it = t1->begin(); it != t1->end(); ++it) {
                 Assert::IsTrue(*it == arr[i]);
                 i++;
             }
+            //for (int x : *t1) {
+            //    cout << x;
+            //}
 
             /// Итератор второго дерева
-            int* arr2 = new int[t2->Size()];
-            //t2->AddToArrayLNR(arr2);
-            arr2[0] = 1;
+            int* arr2 = new int[t2->Size()]{ 1 };
             i = 0;
-            for (BSTree<int>::Iterator<int> it = t2->Begin(); it != t2->End(); ++it) {
+            for (BSTree<int>::Iterator<int> it = t2->begin(); it != t2->end(); ++it) {
                 Assert::IsTrue(*it == arr2[i]);
                 i++;
             }
 
             /// Итератор третьего дерева
-            int* arr3 = new int[t3->Size()];
-            //t3->AddToArrayLNR(arr3);
-            arr3[0] = 2;
-            arr3[1] = 5;
-            arr3[2] = 6;
-            arr3[3] = 10;
-            arr3[4] = 12;
-            arr3[5] = 15;
+            int* arr3 = new int[t3->Size()] { 2, 5, 6, 10, 12, 15};
             i = 0;
-            for (BSTree<int>::Iterator<int> it = t3->Begin(); it != t3->End(); ++it) {
+            for (BSTree<int>::Iterator<int> it = t3->begin(); it != t3->end(); ++it) {
                 Assert::IsTrue(*it == arr3[i]);
                 i++;
             }
 
             /// Итератор четвертого дерева
-            int* arr4 = new int[t4->Size()];
-            //t3->AddToArrayLNR(arr3);
-            arr4[0] = 2;
-            arr4[1] = 5;
-            arr4[2] = 10;
-            arr4[3] = 15;
-            arr4[4] = 20;
+            int* arr4 = new int[t4->Size()]{ 2, 5, 10, 15, 20 };
             i = 0;
-            for (BSTree<int>::Iterator<int> it = t4->Begin(); it != t4->End(); ++it) {
+            for (BSTree<int>::Iterator<int> it = t4->begin(); it != t4->end(); ++it) {
                 Assert::IsTrue(*it == arr4[i]);
                 i++;
             }
 
             /// Итератор пятого дерева
-            int* arr5 = new int[t5->Size()];
-            //t3->AddToArrayLNR(arr3);
-            arr5[0] = 0;
-            arr5[1] = 1;
+            int* arr5 = new int[t5->Size()]{ 0, 1 };
             i = 0;
-            for (BSTree<int>::Iterator<int> it = t5->Begin(); it != t5->End(); ++it) {
+            for (BSTree<int>::Iterator<int> it = t5->begin(); it != t5->end(); ++it) {
                 Assert::IsTrue(*it == arr5[i]);
                 i++;
             }

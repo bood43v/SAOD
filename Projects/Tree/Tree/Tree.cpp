@@ -48,12 +48,16 @@ int main()
 
 
     cout << endl << endl << "t2 used iterator: " << endl;
-    for (BSTree<int>::Iterator<int> it = t2->Begin(); it != t2->End(); ++it) {
+    for (BSTree<int>::Iterator<int> it = t2->begin(); it != t2->end(); ++it) {
         int value = *it;
         cout << value << " ";
     }
 
-
+    // Способ работы с итератором
+    cout << endl;
+    for (int x : *t1) {
+        cout << x << " ";
+    }
  
 }
 

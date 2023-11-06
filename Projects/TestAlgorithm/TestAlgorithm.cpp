@@ -41,17 +41,17 @@ int main() {
     }
     vector<int> target(source.size());
     // target.begin - вектор сохранения действий над элементами вектора source (возведение в квадрат
-    transform(source.begin(), source.end(), target.begin(), [](int& a) {return a * a; });
+    transform(source.begin(), source.end(), target.begin(), [](int& a) { return a * a; } );
     // вывод нового вектора
-    for_each(target.begin(), target.end(), [](int a) {cout << a << ' '; });
+    for_each(target.begin(), target.end(), [/*&target*/](int a) { cout << a << ' '; });
 
 
 
     //-------- copy_if --------//
     // копирование только четных значений вектора
     vector<int> target2(5);
-    copy_if(source.begin(), source.end(), target2.begin(), [](int value) { return value % 2 == 0; });
-    for_each(target2.begin(), target2.end(), [](int a) {cout << a << ' '; });
+    copy_if(source.begin(), source.end(), target2.begin(), [](int value) { return value % 2 == 0; } );
+    for_each(target2.begin()+2, target2.end(), [](int a) { cout << a << ' '; } );
 
 
     //-------- any_of --------//

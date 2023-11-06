@@ -217,12 +217,12 @@ public:
     };
 
     /// ѕервый элемент списка
-    Iterator<T> Begin() const {
+    Iterator<T> begin() const {
         return Iterator<T>(head);
     }
 
     /// Ёлемент, следующий за последним элементом списка
-    Iterator<T> End() const {
+    Iterator<T> end() const {
         return Iterator<T>(nullptr);
     }
 };
