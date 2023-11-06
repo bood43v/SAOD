@@ -34,7 +34,7 @@ private:
 		heap[curr] = temp;
 	}
 
-	// Функция фильтрации вниз, используется при удалении элемента
+	/// Функция фильтрации вниз, используется при удалении элемента
 	void filterdown(int start, int end) {
 		int curr = start;			// Текущий узел, который будет удален
 		int left = 2 * curr + 1;    // Позиция левого поддерева
@@ -59,36 +59,64 @@ private:
 	}
 
 		
-	// Получение индекса элемента в куче
+	/// Получение индекса элемента в куче
 	int getIndex(T data) {
 		for (int i = 0; i < size; i++)
 			if (data == heap[i])
 				return i;
 		// Если элемент не найден, возвращаем недопустимое значение
-		throw std::out_of_range("Element not found");
+		return -1;
 	}
 
 public:
 
-	// Конструктор 
-	MaxHeap(unsigned int capacity_) : heap(0), capacity(capacity_ < 0 ? capacity_ : 1), size(0) {
+
+	/// Конструктор с размером
+	MaxHeap(unsigned int capacity_) : heap(nullptr), capacity(capacity_ < 0 ? capacity_ : 1), size(0) {
 		//if (capacity_ <= 0) capacity = 1;
 		heap = new T[capacity];
 	}
 
-	//todo: конструктор присваивания, копирования
+	// Конструктор без параметров
+	MaxHeap() : heap(nullptr), capacity(1), size(0) {
+		heap = new T[capacity];
+	}
 
-	// Деструктор
+	/// Конструктор копирования
+	MaxHeap(const MaxHeap &heap_) : heap(nullptr), capacity(heap_.capacity), size(heap_.Size()) {
+		heap = new T[capacity];
+		for (int i = 0; i < size; i++)
+		{
+			heap[i] = heap_.heap[i];
+		}
+	}
+
+	/// Оператор присваивания
+	MaxHeap<T>& operator=(const MaxHeap<T>& heap_) {
+		if (this != &heap_) {
+			delete[] heap;
+			capacity = heap_.capacity;
+			size = heap_.size;
+			heap = new T[capacity];
+			for (int i = 0; i < size; i++) {
+				heap[i] = heap_.heap[i];
+			}
+		}
+		return *this;
+	}
+
+
+	/// Деструктор
 	~MaxHeap() {
 		delete[] heap;
 	}
 
-
+	/// Размер
 	int Size() const {
 		return size;
 	}
 
-	// вывод наибольшего значения кучи 
+	/// вывод наибольшего значения кучи 
 	T Max() {
 		if (size == 0) throw "Heap is empty";
 		T temp = heap[0];
@@ -96,7 +124,7 @@ public:
 		return temp;
 	}
 
-	// Вставка элемента с использованием фильтрации вверх
+	/// Вставка элемента с использованием фильтрации вверх
 	int insert(T data) {
 		if (size >= capacity) {
 			// Максимальный размер кучи достигнут
@@ -145,15 +173,18 @@ public:
 	}
 
 
-	// Удаление элемента с использованием фильтрации вниз
-	int remove(T data) {
+	/// Удаление элемента с использованием фильтрации вниз
+	void remove(T data) {
 		int idx;
-		if (size == 0)				// Если куча пуста, возвращаем недопустимое значение
-			throw std::out_of_range("Heap is empty");
+		if (size == 0)				
+			return;
+			//throw "Heap is empty"; // Если куча пуста, возвращаем недопустимое значение
 		idx = getIndex(data);		// Получаем индекс элементав куче
-		heap[idx] = heap[--size];   // Заменяем элемент, который нужно удалить, последним элементом в куче
-		filterdown(idx, size - 1);	// Выполняем фильтрацию вниз
-		return 0;
+		if (idx != -1) {
+			heap[idx] = heap[--size];   // Заменяем элемент, который нужно удалить, последним элементом в куче
+			filterdown(idx, size - 1);	// Выполняем фильтрацию вниз
+		}
+		//return 0;
 	}
 
 	// Вывод элементов кучи
@@ -165,7 +196,7 @@ public:
 		std::cout << std::endl;
 	}
 
-	// Вывод элементов кучи в вектор
+	/// Вывод элементов кучи в вектор
 	std::vector<T> toVector()
 	{
 		std::vector<T> vec;
@@ -176,8 +207,8 @@ public:
 		return vec;
 	}
 
-	// Основная функция, выполняющая пирамидальную сортировку
-	//template <class T>
+	/// Основная функция, выполняющая сортировку кучей
+	///template <class T>
 	std::vector<T> heapSort()
 	{
 		std::vector<T> vec;
