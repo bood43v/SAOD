@@ -69,8 +69,6 @@ private:
 	}
 
 public:
-
-
 	/// Конструктор с размером
 	MaxHeap(unsigned int capacity_) : heap(nullptr), capacity(capacity_ < 0 ? capacity_ : 1), size(0) {
 		//if (capacity_ <= 0) capacity = 1;
