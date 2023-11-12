@@ -17,6 +17,168 @@ namespace UnitTestHeap
     {
     public:
         /// <summary>
+        /// Тестирование конструктора с вектором
+        /// </summary>
+        TEST_METHOD(TestVecConstructor)
+        {
+            // Несколько элементов
+            vector<int> vec{ 1, 5, 3, 4 };
+            MaxHeap<int> heap(vec);
+            sort(vec.begin(), vec.end(), greater<>());
+
+            Assert::IsTrue(heap.Size() == vec.size());
+            for (const int& item : vec) {
+                Assert::IsTrue(item == heap.Max());
+            }
+
+            // 0 элементов
+            vector<int> vec2;
+            MaxHeap<int> heap2(vec2);
+            sort(vec2.begin(), vec2.end(), greater<>());
+
+            Assert::IsTrue(heap2.Size() == vec2.size());
+            for (const int& item : vec2) {
+                Assert::IsTrue(item == heap2.Max());
+            }
+        }
+
+        /// <summary>
+        /// Тестирование конструктора копирования
+        /// </summary>
+        TEST_METHOD(TestCopyConstructor)
+        {
+            // Несколько элементов
+            vector<int> vec{ 1, 5, 3, 4 };
+            MaxHeap<int> heap1(vec);
+
+            /// Конструктор копирования
+            MaxHeap<int> heap2(heap1);       
+            sort(vec.begin(), vec.end(), greater<>());
+
+            /// Проверяем, одинаковые ли кучи 
+            Assert::IsTrue(vec.size() == 4);
+            Assert::IsTrue(heap1.Size() == vec.size());
+            Assert::IsTrue(heap2.Size() == vec.size());
+            for (const int& item : vec) {
+                Assert::IsTrue(heap1.Max() == heap2.Max());
+                //Assert::IsTrue(item == heap1.Max());
+                //Assert::IsTrue(item == heap2.Max());
+            }
+
+            // 0 элементов
+            vector<int> vec2;
+            MaxHeap<int> heap3(vec2);
+
+            /// Конструктор копирования
+            MaxHeap<int> heap4(heap3);
+            sort(vec2.begin(), vec2.end(), greater<>());
+
+            /// Проверяем, одинаковые ли кучи 
+            Assert::IsTrue(heap3.Size() == vec2.size());
+            Assert::IsTrue(heap4.Size() == vec2.size());
+            Assert::IsTrue(vec2.size() == 0);
+            for (const int& item : vec2) {
+                Assert::IsTrue(heap3.Max() == heap4.Max());
+                //Assert::IsTrue(item == heap1.Max());
+                //Assert::IsTrue(item == heap2.Max());
+            }
+        }
+
+        /// <summary>
+        /// Тестирование оператора присваивания копированием
+        /// </summary>
+        TEST_METHOD(TestAssignmentOperator)
+        {
+            // Несколько элементов
+            vector<int> vec{ 1, 5, 3, 4 };
+            MaxHeap<int> heap1(vec);
+            sort(vec.begin(), vec.end(), greater<>());
+
+            MaxHeap<int> heap2;
+
+            /// Оператор присваивания копированием
+            heap2 = heap1;     
+
+            /// Проверяем, одинаковые ли кучи 
+            Assert::IsTrue(vec.size() == 4);
+            Assert::IsTrue(heap1.Size() == vec.size());
+            Assert::IsTrue(heap2.Size() == vec.size());
+
+            for (const int& item : vec) {
+                Assert::IsTrue(heap1.Max() == heap2.Max());
+                //Assert::IsTrue(item == heap1.Max());
+                //Assert::IsTrue(item == heap2.Max());
+            }
+
+            // 0 элементов
+            vector<int> vec2;
+            MaxHeap<int> heap3(vec2);
+            sort(vec2.begin(), vec2.end(), greater<>());
+
+            MaxHeap<int> heap4;
+
+            /// Оператор присваивания копированием
+            heap4 = heap3;
+
+            /// Проверяем, одинаковые ли кучи 
+            Assert::IsTrue(heap3.Size() == vec2.size());
+            Assert::IsTrue(heap4.Size() == vec2.size());
+            Assert::IsTrue(vec2.size() == 0);
+            for (const int& item : vec2) {
+                Assert::IsTrue(heap3.Max() == heap4.Max());
+                //Assert::IsTrue(item == heap1.Max());
+                //Assert::IsTrue(item == heap2.Max());
+            }
+        }
+
+        /// <summary>
+        /// Тестирование оператора присваивания перемещением
+        /// </summary>
+        TEST_METHOD(TestMoveAssignmentOperator)
+        {
+            // Несколько элементов
+            vector<int> vec{ 1, 5, 3, 4 };
+            MaxHeap<int> heap1(vec);
+            sort(vec.begin(), vec.end(), greater<>());
+
+            MaxHeap<int> heap2;
+
+            /// Оператор присваивания перемещением
+            heap2 = move(heap1);
+
+            /// Проверяем, одинаковые ли кучи 
+            Assert::IsTrue(vec.size() == 4);
+            Assert::IsTrue(heap1.Size() == 0);
+            Assert::IsTrue(heap2.Size() == vec.size());
+
+            for (const int& item : vec) {
+                Assert::IsTrue(heap2.Max() == item);
+                //Assert::IsTrue(item == heap1.Max());
+                //Assert::IsTrue(item == heap2.Max());
+            }
+
+            // 0 элементов
+            vector<int> vec2;
+            MaxHeap<int> heap3(vec2);
+            sort(vec2.begin(), vec2.end(), greater<>());
+
+            MaxHeap<int> heap4;
+
+            /// Оператор присваивания копированием
+            heap4 = move(heap3);
+
+            /// Проверяем, одинаковые ли кучи 
+            Assert::IsTrue(heap3.Size() == 0);
+            Assert::IsTrue(heap4.Size() == vec2.size());
+            Assert::IsTrue(vec2.size() == 0);
+            for (const int& item : vec2) {
+                Assert::IsTrue(heap4.Max() == item);
+                //Assert::IsTrue(item == heap1.Max());
+                //Assert::IsTrue(item == heap2.Max());
+            }
+        }
+
+        /// <summary>
         ///  Является ли кучей
         /// </summary>
         TEST_METHOD(TestInsert)

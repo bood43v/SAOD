@@ -9,27 +9,24 @@ using namespace std;
 int main()
 {
     try {
-        MaxHeap<int> heap(5);
-        heap.insert(5);
-        heap.insert(10);
-        heap.insert(30);
-        heap.insert(7);
-        heap.insert(6);
+        vector<int> vec{ 1, 2, 3, 4 };
+        MaxHeap<int> heap1(vec);         /// Куча 1
 
+        MaxHeap<int> heap2(heap1);       /// Конструктор копирования
 
-        MaxHeap<int> heap2(heap);
-        heap2.print();
+        MaxHeap<int> heap3(move(heap1)); /// Конструктор перемещения
+       
 
-        MaxHeap<int> heap3 = heap2;
+        MaxHeap<int> heap_(vec);         /// Куча 2        
 
-        cout << endl;
-        heap3.print();
+        MaxHeap<int> heap4;            
+        heap4 = heap_;                   /// Оператор присваивания копированием
+
+        MaxHeap<int> heap5;             
+        heap5 = move(heap_);             /// Оператор присваивания перемещением
 
     }
     catch (const char* error_message) {
         cout << endl << error_message << endl;
     }
-
-
-
 }

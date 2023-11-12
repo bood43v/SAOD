@@ -58,7 +58,7 @@ private:
 		heap[curr] = temp;
 	}
 
-		
+
 	/// Получение индекса элемента в куче
 	int getIndex(T data) {
 		for (int i = 0; i < size; i++)
@@ -80,26 +80,65 @@ public:
 		heap = new T[capacity];
 	}
 
-	/// Конструктор копирования
-	MaxHeap(const MaxHeap &heap_) : heap(nullptr), capacity(heap_.capacity), size(heap_.Size()) {
+	// Конструктор с вектором
+	// Если размер вектора = 0, то capacity = 1, чтобы была выделена память под 1 элемент
+	MaxHeap(const std::vector<T>& arr) : heap(nullptr), capacity(arr.size() != 0 ? arr.size() : 1), size(0) {
 		heap = new T[capacity];
-		for (int i = 0; i < size; i++)
-		{
-			heap[i] = heap_.heap[i];
+		/// вставка элементов из вектора в кучу итератором
+		for (const T& item : arr) {
+			insert(item);
 		}
 	}
 
-	/// Оператор присваивания
+	/// Конструктор копирования
+	MaxHeap(const MaxHeap& heap_) : heap(nullptr), capacity(heap_.capacity), size(heap_.Size()) {
+		heap = new T[capacity];
+		memcpy(heap, heap_.heap, capacity * sizeof(T));
+
+		/*std::cout << "Copy constructor" << std::endl;*/
+	}
+
+	/// Конструктор перемещения
+	MaxHeap(MaxHeap&& heap_) noexcept : heap(heap_.heap), capacity(heap_.capacity), size(heap_.size) {
+		heap_.heap = nullptr;
+		heap_.capacity = 0;
+		heap_.size = 0;
+
+	/*	std::cout << "Move constructor" << std::endl;*/
+	}
+
+	/// Оператор присваивания копированием
 	MaxHeap<T>& operator=(const MaxHeap<T>& heap_) {
 		if (this != &heap_) {
 			delete[] heap;
 			capacity = heap_.capacity;
 			size = heap_.size;
 			heap = new T[capacity];
-			for (int i = 0; i < size; i++) {
-				heap[i] = heap_.heap[i];
-			}
+			memcpy(heap, heap_.heap, capacity * sizeof(T));
+			//for (int i = 0; i < size; i++) {
+			//	heap[i] = heap_.heap[i];
+			//}
 		}
+		/*std::cout << "Assignment operator" << std::endl;*/
+		return *this;
+	}
+
+	// Для обозначения объекта, который готов к перемещению(и может быть украден), 
+	// используется r-value ссылка(&&).Функция std::move() преобразует объект в r-value ссылку, 
+	// что позволяет вызывать конструкторы перемещения или операторы присваивания перемещением.
+
+	/// Оператор присваивания перемещением
+	MaxHeap<T>& operator=(MaxHeap<T>&& heap_) noexcept {
+		if (this != &heap_) {
+			delete[] heap;
+			heap = heap_.heap;
+			capacity = heap_.capacity;
+			size = heap_.size;
+			heap_.heap = nullptr;
+			heap_.capacity = 0;
+			heap_.size = 0;
+		}
+		/*std::cout << "Move Assignment Operator" << std::endl;*/
 		return *this;
 	}
 
@@ -174,9 +213,9 @@ public:
 	/// Удаление элемента с использованием фильтрации вниз
 	void remove(T data) {
 		int idx;
-		if (size == 0)				
+		if (size == 0)
 			return;
-			//throw "Heap is empty"; // Если куча пуста, возвращаем недопустимое значение
+		//throw "Heap is empty"; // Если куча пуста, возвращаем недопустимое значение
 		idx = getIndex(data);		// Получаем индекс элементав куче
 		if (idx != -1) {
 			heap[idx] = heap[--size];   // Заменяем элемент, который нужно удалить, последним элементом в куче
