@@ -25,10 +25,10 @@ public:
     TreeNode(const T& data_, TreeNode<T>* left_ = nullptr, TreeNode<T>* right_ = nullptr) :
         data(data_), left(left_), right(right_) {};
 
-    //~TreeNode()
-    //{
-    //    DeleteTree(this);
-    //}
+    virtual ~TreeNode()
+    {
+        DeleteTree(this);
+    }
 
     /// Вернуть указатель на левого потомка
     TreeNode<T>* Left() const {

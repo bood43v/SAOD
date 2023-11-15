@@ -39,7 +39,8 @@ public:
 
     /// Конструктор копирования
     BSTree(const BSTree<T>& tree) {
-        root = CopyTree(tree->root);
+        root = CopyTree(tree.root);
+        /*root = CopyTree(tree->    root);*/
     }
 
     /// Оператор присваивания
@@ -57,7 +58,7 @@ public:
 
 
     /// Деструктор
-    ~BSTree() {
+    virtual ~BSTree() {
         DeleteTree(root);   
     };
 
@@ -83,8 +84,13 @@ public:
         root = newRoot;
     }
 
+    /// Установить текущий
+    void SetCurr(TreeNode<T>* newRoot) {
+        curr = newRoot;
+    }
+
     /// Вставка
-    void Insert(const T& key) {
+    virtual void Insert(const T& key) {
         root->Insert(key);
     }
     
@@ -119,7 +125,7 @@ public:
     }
 
     /// Удаление узла
-    void Remove(const T& key) {
+    virtual void Delete(const T& key) {
         root = root->Remove(root, key);
     }
 

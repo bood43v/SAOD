@@ -61,7 +61,7 @@ namespace UnitTestHeap
             Assert::IsTrue(heap2.Size() == vec.size());
             for (const int& item : vec) {
                 Assert::IsTrue(heap1.Max() == heap2.Max());
-                //Assert::IsTrue(item == heap1.Max());
+                /*Assert::IsTrue(item == heap1.Max());*/
                 //Assert::IsTrue(item == heap2.Max());
             }
 

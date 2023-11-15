@@ -1,11 +1,9 @@
-/// Тестирование класса AVLTree
-/// @author Будаев Г.Б.
 #include "pch.h"
 #include "CppUnitTest.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace UnitTestAVL
+namespace UnitTestAVLTree
 {
     TEST_CLASS(UnitTest1)
     {
