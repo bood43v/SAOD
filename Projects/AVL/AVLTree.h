@@ -241,17 +241,17 @@ private:
 			}
 	}
 
-	void AVLDelete(AVLTreeNode<T>* &tree, AVLTreeNode<T>* nodeToDelete, int& reviseBalanceFactor)
+	void AVLDelete(AVLTree<T>*& tree, AVLTreeNode<T>* nodeToDelete, int& reviseBalanceFactor)
 	{
 		if (tree == nullptr)
 		{
-			// Узел не найден, выходим из рекурсии
+			// Узел не найден, выходим
 			return;
 		}
-		else if (nodeToDelete->data < tree->data)
+		else if (tree->Data(nodeToDelete) < tree->Root()->Data())
 		{
 			// Рекурсивно спускаемся по левому поддереву
-			AVLDelete(tree->Left(), nodeToDelete, reviseBalanceFactor);
+			AVLDelete(static_cast<AVLTree<T>*>(tree->Root()->Left()), nodeToDelete, reviseBalanceFactor);
 			// Проверяем, нужно ли корректировать balanceFactor
 			if (reviseBalanceFactor)
 			{
@@ -355,32 +355,52 @@ private:
 		}
 	}
 
+public:
+	/// Конструктор без параметров
+	AVLTree() {
+		this->SetRoot(nullptr);
+	}
+
+	/// Конструктор копирования
+	AVLTree(const AVLTree<T>& tree) {
+		this->SetRoot(CopyTree(tree.root));
+	}
+
+	/// Оператор присваивания
+	AVLTree<T>& operator= (const AVLTree<T>& tree) {
+		if (this == &tree) {
+			return *this;               /// Проверка на самоприсваивание
+		}
+		DeleteTree(this->root);               /// Освобождаем память текущего дерева
+		this->root = CopyTree(tree->Root());  /// Копируем узлы из исходного дерева в новое дерево
+		return *this;                   /// Возвращаем ссылку на текущий объект
+	}
+
+
 	void Insert(const T& key) override
 	{
-		// объявить указатель AVL-дерева, используя метод
-		// базового класса GetRoot.
-		// произвести приведение типов для указателей
+
 		AVLTreeNode<T>* treeRoot = static_cast<AVLTreeNode<T>*>(this->Root()), * newNode;
-		// флажок, используемый функцией AVLInsert для перебалансировки узлов
+
 		int reviseBalanceFactor = 0;
-		// создать новый узел AVL-дерева с нулевыми полями указателей
+
 		newNode = GetAVLTreeNode(key, nullptr, nullptr);
-		// вызвать рекурсивную процедуру для фактической встаaвки элемента
+
 		AVLInsert(treeRoot, newNode, reviseBalanceFactor);
-		// присвоить новые значения элементам данных базового класса
+
 		this->SetRoot(treeRoot);
 		this->SetCurr(newNode);
-		this->size++;
+		/*this->size++;*/
 	}
 
 	void Delete(const T& key) override
 	{
-		AVLTreeNode<T>* nodeToDelete = this->Search(key);
+		AVLTreeNode<T>* nodeToDelete = static_cast<AVLTreeNode<T>*>(this->Search(key));
 		if (nodeToDelete != nullptr)
 		{
 			int reviseBalanceFactor = 0;
-			AVLDelete(this, nodeToDelete, reviseBalanceFactor);
-			this->size--;
+			AVLDelete(static_cast<AVLTree<T>*>(this), nodeToDelete, reviseBalanceFactor);
+			//this->size--;
 		}
 	}
 };

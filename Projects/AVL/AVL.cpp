@@ -4,5 +4,6 @@
 #include "AVLTree.h"
 int main()
 {
+	AVLTree<int>* tree = new AVLTree<int>();
 
 }
