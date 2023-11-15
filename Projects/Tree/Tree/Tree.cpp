@@ -14,7 +14,7 @@ void summ(int& i, const int value) {
 int main()
 {
     /// Создание первого дерева
-    BSTree<int>* t1 = new BSTree<int>();
+    BSTree<int>* t1 = new BSTree<int>();    
     t1->Insert(10);//          10  
     t1->Insert(5);//       5        15
     t1->Insert(2);///  2     6   12
