@@ -94,6 +94,11 @@ public:
         root->Insert(key);
     }
     
+    /// Удаление узла
+    virtual void Delete(const T& key) {
+        root = root->Remove(root, key);
+    }
+
     /// Поиск
     TreeNode<T>* Search(const T& key) {
         return root->Search(key);
@@ -124,10 +129,7 @@ public:
         return root->Successor(key); 
     }
 
-    /// Удаление узла
-    virtual void Delete(const T& key) {
-        root = root->Remove(root, key);
-    }
+
 
     /// Добавить в массив LNR
     void AddToArrayLNR(T arr[]) {

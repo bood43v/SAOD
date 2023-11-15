@@ -399,7 +399,7 @@ public:
 		if (nodeToDelete != nullptr)
 		{
 			int reviseBalanceFactor = 0;
-			AVLDelete(static_cast<AVLTree<T>*>(this), nodeToDelete, reviseBalanceFactor);
+ 			AVLDelete(static_cast<AVLTree<T>*>(this), nodeToDelete, reviseBalanceFactor);
 			//this->size--;
 		}
 	}
