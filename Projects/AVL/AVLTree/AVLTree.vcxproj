@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{09f8ea9c-cc4e-4031-b972-da8b3617bd72}</ProjectGuid>
-    <RootNamespace>AVL</RootNamespace>
+    <ProjectGuid>{120d11e6-bcf1-41f4-94bf-85484cddd6a2}</ProjectGuid>
+    <RootNamespace>AVLTree</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,7 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AVL.cpp" />
+    <ClCompile Include="AVLTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AVLTree.h" />

@@ -378,51 +378,6 @@ public:
 
 };
 
-
-
-//void Remove(T key) {
-//    TreeNode<T>* parent;
-//    TreeNode<T>* root = this;
-//    /// Если дерево пустое
-//    if (root == nullptr) return /*nullptr*/;
-//    if (key < root->Data()) {
-//        /// Удаление в левом поддереве
-//        root->Left()->Remove(key);
-//    }
-//    else if (key > root->Data()) {
-//        /// Удаление в правом поддереве
-//        root->Right()->Remove(key);
-//    }
-//    /// Если узел найден
-//    else {
-//        /// Если нет потомков
-//        if (root->Left() == nullptr && root->Right() == nullptr) {
-//            root->Delete();
-//            //root = nullptr;
-//        }
-//        /// Имеет только левого потомка
-//        else if (root->Left() != nullptr && root->Right() == nullptr) {
-//            root->SearchParent(key)->SetLeft(root->Left());
-//            root->Delete();
-//        }
-//        /// Имеет только правого потомка
-//        else if (root->Right() != nullptr && root->Left() != nullptr) {
-//            root->SearchParent(key)->SetRight(root->Right());
-//            root->Delete();
-//        }
-//        /// Имеет оба потомка
-//        else {
-//            TreeNode<T>* successor = root->Successor();
-//            root = successor;
-//            successor->Remove();
-//        }
-//    }
-//    //return root;
-//}
-
-
-
-
 /// Удаление дерева
 template<typename T>
 void DeleteTree(TreeNode<T>* root) {
@@ -433,7 +388,6 @@ void DeleteTree(TreeNode<T>* root) {
         delete root;
     }
 }
-
 
 // Функция для обхода дерева и применения функции к каждому элементу
 template<typename T>
