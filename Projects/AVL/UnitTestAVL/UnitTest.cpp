@@ -657,9 +657,6 @@ namespace UnitTestAVL
             Assert::IsTrue(t5->Depth() == 1);
         }
 
-
-       
-
         /// <summary>
         /// Тест копирование дерева
         /// </summary>
