@@ -34,6 +34,8 @@ public:
     
     /// Конструктор с параметром - корень дерева
     BSTree(const T& node) {
+        root = new TreeNode<T>();
+        curr = new TreeNode<T>();
         this->Insert(node);
     };
 
@@ -90,12 +92,12 @@ public:
     }
 
     /// Вставка
-    virtual void Insert(const T& key) {
+    void Insert(const T& key) {
         root->Insert(key);
     }
     
     /// Удаление узла
-    virtual void Delete(const T& key) {
+    void Remove(const T& key) {
         root = root->Remove(root, key);
     }
 

@@ -14,8 +14,8 @@ void summ(int& i, const int value) {
 int main()
 {
     /// Создание первого дерева
-    BSTree<int>* t1 = new BSTree<int>();    
-    t1->Insert(10);//          10  
+    BSTree<int>* t1 = new BSTree<int>(10);
+    //t1->Insert(10);//          10  
     t1->Insert(5);//       5        15
     t1->Insert(2);///  2     6   12
     t1->Insert(6);///
@@ -59,8 +59,15 @@ int main()
         cout << x << " ";
     }
 
-    TreeNode<int> *x = new TreeNode<int>();
-    
-    x->PrintNodeData();
+    //TreeNode<int>* x = new TreeNode<int>(55);
+    //TreeNode<int>* y(x);
+    //y->PrintNodeData();
+    //x->PrintNodeData();
+    //TreeNode<int>* z(move(y));
+    //z->PrintNodeData();
+    //cout << "X: ";
+    //x->PrintNodeData();
+    //y->PrintNodeData();
+
 }
 

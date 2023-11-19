@@ -17,13 +17,25 @@ private:
 
 public:
 
-    ///// Конструктор без параметров
-    //TreeNode() : 
-    //    data(NULL), left(nullptr), right(nullptr) {};
+    /// Конструктор без параметров
+    TreeNode() : 
+        data(NULL), left(nullptr), right(nullptr) {};
 
     /// Конструктор
     TreeNode(const T& data_, TreeNode<T>* left_ = nullptr, TreeNode<T>* right_ = nullptr) :
         data(data_), left(left_), right(right_) {};
+
+    /// Конструктор копирования
+    TreeNode(const TreeNode<T> * node) :
+        data(node->data), left(node->left), right(node->right) {};
+
+    ///// Конструктор перемещения
+    //TreeNode(TreeNode<T>* node) :
+    //    data(node->data), left(node->left), right(node->right) {
+    //    node->data = NULL;
+    //    node->left = nullptr;
+    //    node->right = nullptr;
+    //};
 
     virtual ~TreeNode()
     {
@@ -230,7 +242,6 @@ public:
     }
 
 
-
     /// Вставка узла
     void Insert(const T& key)
     {
@@ -264,6 +275,7 @@ public:
 
     }
 
+   
     /// Удаление узла - возвращаем указатель корень дерева с удаленным узлом
     TreeNode<T>* Remove(TreeNode<T>* root, const T& key) {
         TreeNode<T>* parent;
