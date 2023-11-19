@@ -10,25 +10,39 @@
 using namespace std;
 int main()
 {
-    //AVLTreeNode<int>* a = new AVLTreeNode<int>();
     //AVLTreeNode<int>* a = nullptr;
-    //a = a->insert(a, 6);
-    //a = a->insert(a, 5);
-    //a = a->insert(a, 7);
-    //a = a->insert(a, 2);
-    //a = a->insert(a, 11);
 
-    //a->PrintTree(a,0);
+    AVLTreeNode<int>* a = new AVLTreeNode<int>(1);
+
+    a = a->insert(a, 8);
+    a = a->insert(a, 7);
+    a = a->insert(a, 6);
+    a = a->insert(a, 6);
+    a = a->remove(a, 1);
+    a = a->remove(a, 10);
+
+    //a->insert(a, 2);
+    //a->insert(a, 11);
 
 
-    AVLTree<int>* b = new AVLTree<int>();
-    b->Insert(6);
-    b->Insert(5);
-    b->Insert(7);
-    b->Insert(2);
-    b->Insert(11);
-    b->PrintTree();
+    cout << a->Size() << endl;
+    a->PrintTree(a,0);
+    //cout << a->Size();
 
+    if (search(a, 2) != nullptr)
+        cout << search(a, 2)->Data();
+    else cout << "not found";
+
+
+    //AVLTree<int>* b = new AVLTree<int>();
+    //b->Insert(6);
+    //b->Insert(5);
+    //b->Insert(7);
+    //b->Insert(2);
+    //b->Insert(11);
+    //b->PrintTree();
+
+    //b->
 
     //AVLTreeNode<int>* b = new AVLTreeNode<int>();
     //b->insert(b, 5);

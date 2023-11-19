@@ -5,8 +5,7 @@ template <class T>
 class AVLTreeNode : public TreeNode<T> {
 private:
 
-	int height;
-
+	unsigned char height;
 
 	//
 	AVLTreeNode<T>* findmin(AVLTreeNode<T>* p) // поиск узла с минимальным ключом в дереве p 
@@ -22,10 +21,11 @@ private:
 		return balance(p);
 	}
 
-	int getHeight(AVLTreeNode<T>* p)
+	unsigned char getHeight(AVLTreeNode<T>* p)
 	{
-		if (p == nullptr) return 0;
-		else return p->height;
+		return p ? p->height : 0;
+		//if (p == nullptr) return 0;
+		//else return p->height;
 	}
 
 	int bFactor(AVLTreeNode<T>* p)
@@ -36,8 +36,8 @@ private:
 
 	void fixHeight(AVLTreeNode<T>* p)
 	{
-		int hl = getHeight(dynamic_cast<AVLTreeNode<T>*>(p->Left()));
-		int hr = getHeight(dynamic_cast<AVLTreeNode<T>*>(p->Right()));
+		unsigned char hl = getHeight(dynamic_cast<AVLTreeNode<T>*>(p->Left()));
+		unsigned char hr = getHeight(dynamic_cast<AVLTreeNode<T>*>(p->Right()));
 		p->height = (hl > hr ? hl : hr) + 1;
 	}
 
@@ -80,10 +80,12 @@ private:
 	}
 public:
 
-	AVLTreeNode(T k) : TreeNode<T>(k, nullptr, nullptr), height(0) {}
+	AVLTreeNode(T k) : TreeNode<T>(k, nullptr, nullptr), height(1) {}
 
+	//// конструктор без параметров
+	//AVLTreeNode() : TreeNode<T>(), height(0){}
 
-	AVLTreeNode() : TreeNode<T>(NULL, nullptr, nullptr), height(0) {}
+	~AVLTreeNode() {}
 
 	// промежуток между уровнями
 	const int indentBlock = 6;
@@ -115,6 +117,11 @@ public:
 	AVLTreeNode<T>* insert(AVLTreeNode<T>* p, T k) // вставка ключа k в дерево с корнем p
 	{
 		if (!p) return new AVLTreeNode<T>(k);
+		//if (this->Data() == NULL) {
+		//	this->SetData(k);
+		//	return balance(p);
+		//}
+		//else
 		if (k < p->Data())
 			p->SetLeft(insert(dynamic_cast<AVLTreeNode<T>*>(p->Left()), k));
 		else
@@ -127,7 +134,7 @@ public:
 
 	AVLTreeNode<T>* remove(AVLTreeNode<T>* p, T k) // удаление ключа k из дерева p
 	{
-		if (!p) return 0;
+		if (!p) return nullptr;
 		if (k < p->Data())
 			p->SetLeft(remove(dynamic_cast<AVLTreeNode<T>*>(p->Left()), k));
 		else if (k > p->Data())
@@ -138,16 +145,25 @@ public:
 			AVLTreeNode<T>* r = dynamic_cast<AVLTreeNode<T>*>(p->Right());
 			delete p;
 			if (!r) return q;
+			//AVLTreeNode<T>* min = dynamic_cast<AVLTreeNode<T>*>(r->FindMin());
 			AVLTreeNode<T>* min = findmin(r);
 			min->SetRight(removemin(r));
 			min->SetLeft(q);
+			fixHeight(min);
 			return balance(min);
 		}
+		fixHeight(p);
 		return balance(p);
 	}
+
+
 
 	void PrintNode() {
 		this->TreeNode<T>::PrintNodeData();
 	}
 
 };
+template <class T>
+AVLTreeNode<T>* search(AVLTreeNode<T>* root, T k) {
+	return dynamic_cast<AVLTreeNode<T>*>(root->Search(k));
+}

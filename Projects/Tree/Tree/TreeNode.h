@@ -17,9 +17,9 @@ private:
 
 public:
 
-    /// Конструктор без параметров
-    TreeNode() :
-        data(NULL), left(nullptr), right(nullptr) {};
+    ///// Конструктор без параметров
+    //TreeNode() : 
+    //    data(NULL), left(nullptr), right(nullptr) {};
 
     /// Конструктор
     TreeNode(const T& data_, TreeNode<T>* left_ = nullptr, TreeNode<T>* right_ = nullptr) :
@@ -130,38 +130,6 @@ public:
     }
 
 
-    /// Вставка узла
-    void Insert(const T& key)
-    {
-        /// Eсли такого узла нет
-        if (this->Search(key) == nullptr)
-        {
-            // t — текущий узел, parent — предыдущий узел
-            TreeNode<T>* t = this, * parent = nullptr, * newNode;
-            newNode = new TreeNode<T>(key);
-            // Дойти до конца ветки
-            while (t != nullptr)
-            {
-                // обновить указатель parent и идти направо или налево
-                parent = t;
-                if (key < t->Data())
-                    t = t->Left();
-                else
-                    t = t->Right();
-            }
-            // если узлов нет, то вставить в качестве корневого узла
-            if (parent->Data() == NULL)
-                this->SetData(newNode->Data());
-            // если key меньше родительского узла, вставить в качестве левого сына
-            else if (key < parent->Data())
-                parent->SetLeft(newNode);
-
-            else
-                // если key больше родительского узла
-                parent->SetRight(newNode);
-        }
-    }
-
 
     /// <summary>
     /// Количество узлов - размер дерева
@@ -259,6 +227,41 @@ public:
             }
             return successor;
         }
+    }
+
+
+
+    /// Вставка узла
+    void Insert(const T& key)
+    {
+        /// Eсли такого узла нет
+        if (this->Search(key) == nullptr)
+        {
+            // t — текущий узел, parent — предыдущий узел
+            TreeNode<T>* t = this, * parent = nullptr, * newNode;
+            newNode = new TreeNode<T>(key);
+            // Дойти до конца ветки
+            while (t != nullptr)
+            {
+                // обновить указатель parent и идти направо или налево
+                parent = t;
+                if (key < t->Data())
+                    t = t->Left();
+                else
+                    t = t->Right();
+            }
+            // если узлов нет, то вставить в качестве корневого узла
+            if (parent->Data() == NULL)
+                this->SetData(newNode->Data());
+            // если key меньше родительского узла, вставить в качестве левого сына
+            else if (key < parent->Data())
+                parent->SetLeft(newNode);
+
+            else
+                // если key больше родительского узла
+                parent->SetRight(newNode);
+        }
+
     }
 
     /// Удаление узла - возвращаем указатель корень дерева с удаленным узлом

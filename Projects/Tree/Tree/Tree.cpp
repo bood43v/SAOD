@@ -58,6 +58,9 @@ int main()
     for (int x : *t1) {
         cout << x << " ";
     }
- 
+
+    TreeNode<int> *x = new TreeNode<int>();
+    
+    x->PrintNodeData();
 }
 
