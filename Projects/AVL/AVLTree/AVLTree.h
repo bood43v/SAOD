@@ -13,10 +13,12 @@ public:
     AVLTree() : root(nullptr), curr(nullptr) {}
 
     /// <summary>
-    /// Конструкто с параметром ключ
+    /// Конструктор с параметром ключ
     /// </summary>
     /// <param name="data"></param>
     AVLTree(const T& data) : root(new AVLTreeNode<T>(data)), curr(nullptr) {}
+
+
 
     /// Деструктор
     ~AVLTree() {
@@ -52,7 +54,7 @@ public:
     /// Печать дерева горизонтально
     void Print()
     {
-        root->PrintTree(root, 0);
+        PrintTree(root, 0);
     }
 
     /// Размер
@@ -91,12 +93,12 @@ public:
         root->AddToArrayLNR(arr, i);
     }
 
-    /// Копировать дерево
-    AVLTree<T>* CopyTree() {
-        AVLTree<T>* copiedTree = new AVLTree<T>();
-        copiedTree->SetRoot(dynamic_cast<AVLTreeNode<T>*>(root->CopyTree()));
-        return copiedTree;
-    }
+    ///// Копировать дерево
+    //AVLTree<T>* CopyTree() {
+    //    AVLTree<T>* copiedTree = new AVLTree<T>();
+    //    copiedTree->SetRoot(dynamic_cast<AVLTreeNode<T>*>(root->CopyTree()));
+    //    return copiedTree;
+    //}
 
 
     /// <summary>

@@ -131,6 +131,7 @@ public:
 		}
 	}
 
+	// конструктор перемещения
 
 	/// Перегруженный метод вставки
 	/// ключа k в дерево с корнем p
@@ -177,31 +178,32 @@ public:
 		return Balance(p);
 	}
 
-	/// промежуток между уровнями (для печати)
-	const int indentBlock = 6;
-
-	/// <summary>
-	/// функция печати дерева горизонтально
-	/// </summary>
-	/// <param name="p"></param>
-	/// <param name="k"></param>
-	/// <returns></returns>
-	template <class T>
-	void PrintTree(AVLTreeNode<T>* node, int level)
-	{
-		// печатать правое дерево узла node, пока он не равет nullptr
-		if (node != nullptr)
-		{
-			// печатать правое поддерево узла node
-			PrintTree(dynamic_cast<AVLTreeNode<T>*>(node->Right()), level + 1);
-			// выровнять текущий уровень и вывести поле данных
-			for (int i = 0; i < level * 6; i++)
-				std::cout << "  ";
-			std::cout << node->Data() << std::endl;
-			// печатать левое поддерево узла node
-			PrintTree(dynamic_cast<AVLTreeNode<T>*>(node->Left()), level + 1);
-		}
-	}
+	
 };
 
 
+/// промежуток между уровнями (для печати)
+const int indentBlock = 6;
+
+/// <summary>
+/// функция печати дерева горизонтально
+/// </summary>
+/// <param name="p"></param>
+/// <param name="k"></param>
+/// <returns></returns>
+template <class T>
+void PrintTree(AVLTreeNode<T>* node, int level = 0)
+{
+	// печатать правое дерево узла node, пока он не равет nullptr
+	if (node != nullptr)
+	{
+		// печатать правое поддерево узла node
+		PrintTree(dynamic_cast<AVLTreeNode<T>*>(node->Right()), level + 1);
+		// выровнять текущий уровень и вывести поле данных
+		for (int i = 0; i < level * 6; i++)
+			std::cout << "  ";
+		std::cout << node->Data() << std::endl;
+		// печатать левое поддерево узла node
+		PrintTree(dynamic_cast<AVLTreeNode<T>*>(node->Left()), level + 1);
+	}
+}
