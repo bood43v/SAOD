@@ -1,4 +1,5 @@
-#pragma once
+/// Класс узел AVL дерево
+/// @author Будаев Г.Б.#pragma once
 #include "AVLTreeNode.h"
 #include "../../Tree/Tree/BinarySearchTree.h"
 

@@ -26,16 +26,23 @@ public:
         data(data_), left(left_), right(right_) {};
 
     /// Конструктор копирования
-    TreeNode(const TreeNode<T> * node) :
-        data(node->data), left(node->left), right(node->right) {};
+    TreeNode(const TreeNode<T>& node) : data(node.data), left(nullptr), right(nullptr)
+    {
+        if (node.left) {
+            left = new TreeNode<T>(*node.left);
+        }
+        if (node.right) {
+            right = new TreeNode<T>(*node.right);
+        }
+    }
 
     ///// Конструктор перемещения
-    //TreeNode(TreeNode<T>* node) :
-    //    data(node->data), left(node->left), right(node->right) {
-    //    node->data = NULL;
-    //    node->left = nullptr;
-    //    node->right = nullptr;
-    //};
+    //TreeNode(TreeNode<T>&& node) noexcept : data(node.data), left(node.left), right(node.right)
+    //{
+    //    node.left = nullptr;
+    //    node.right = nullptr;
+    //    std::cout << "Move Constructor" << std::endl;
+    //}
 
     virtual ~TreeNode()
     {

@@ -59,15 +59,15 @@ int main()
         cout << x << " ";
     }
 
-    //TreeNode<int>* x = new TreeNode<int>(55);
-    //TreeNode<int>* y(x);
-    //y->PrintNodeData();
-    //x->PrintNodeData();
-    //TreeNode<int>* z(move(y));
-    //z->PrintNodeData();
-    //cout << "X: ";
-    //x->PrintNodeData();
-    //y->PrintNodeData();
+    TreeNode<int>* node = new TreeNode<int>(77);
+    TreeNode<int>* node_(node);//конструктор копирования
+
+    node->PrintNodeData();
+    TreeNode<int>* node2(move(node));
+
+    cout << endl;
+    node->PrintNodeData();
+    node2->PrintNodeData();
 
 }
 

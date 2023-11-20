@@ -16,6 +16,8 @@ int main()
 
         MaxHeap<int> heap3(move(heap1)); /// Конструктор перемещения
        
+        heap1.print();
+        heap3.print();
 
         MaxHeap<int> heap_(vec);         /// Куча 2        
 
