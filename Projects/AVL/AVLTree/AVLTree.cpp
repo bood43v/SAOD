@@ -15,7 +15,7 @@ int main()
     a = a->Insert(2);
     a = a->Insert(3);
     a = a->Insert(4);
-    //a = a->Insert(5);
+    a = a->Insert(5);
     //a = a->Remove(8);
 
     PrintTree(a);

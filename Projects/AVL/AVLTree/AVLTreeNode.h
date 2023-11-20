@@ -6,6 +6,7 @@
 /// <summary>
 ///  ласс узел AVL дерева
 /// наследуемый от TreeNode
+
 /// </summary>
 template <class T>
 class AVLTreeNode : public TreeNode<T> {
@@ -32,6 +33,7 @@ private:
 
 	/// <summary>
 	/// вычисление balance factor заданного узла 
+	/// вычисл€етс€ как разница высоты поддеверва справа с высотой поддерева слева узла p
 	/// </summary>
 	/// <param name="p"></param>
 	/// <returns></returns>
