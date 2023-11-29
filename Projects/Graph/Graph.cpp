@@ -78,6 +78,7 @@ int main()
         for (Graph<int>::Iterator<int> it = g2->begin(); it != g2->end(); ++it) {
             cout << *it << " ";
         }
+        cout << endl;
 
     }
 

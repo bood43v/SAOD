@@ -36,7 +36,7 @@ private:
     /// <returns></returns>
     int FindVertex(const vector<T>& L, const T& vertex)
     {
-        for (int i = 0; i < L.size(); ++i)
+        for (int i = 0; i < L.size(); i++)
         {
             if (L[i] == vertex)
             {
@@ -64,18 +64,18 @@ private:
     /// <param name="vertex"></param>
     /// <param name="marked"></param>
     /// <param name="visited"></param>
-    void DepthFirstSearchHelper(int vertex, vector<bool>& marked, vector<T>& visited)
+    void DepthFirstSearch_(int vertex, vector<bool>& marked, vector<T>& visited)
     {
         marked[vertex] = true;                  // пометка текущей вершины, как посещенной
         visited.push_back(vertexList[vertex]);  // добавляем текущую вершину в вектор посещенных
-        for (int i = 0; i < graphSize; ++i)     // перебор смежных вершин
+        for (int i = 0; i < graphSize; i++)     // перебор смежных вершин
         {
             // если существует ребро между текущей вершиной и смежной вершиной 
             // и смежная вершина i еще не была посещена
             if (edge[vertex][i] != 0 && !marked[i])
             {
                 // рекурсивно вызываем метод DepthFirstSearchHelper для смежной вершины i
-                DepthFirstSearchHelper(i, marked, visited);
+                DepthFirstSearch_(i, marked, visited);
             }
         }
     }
@@ -88,13 +88,111 @@ public:
     Graph()
     {
         graphSize = 0;
-        for (int i = 0; i < MaxGraphSize; ++i)
+        for (int i = 0; i < MaxGraphSize; i++)
         {
-            for (int j = 0; j < MaxGraphSize; ++j)
+            for (int j = 0; j < MaxGraphSize; j++)
             {
                 edge[i][j] = 0;
             }
         }
+    }
+
+    // деструктор
+    ~Graph(){}
+
+    /// <summary>
+    /// Конструктор копирования
+    /// </summary>
+    /// <param name="other"></param>
+    Graph(const Graph<T>& graph)
+    {
+        // копирование списка вершин
+        vertexList = graph.vertexList;
+        // копирование матрицы смежности
+        for (int i = 0; i < MaxGraphSize; i++)
+        {
+            for (int j = 0; j < MaxGraphSize; j++)
+            {
+                edge[i][j] = graph.edge[i][j];
+            }
+        }
+        // копирование размера графа
+        graphSize = graph.graphSize;
+    }
+
+    /// <summary>
+    /// конструктор перемещения
+    /// </summary>
+    /// <param name="other"></param>
+    Graph(Graph<T>&& graph)
+    {
+        // перемещение списка вершин
+        vertexList = graph.vertexList;
+        graph.vertexList.clear();
+
+
+        // перемещение матрицы смежности
+        for (int i = 0; i < MaxGraphSize; i++)
+        {
+            for (int j = 0; j < MaxGraphSize; j++)
+            {
+                edge[i][j] = graph.edge[i][j];       
+            }
+        }
+        edge.clear();
+        // перемещение размера графа
+        graphSize = graph.graphSize;
+        graph.graphSize = 0;
+    }
+
+    /// <summary>
+    /// оператор присваивания копированием
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    Graph<T>& operator=(const Graph<T>& graph)
+    {
+        // копирование списка вершин
+        vertexList = graph.vertexList;
+
+        // копирование матрицы смежности
+        for (int i = 0; i < MaxGraphSize; i++)
+        {
+            for (int j = 0; j < MaxGraphSize; j++)
+            {
+                edge[i][j] = graph.edge[i][j];
+            }
+        }
+
+        // копирование размера графа
+        graphSize = graph.graphSize;
+
+        return *this;
+    }
+
+    /// <summary>
+    /// оператор присваивания перемещением
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    Graph<T>& operator=(Graph<T>&& graph)
+    {
+        // перемещение списка вершин
+        vertexList = std::move(graph.vertexList);
+
+        // перемещение матрицы смежности
+        for (int i = 0; i < MaxGraphSize; ++i)
+        {
+            for (int j = 0; j < MaxGraphSize; ++j)
+            {
+                edge[i][j] = std::move(graph.edge[i][j]);
+            }
+        }
+
+        // перемещение размера графа
+        graphSize = std::move(graph.graphSize);
+
+        return *this;
     }
 
     /// <summary>
@@ -141,16 +239,16 @@ public:
         if (pos != -1)
         {
             vertexList.erase(vertexList.begin() + pos);
-            for (int i = pos; i < graphSize - 1; ++i)
+            for (int i = pos; i < graphSize - 1;  i++)
             {
-                for (int j = 0; j < graphSize; ++j)
+                for (int j = 0; j < graphSize;  j++)
                 {
                     edge[i][j] = edge[i + 1][j];
                 }
             }
-            for (int i = 0; i < graphSize; ++i)
+            for (int i = 0; i < graphSize; i++)
             {
-                for (int j = pos; j < graphSize - 1; ++j)
+                for (int j = pos; j < graphSize - 1; j++)
                 {
                     edge[i][j] = edge[i][j + 1];
                 }
@@ -181,17 +279,17 @@ public:
     {
         // Вывод значений вершин для вертикальной оси
         std::cout << "   ";
-        for (int i = 0; i < graphSize; ++i)
+        for (int i = 0; i < graphSize; i++)
         {
             std::cout << std::setw(3) << vertexList[i];
         }
         std::cout << std::endl;
 
         // Вывод значений вершин и значений матрицы смежности
-        for (int i = 0; i < graphSize; ++i)
+        for (int i = 0; i < graphSize; i++)
         {
             std::cout << std::setw(3) << vertexList[i];
-            for (int j = 0; j < graphSize; ++j)
+            for (int j = 0; j < graphSize; j++)
             {
                 std::cout << std::setw(3) << edge[i][j];
             }
@@ -251,9 +349,9 @@ public:
     int NumberOfEdges() const
     {
         int edgeCount = 0;
-        for (int i = 0; i < graphSize; ++i)
+        for (int i = 0; i < graphSize; i++)
         {
-            for (int j = i; j < graphSize; ++j)
+            for (int j = i; j < graphSize; j++)
             {
                 if (edge[i][j] != 0)
                 {
@@ -275,7 +373,7 @@ public:
         int pos = GetVertexPos(vertex);
         if (pos != -1)
         {
-            for (int i = 0; i < graphSize; ++i)
+            for (int i = 0; i < graphSize; i++)
             {
                 // которые выходят из vertex
                 if (edge[pos][i] != 0 && pos != i)
@@ -310,7 +408,7 @@ public:
         // если начальная вершина найдена, выполняем обход в глубину
         if (pos != -1)
         {
-            DepthFirstSearchHelper(pos, marked, visited);
+            DepthFirstSearch_(pos, marked, visited);
         }
         return visited;
     }
@@ -341,7 +439,7 @@ public:
                 visited.push_back(vertexList[currVertex]);
 
                 // перебор смежных вершин
-                for (int i = 0; i < graphSize; ++i)
+                for (int i = 0; i < graphSize; i++)
                 {
                     // если существует ребро между текущей вершиной и смежной вершиной i
                     // и смежная вершина i еще не была посещена, то отмечаем ее как посещенную и добавляем в очередь
