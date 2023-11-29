@@ -2,6 +2,8 @@
 /// @author Будаев Г.Б.
 #pragma once
 
+using namespace std;
+
 #include <vector>
 #include <queue>
 #include <iomanip>
@@ -21,7 +23,7 @@ class Graph
 private:
     // Основные данные включают список вершин, матрицу смежности
     // и текущий размер (число вершин) графа
-    std::vector<T> vertexList;
+    vector<T> vertexList;
     int edge[MaxGraphSize][MaxGraphSize];
     int graphSize;
 
@@ -32,7 +34,7 @@ private:
     /// <param name="L"></param>
     /// <param name="vertex"></param>
     /// <returns></returns>
-    int FindVertex(const std::vector<T>& L, const T& vertex)
+    int FindVertex(const vector<T>& L, const T& vertex)
     {
         for (int i = 0; i < L.size(); ++i)
         {
@@ -55,47 +57,24 @@ private:
         return FindVertex(vertexList, vertex);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    void BreadthFirstSearchHelper(int vertex, std::vector<bool>& marked, std::vector<T>& visited)
-    {
-        std::queue<int> queue;
-        marked[vertex] = true;
-        queue.push(vertex);
-
-        while (!queue.empty())
-        {
-            int currVertex = queue.front();
-            queue.pop();
-            visited.push_back(vertexList[currVertex]);
-
-            for (int i = 0; i < graphSize; ++i)
-            {
-                if (edge[currVertex][i] != 0 && !marked[i])
-                {
-                    marked[i] = true;
-                    queue.push(i);
-                }
-            }
-        }
-    }
 
     /// <summary>
-    /// 
+    /// рекурсивный вспомогательный метод обхода в глубину 
     /// </summary>
     /// <param name="vertex"></param>
     /// <param name="marked"></param>
     /// <param name="visited"></param>
-    void DepthFirstSearchHelper(int vertex, std::vector<bool>& marked, std::vector<T>& visited)
+    void DepthFirstSearchHelper(int vertex, vector<bool>& marked, vector<T>& visited)
     {
-        marked[vertex] = true;
-        visited.push_back(vertexList[vertex]);
-        for (int i = 0; i < graphSize; ++i)
+        marked[vertex] = true;                  // пометка текущей вершины, как посещенной
+        visited.push_back(vertexList[vertex]);  // добавляем текущую вершину в вектор посещенных
+        for (int i = 0; i < graphSize; ++i)     // перебор смежных вершин
         {
+            // если существует ребро между текущей вершиной и смежной вершиной 
+            // и смежная вершина i еще не была посещена
             if (edge[vertex][i] != 0 && !marked[i])
             {
+                // рекурсивно вызываем метод DepthFirstSearchHelper для смежной вершины i
                 DepthFirstSearchHelper(i, marked, visited);
             }
         }
@@ -119,9 +98,9 @@ public:
     }
 
     /// <summary>
-/// вставка узла
-/// </summary>
-/// <param name="vertex"></param>
+    /// вставка узла
+    /// </summary>
+    /// <param name="vertex"></param>
     void InsertVertex(const T& vertex)
     {
         if (graphSize < MaxGraphSize)
@@ -139,6 +118,7 @@ public:
     /// <param name="weight"></param>
     void InsertEdge(const T& vertex1, const T& vertex2, int weight)
     {
+        if (weight == 0) throw "Вес не может быть нулевым!";
         int pos1 = GetVertexPos(vertex1);
         int pos2 = GetVertexPos(vertex2);
         if (pos1 != -1 && pos2 != -1)
@@ -195,7 +175,7 @@ public:
     }
 
     /// <summary>
-    /// Печать матрицы смежности
+    /// печать матрицы смежности с выводом значений вершин
     /// </summary>
     void PrintAdjacencyMatrix() const
     {
@@ -275,7 +255,7 @@ public:
         {
             for (int j = i; j < graphSize; ++j)
             {
-                if (edge[i][j] != 0 || (i == j && edge[i][j] == 1))
+                if (edge[i][j] != 0)
                 {
                     edgeCount++;
                 }
@@ -285,24 +265,31 @@ public:
     }
 
     /// <summary>
-    /// вернуть соседей
+    /// вернуть соседей - узел не может быть соседом самому себе
     /// </summary>
     /// <param name="vertex"></param>
     /// <returns></returns>
-    std::vector<T> GetNeighbors(const T& vertex)
+    vector<T> GetNeighbors(const T& vertex)
     {
-        std::vector<T> neighbors;
+        vector<T> neighbors;
         int pos = GetVertexPos(vertex);
         if (pos != -1)
         {
             for (int i = 0; i < graphSize; ++i)
             {
-                if (edge[pos][i] != 0)
+                // которые выходят из vertex
+                if (edge[pos][i] != 0 && pos != i)
+                {
+                    neighbors.push_back(vertexList[i]);
+                }
+                // которые входят в vertex
+                if (edge[i][pos] != 0 && pos != i)
                 {
                     neighbors.push_back(vertexList[i]);
                 }
             }
         }
+        // сортировка вектора для удобства
         sort(neighbors.begin(), neighbors.end());
         return neighbors;
     }
@@ -310,15 +297,17 @@ public:
 
 
     /// <summary>
-    /// в глубину
+    /// обход в глубину
     /// </summary>
     /// <param name="beginVertex"></param>
     /// <returns></returns>
-    std::vector<T> DepthFirstSearch(const T& beginVertex)
+    vector<T> DepthFirstSearch(const T& vertex)
     {
-        std::vector<T> visited;
-        std::vector<bool> marked(graphSize, false);
-        int pos = GetVertexPos(beginVertex);
+        vector<T> visited;// посещенные вершины - значения
+        vector<bool> marked(graphSize, false);// посещенные вершины - отметки
+        // позиция начальной вершины в списке вершин
+        int pos = GetVertexPos(vertex);
+        // если начальная вершина найдена, выполняем обход в глубину
         if (pos != -1)
         {
             DepthFirstSearchHelper(pos, marked, visited);
@@ -327,23 +316,48 @@ public:
     }
 
     /// <summary>
-    /// в ширину
+    /// обход в ширину
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    std::vector<T> BreadthFirstSearch(const T& beginVertex)
+    vector<T> BreadthFirstSearch(const T& beginVertex)
     {
-        std::vector<T> visited;
-        std::vector<bool> marked(graphSize, false);
-        int pos = GetVertexPos(beginVertex);
+        vector<T> visited;                      // вектор для посещенных вершин
+        vector<bool> marked(graphSize, false);  // вектор для отметки посещенных вершин
+        int pos = GetVertexPos(beginVertex);    // Поиск позиции начальной вершины в списке вершин
+        // если вершина найдена
         if (pos != -1)
         {
-            BreadthFirstSearchHelper(pos, marked, visited);
+            queue<int> queue;// очередь для хранения вершин
+            marked[pos] = true;// отмечаем начальную вершину как посещенную и помещаем в очередь
+            queue.push(pos);
+
+            // цикл обхода в ширину
+            while (!queue.empty())
+            {
+                // извлекаем вершину из очереди
+                int currVertex = queue.front();
+                queue.pop();
+                // добавляем посещенную вершину в вектор visited
+                visited.push_back(vertexList[currVertex]);
+
+                // перебор смежных вершин
+                for (int i = 0; i < graphSize; ++i)
+                {
+                    // если существует ребро между текущей вершиной и смежной вершиной i
+                    // и смежная вершина i еще не была посещена, то отмечаем ее как посещенную и добавляем в очередь
+                    if (edge[currVertex][i] != 0 && !marked[i])
+                    {
+                        marked[i] = true;
+                        queue.push(i);
+                    }
+                }
+            }
         }
         return visited;
     }
 
     template <class F>
-    // Вложенный класс итератора
+    // Вложенный класс итератора для Graph
     class Iterator
         {
         private:
@@ -351,7 +365,7 @@ public:
             int currentIndex;
 
         public:
-                Iterator(const Graph<F>& g, int index) : graph(g), currentIndex(index) {}
+            Iterator(const Graph<F>& g, int index) : graph(g), currentIndex(index) {}
 
             // Перегрузка оператора разыменования *
             F operator*() const
@@ -387,12 +401,13 @@ public:
             }
      };
 
-    // Методы begin() и end() для получения итераторов
+    // первый элемент
     Iterator<T> begin() const
     {
         return Iterator<T>(*this, 0);
     }
 
+    // последний элемент
     Iterator<T> end() const
     {
         return Iterator<T>(*this, graphSize);
