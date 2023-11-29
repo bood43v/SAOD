@@ -28,80 +28,79 @@ void pyramidSort(vector<T>& vec)
     vec = heap.heapSort();
 }
 
-
- //массив из указателей на Т
-
- //Турнирная сортировка по возрастанию с изменением вектора, который был передан
- //mode - режим сортировки
- //0 - по возрастанию
- //1 - по убыванию
+//Турнирная сортировка по возрастанию с изменением вектора, который был передан
 template<typename T>
 
-vector<T> tournamentSort(unsigned const int mode,vector<T> arr)
+void tournamentSort(vector<T>& vec)
 {
-    vector<T*> vec;
-    for (int i = 0; i < arr.size(); i++) {
-        vec.push_back(&arr[i]);
+    int vecSize = vec.size();
+    vector<T*> arr;
+
+    for (int i = 0; i < vecSize; i++) {
+        arr.push_back(&vec[i]);
+        //cout << *vec[i] << endl;
     }
 
-    if ((mode != 0) && (mode != 1)) throw "Wrong sorting mode! (0 or 1)";
-    else {
+    /// Определяем размер турнирного дерева
+    int treeSize = 1;
+    while (treeSize <= vecSize) {
+        treeSize *= 2;
+    }
 
-        int vecSize = arr.size();
-        /// Определяем размер турнирного дерева
-        int treeSize = 1;
-        while (treeSize <= vecSize) {
-            treeSize *= 2;
-        }
+    // Создаем массив размером с общее количество узлов (элементов) в дереве турнира
+    int size = (2 * treeSize);
+    vector<T*> tree(size);
 
-        // Создаем массив размером с общее количество узлов (элементов) в дереве турнира
-        int size = (2 * treeSize);
-        vector<T*> tree(size);
+    // Назначает каждому узлу в дереве указателей tree значение nullptr 
+    for (int i = 0; i < size; i++) {
+        tree[i] = nullptr;
+    }
 
-        // Назначает каждому узлу в дереве максимальное значение используемого типа 
-        for (int i = 0; i < size; i++) {
+    // Присваивает элементы из несортированного массива в листья
+    for (int i = 0; i < vecSize; i++) {
+        tree[treeSize + i] = arr[i];
+    }
 
-            tree[i] = nullptr;
-        }
+    // Построение турнирного дерева
+    for (int i = treeSize - 1; i >= 1; i--) {
+        tree[i] = *max_element(tree.begin() + 2 * i, tree.begin() + 2 * i + 2);
+    }
 
-        // Присваивает элементы из несортированного массива в листья
-        for (int i = 0; i < vecSize; i++) {
-            tree[treeSize + i] = vec[i];
+    // Извлечение и перестроение дерева
+    int sortIndex = 0;
+    while (sortIndex < vecSize) {
+        // Заполнение в вектор и присваивание корню максимального значения
+        vec[sortIndex] = *tree[1];
+        cout << tree[1] << endl;
+        sortIndex++;
+        tree[1] = nullptr;
+
+        //Заменяет минимальное значение на nullptr
+        int node = 1;
+        while (node < treeSize) {
+            int leftChild = 2 * node;
+            int rightChild = 2 * node + 1;
+
+            // Узлу присваивается порядковый номер наименьшего значения тернарным оператором
+            node = (*tree[leftChild] > *tree[rightChild]) ? leftChild : rightChild;
+
+            // Изменяет наименьшее nullptr
+            if (tree[leftChild] > tree[rightChild]) {
+                tree[leftChild] = nullptr;
+            }
+            else {
+                tree[rightChild] = nullptr;
+            }
         }
 
         // Построение турнирного дерева
         for (int i = treeSize - 1; i >= 1; i--) {
-            tree[i] = (mode == 1) ? *min_element(&tree[2 * i], &tree[2 * i + 1]) : *max_element(&tree[2 * i], &tree[2 * i + 1]);
+            tree[i] = *max_element(tree.begin() + 2 * i, tree.begin() + 2 * i + 2);
+            //cout << *tree[i] << endl;
         }
 
-        // Извлечение и перестроение дерева
-        int sortIndex = 0;
-        while (sortIndex < vecSize) {
-            // Заполнение в вектор и присваивание корню максимального значения
-            vec[sortIndex] = tree[1];
-            sortIndex++;
-
-            // Найти индекс элемента с наибольшим/наименьшим значением в оставшейся части дерева
-            int maxminIndex = (mode == 1) ? max_element(tree.begin() + treeSize, tree.end()) - tree.begin() : 
-                min_element(tree.begin() + treeSize, tree.end()) - tree.begin();
-
-            // Присвоить корню указатель на найденный элемент
-            tree[1] = tree[maxminIndex];
-            tree[maxminIndex] = nullptr;
-
-            // Построение турнирного дерева
-            for (int i = treeSize - 1; i >= 1; i--) {
-                tree[i] = (mode == 1) ? *min_element(&tree[2 * i], &tree[2 * i + 1]) : *max_element(&tree[2 * i], &tree[2 * i + 1]);
-            }
-        }
-        for (int i = 0; i < vec.size(); i++) {
-            arr[i] = *vec[i];
-        }
-        return arr;
     }
 
-
-  
 }
 
 //template<typename T>
@@ -169,8 +168,6 @@ vector<T> tournamentSort(unsigned const int mode,vector<T> arr)
 //            }
 //        }
 //    }
-//
-//
 //}
 
 
@@ -216,7 +213,7 @@ void testPyramidSort(vector<T> vec) {
 
 int main() {
     try {
-        vector<int> vec1 = { 44, 55, 1, -5, 1 };
+        vector<int> vec1 = { 17, 55, 12, -5, 1 };
         //vector<int> vec2 = { 1,2,3,4,5,6,7,8,9 };
         //vector<int> vec3 = { 9,8,7,6,5,4,3,2,1 };
         //vector<int> vec4 = { 65 };
@@ -246,8 +243,8 @@ int main() {
         //testPyramidSort(vec11);
         //testPyramidSort(vec12);
 
-        vector<int> x = tournamentSort(0, vec1);
-        print(x);
+        tournamentSort(vec1);
+        print(vec1);
 
         //tournamentSort(0, vec1);
         //print(vec1);
