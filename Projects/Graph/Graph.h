@@ -20,6 +20,7 @@ const int MaxGraphSize = 25;
 /// > Eсли вставить уже существующее ребро -> ќно перезапишетс€
 /// > ѕри вставке нового ребра в матрицу смежности вставл€етс€ только положительное значение. ≈сли отрицательное -> 
 /// -> вставл€етс€ противоположное по модулю, но мен€етс€ источник ребра. 
+/// ≈сли вес ребра 0 - значит оно отсутсвует.
 /// </summary>
 /// <typeparam name="T"></typeparam>
 template <class T>
@@ -228,11 +229,8 @@ public:
     {
         if (graphSize < MaxGraphSize)
         {
-            if (GetVertexPos(vertex) == -1) {
-                vertexList.push_back(vertex);
-                graphSize++;
-            }
-
+            vertexList.push_back(vertex);
+            graphSize++;
         }
     }
 
@@ -355,7 +353,7 @@ public:
 
 
     /// <summary>
-    /// вернуть вес ребра между вершинами
+    /// вернуть вес ребра между вершинами - если вернулс€ 0, значит, что ребро отсутствует.
     /// </summary>
     /// <param name="vertex1"></param>
     /// <param name="vertex2"></param>
@@ -544,7 +542,7 @@ public:
     ///  ѕечать графа в текстовый файл
     /// </summary>
     /// <param name="filename"></param>
-    void FillFile(const string filename)
+    void FillFile(const string& filename)
     {
         ofstream file(filename);
         // проверка на открытие
@@ -592,7 +590,7 @@ public:
         // проверка на открытие
         if (!file.is_open())
         {
-            throw runtime_error("ќшибка открыти€ файла");
+            throw "ќшибка открыти€ файла";
         }
 
         string line;        // дл€ построчного считывани€
