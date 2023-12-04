@@ -7,12 +7,11 @@ using namespace std;
 #include <vector>
 #include <queue>
 #include <iomanip>
-#include <fstream>
 #include <iostream>
-#include <tuple>
+#include <fstream>
 #include <string>
 #include <sstream>
-#include <list>
+#include <list> 
 const int MaxGraphSize = 25;
 
 
@@ -20,7 +19,7 @@ const int MaxGraphSize = 25;
 /// класс граф с фиксированным максимальным размером.
 /// > Eсли вставить уже существующее ребро -> Оно перезапишется
 /// > При вставке нового ребра в матрицу смежности вставляется только положительное значение. Если отрицательное -> 
-/// -> вставляется противоположное по модулю, но меняется источник дуги
+/// -> вставляется противоположное по модулю, но меняется источник ребра. 
 /// </summary>
 /// <typeparam name="T"></typeparam>
 template <class T>
@@ -377,7 +376,7 @@ public:
         int edgeCount = 0;
         for (int i = 0; i < graphSize; i++)
         {
-            for (int j = i; j < graphSize; j++)
+            for (int j = 0; j < graphSize; j++)
             {
                 if (edge[i][j] != 0)
                 {
@@ -535,6 +534,8 @@ public:
         return Iterator<T>(*this, graphSize);
     }
 
+
+
     /// <summary>
     ///  Печать графа в текстовый файл
     /// </summary>
@@ -562,7 +563,7 @@ public:
         /// проход по вершинам (по матрице)
         for (int i = 0; i < NumberOfVertices(); i++)
         {
-            for (int j = i; j < NumberOfVertices(); j++)
+            for (int j = 0; j < NumberOfVertices(); j++)
             {
                 // найти вес ребра
                 int weight = GetWeight(vertexList[i], vertexList[j]);
@@ -649,6 +650,12 @@ public:
 };
     
    
+
+
+
+
+
+
 
 
 

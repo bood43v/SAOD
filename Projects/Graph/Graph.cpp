@@ -14,10 +14,12 @@ int main()
 
         g1.InsertVertex(2);
         g1.InsertVertex(3);
-        g1.InsertEdge(1, 2, 1);
-        g1.InsertEdge(2, 3, 1);
-        g1.InsertEdge(1, 3, 1);
+        g1.InsertEdge(1, 2, 3);
+        g1.InsertEdge(2, 3, 4);
+        g1.InsertEdge(3, 2, 5);
+        g1.InsertEdge(1, 3, 10);
 
+        cout << g1.NumberOfEdges() << endl;
         g1.PrintAdjacencyMatrix();
 
         /// Проход в глубину
@@ -46,7 +48,7 @@ int main()
 
 
         /// Проход итератором 
-        cout << endl << "Итератором до: ";
+        cout << endl << "g1: ";
         if (!g1.isEmpty()) {
             for (Graph<int>::Iterator<int> it = g1.begin(); it != g1.end(); ++it) {
                 cout << *it << " ";
@@ -55,11 +57,11 @@ int main()
         }
 
         /// Проход итератором 
-        cout << endl << "Итератором после: ";
+        cout << endl << "g2: ";
         for (Graph<int>::Iterator<int> it = g2.begin(); it != g2.end(); ++it) {
             cout << *it << " ";
         }
-        cout << endl;
+        cout << endl << endl;
 
         g2.FillFile("g2.txt");
        
