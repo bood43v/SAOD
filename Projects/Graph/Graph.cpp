@@ -10,26 +10,39 @@ int main()
 {
     setlocale(LC_ALL, "ru");
     try {
-        Graph<int> g1(1);
+        Graph<int> g1;
 
+        g1.InsertVertex(1);
         g1.InsertVertex(2);
         g1.InsertVertex(3);
-        g1.InsertEdge(1, 2, 3);
-        g1.InsertEdge(2, 3, 4);
-        g1.InsertEdge(3, 2, 5);
-        g1.InsertEdge(1, 3, 10);
+        g1.InsertVertex(4);
+        g1.InsertVertex(5);
+        g1.InsertVertex(6);
+        g1.InsertEdge(1, 2, 5);
+        g1.InsertEdge(1, 1, 5);
+        g1.InsertEdge(1, 4, 2);
+        g1.InsertEdge(2, 3, 7);
+        g1.InsertEdge(1, 5, -20);
+        g1.InsertEdge(5, 1, 44);
 
-        cout << g1.NumberOfEdges() << endl;
+
         g1.PrintAdjacencyMatrix();
 
         /// Проход в глубину
         cout << endl << "Проход в глубину: ";
-        vector<int> res = g1.DepthFirstSearch(3);
+        vector<int> res = g1.DepthFirstSearch(1);
         for (const auto& it : res) {
             cout << it << " ";
         }
         cout << endl;
 
+        /// Проход в ширину
+        cout << endl << "Проход в ширину: ";
+        vector<int> res2 = g1.BreadthFirstSearch(1);
+        for (const auto& it : res2) {
+            cout << it << " ";
+        }
+        cout << endl;
 
         //// конструктор копирования
         //Graph<int> g2(g1);

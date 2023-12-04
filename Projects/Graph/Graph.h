@@ -228,8 +228,11 @@ public:
     {
         if (graphSize < MaxGraphSize)
         {
-            vertexList.push_back(vertex);
-            graphSize++;
+            if (GetVertexPos(vertex) == -1) {
+                vertexList.push_back(vertex);
+                graphSize++;
+            }
+
         }
     }
 
@@ -246,10 +249,11 @@ public:
         int pos2 = GetVertexPos(vertex2);
         if (pos1 != -1 && pos2 != -1)
         {
-            if (weight >= 0)
-                edge[pos1][pos2] = weight;
-            if (weight <= 0)
-                edge[pos2][pos1] = -weight;
+            edge[pos1][pos2] = weight;
+            //if (weight >= 0)
+            //    
+            //if (weight <= 0)
+            //    edge[pos2][pos1] = -weight;
         }
         //else throw " ак минимум одной из вершин нет!";
     }
@@ -303,20 +307,20 @@ public:
     void PrintAdjacencyMatrix() const
     {
         // ¬ывод значений вершин дл€ вертикальной оси
-        std::cout << "   ";
+        std::cout << "     ";
         for (int i = 0; i < graphSize; i++)
         {
-            std::cout << std::setw(3) << vertexList[i];
+            std::cout << std::setw(5) << vertexList[i];
         }
         std::cout << std::endl;
 
         // ¬ывод значений вершин и значений матрицы смежности
         for (int i = 0; i < graphSize; i++)
         {
-            std::cout << std::setw(3) << vertexList[i];
+            std::cout << std::setw(5) << vertexList[i];
             for (int j = 0; j < graphSize; j++)
             {
-                std::cout << std::setw(3) << edge[i][j];
+                std::cout << std::setw(5) << edge[i][j];
             }
             std::cout << std::endl;
         }

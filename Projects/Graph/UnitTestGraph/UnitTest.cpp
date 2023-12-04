@@ -525,8 +525,15 @@ namespace UnitTestGraph
                 i++;
             }
         }
+
     };
 }
+
+
+
+
+
+
 
 
 ///// Тестирование методов класса Graph
