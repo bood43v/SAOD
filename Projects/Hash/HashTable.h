@@ -4,7 +4,7 @@
 #include <vector>
 
 template <class T>
-class HashTable : public std::list<T> {
+class HashTable : public std::list<T> { 
 protected:
     int numBuckets; // Количество корзин в хэш-таблице
     std::vector<std::list<T>> buckets; // Вектор корзин, содержащих связанные списки элементов
