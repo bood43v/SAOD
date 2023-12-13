@@ -28,61 +28,12 @@ int main()
 
         g1.PrintAdjacencyMatrix();
 
-        /// Проход в глубину
-        cout << endl << "Проход в глубину: ";
-        vector<int> res = g1.DepthFirstSearch(1);
-        for (const auto& it : res) {
-            cout << it << " ";
-        }
-        cout << endl;
-
-        /// Проход в ширину
-        cout << endl << "Проход в ширину: ";
-        vector<int> res2 = g1.BreadthFirstSearch(1);
-        for (const auto& it : res2) {
-            cout << it << " ";
-        }
-        cout << endl;
-
-        //// конструктор копирования
-        //Graph<int> g2(g1);
-
-
-        //конструктор перемещения
-        //Graph<int> g2(move(g1));
-
-        // оператор присваивания копированием
-        //Graph<int> g2;
-        //g2 = g1;
-
-        // оператор присваивания перемещением
-        Graph<int> g2;
-        g2 = move(g1);
-
-
-        /// Проход итератором 
-        cout << endl << "g1: ";
-        if (!g1.isEmpty()) {
-            for (Graph<int>::Iterator<int> it = g1.begin(); it != g1.end(); ++it) {
-                cout << *it << " ";
-            }
-            cout << endl;
-        }
-
-        /// Проход итератором 
-        cout << endl << "g2: ";
-        for (Graph<int>::Iterator<int> it = g2.begin(); it != g2.end(); ++it) {
-            cout << *it << " ";
-        }
-        cout << endl << endl;
-
-        g2.FillFile("g2.txt");
-       
-        Graph<int> g3;
-        g3.ReadFile("g2.txt");
         
-        g3.PrintAdjacencyMatrix();
 
+        vector<int> way = g1.Dijkstra(4);
+        for (const auto& it : way) {
+            cout << it << " ";
+        }
     }
 
     catch (const char* error_message) {

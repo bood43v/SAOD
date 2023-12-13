@@ -536,7 +536,54 @@ public:
         return Iterator<T>(*this, graphSize);
     }
 
+        // поиск кратчайшего пути алгоритмом Дейкстры от начальной вершины до всех остальных вершин в графе
+        vector<int> Dijkstra(int vertex) {
+            // Инициализируем расстояния бесконечностью
+            vector<int> distances(graphSize, numeric_limits<int>::max());
+            // Расстояние до начальной вершины равно 0
+            distances[vertex] = 0;
 
+            priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+
+            // Добавляем начальную вершину в приоритетную очередь, make_pair - используется для создания пары (расстояние, вершина)
+            //  и добавления этой пары в приоритетную очередь
+            pq.push(make_pair(0, vertex));
+
+            //выполняем нужное количество итераций, пока приоритетную очередь не пуста
+            while (!pq.empty()) {
+                //top - используется для получения ссылки на самую верхнюю пару (расстояние, вершина)
+                int currentDistance = pq.top().first;
+                int currentNode = pq.top().second;
+                pq.pop();
+
+                if (currentDistance > distances[currentNode]) {
+                    continue; // Если текущее расстояние больше, игнорируем вершину
+                }
+
+                // Проходим по смежным вершинам
+                // начинается цикл, в котором проходим по всем вершинам, смежным с текущей вершиной currentNode. 
+                // numVertices представляет общее количество вершин в графе.
+                for (int neighbor = 0; neighbor < graphSize; ++neighbor) {
+                    // получаем вес ребра между текущей вершиной currentNode и смежной вершиной neighbor из матрицы смежности adjMatrix. 
+                    // Если вес ребра равен 0, это означает, что между вершинами нет прямого ребра и мы пропускаем эту смежную вершину.
+                    int edgeWeight = edge[currentNode][neighbor];
+                    if (edgeWeight != 0) {
+                        //вычисляем новое расстояние distance от начальной вершины до смежной вершины через текущую вершину.
+                        // Суммируем текущее
+                        int distance = currentDistance + edgeWeight;
+                        // проверяем, является ли новое расстояние distance меньше, 
+                        // чем уже известное расстояние distances[neighbor] до смежной вершины neighbor.
+                        if (distance < distances[neighbor]) {
+                            distances[neighbor] = distance;
+                            // добавляем пару (distance, neighbor) в приоритетную очередь 
+                            pq.push(make_pair(distance, neighbor));
+                        }
+                    }
+                }
+            }
+
+            return distances;
+        }
 
     /// <summary>
     ///  Печать графа в текстовый файл

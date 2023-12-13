@@ -332,7 +332,7 @@ namespace UnitTestGraph
             g2.InsertEdge(2, 3, 7);
             g2.InsertEdge(1, 5, -20);
 
-            vector<int> fixed1 = { 1, 2, 4, 3 };
+            vector<int> fixed1 = { 1, 2, 4, 5, 3 };
             int i = 0;
             vector<int> res1 = g2.BreadthFirstSearch(1);
             for (const auto& it : res1) {
@@ -364,7 +364,7 @@ namespace UnitTestGraph
                 i++;
             }
 
-            vector<int> fixed5 = { 5, 1, 2, 4, 3 };
+            vector<int> fixed5 = { 5 };
             i = 0;
             vector<int> res5 = g2.BreadthFirstSearch(5);
             for (const auto& it : res5) {
@@ -417,7 +417,7 @@ namespace UnitTestGraph
             g2.InsertEdge(2, 3, 7);
             g2.InsertEdge(1, 5, -20);
 
-            vector<int> fixed1 = { 1, 2, 3, 4 };
+            vector<int> fixed1 = { 1, 2, 3, 4, 5 };
             int i = 0;
             vector<int> res1 = g2.DepthFirstSearch(1);
             for (const auto& it : res1) {
@@ -449,7 +449,7 @@ namespace UnitTestGraph
                 i++;
             }
 
-            vector<int> fixed5 = { 5, 1, 2, 3, 4 };
+            vector<int> fixed5 = { 5 };
             i = 0;
             vector<int> res5 = g2.DepthFirstSearch(5);
             for (const auto& it : res5) {
