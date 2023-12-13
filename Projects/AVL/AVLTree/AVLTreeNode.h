@@ -149,7 +149,7 @@ public:
 		//}
 		//else
 		if (k < p->Data())
-			p->SetLeft(dynamic_cast<AVLTreeNode<T>*>(p->Left())->Insert(k));
+			p->SetLeft(dynamic_cast<AVLTreeNode<T>*>(p->Left())->Insert(k)); 
 		else
 			p->SetRight(dynamic_cast<AVLTreeNode<T>*>(p->Right())->Insert(k));
 		return Balance(p);
