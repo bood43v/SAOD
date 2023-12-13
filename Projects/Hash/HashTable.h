@@ -2,7 +2,10 @@
 #include <functional>
 #include <list>
 #include <vector>
-
+/// <summary>
+/// 
+/// </summary>
+/// <typeparam name="T"></typeparam>
 template <class T>
 class HashTable : public std::list<T> { 
 protected:
