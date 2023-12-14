@@ -19,7 +19,23 @@ int main() {
     hashTable.Insert(3);
 
     // Поиск элемента в хеш-таблице
-    int key = 3;
+    int key = 1;
+    if (hashTable.Find(key)) {
+        std::cout << "Элемент найден: " << key << std::endl;
+    }
+    else {
+        std::cout << "Элемент не найден" << std::endl;
+    }
+    cout << endl;
+
+
+    // Удаление элемента из хеш-таблицы
+    hashTable.Delete(3);
+
+    // Обновление элемента в хеш-таблице
+    hashTable.Update(2, 3);
+    // Поиск элемента в хеш-таблице
+    key = 3;
     if (hashTable.Find(key)) {
         std::cout << "Элемент найден: " << key << std::endl;
     }
@@ -27,15 +43,6 @@ int main() {
         std::cout << "Элемент не найден" << std::endl;
     }
 
-
-    cout << endl;
-     // Обновление элемента в хеш-таблице
-    int newKey = 12;
-    hashTable.Update(newKey, 5);
-
-    // Удаление элемента из хеш-таблицы
-    int deleteKey = 5;
-    hashTable.Delete(deleteKey);
 
     // Очистка хеш-таблицы
     hashTable.ClearList();

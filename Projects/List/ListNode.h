@@ -29,6 +29,11 @@ public:
 		prev = newPrev;
 	}
 
+	/// Установить Данные
+	void SetData(const T& data_) {
+		data = data_;
+	}
+
 	/// вернуть next
 	T Data() {
 		return data;

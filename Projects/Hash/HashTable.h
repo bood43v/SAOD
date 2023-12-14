@@ -34,11 +34,14 @@ public:
 		buckets[bucketIndex].InsertAtTail(key); 
 	}
 
-	int Find(T& key)
+	bool Find(T& key)
 	{
 		unsigned long hashValue = hf(key);
 		int bucketIndex = hashValue % numBuckets;
-		return buckets[bucketIndex].Search(key); 
+		if(buckets[bucketIndex].Search(key) == nullptr)
+			false;
+		else
+		return true;
 	}
 
 	void Delete(const T& key)
@@ -47,11 +50,12 @@ public:
 		int bucketIndex = hashValue % numBuckets;
 		buckets[bucketIndex].Remove(key);
 	}
+
 	void ClearList(void)
 	{
 		for (auto& lst : buckets)
 		{
-			lst.clear();
+			lst.ClearList();
 		}
 	}
 
@@ -64,7 +68,7 @@ public:
 		int newBucketIndex = newHashValue % numBuckets; 
 
 		if (oldBucketIndex == newBucketIndex) {
-			buckets[oldBucketIndex].update(oldKey, newKey); 
+			buckets[oldBucketIndex].Update(oldKey, newKey); 
 		}
 		else {
 			buckets[oldBucketIndex].Remove(oldKey);

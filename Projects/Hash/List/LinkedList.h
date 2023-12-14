@@ -136,11 +136,11 @@ public:
     void Update(const T& oldValue, const T& newValue) {
         ListNode<T>* current = head;
         while (current != nullptr) {
-            if (current->data == oldValue) {
-                current->data = newValue;
+            if (current->Data() == oldValue) {
+                current->SetData(newValue);
                 return;
             }
-            current = current->next;
+            current = current->Next();
         }
     }
 
