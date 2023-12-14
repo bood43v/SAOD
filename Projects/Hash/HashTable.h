@@ -1,158 +1,108 @@
-#include <iostream>
+﻿#include <iostream>
 #include <functional>
 #include <vector>
 #include <list>
-
+#include "List/LinkedList.h"
 using namespace std;
 
+//template <class T>
+//class HashTablelterator;
 template <class T>
-class HashTablelterator;
-template <class T>
-class HashTable : public list<T>
+class HashTable : public LinkedList<T>
 {
 protected:
-	// ����� ������; ������������ ������ �������
+	// число блоков; представляет размер таблицы
 	int numBuckets;
-	// ���-������� ���� ������ ��������� �������
-	vector<list<T>> buckets;
-	// ���-������� � ����� �������� ������,
-	//� �������� ���������� ��������� ���
+	// хеш-таблица есть массив связанных списков
+	vector<LinkedList<T>> buckets;
+	// хеш-функция и адрес элемента данных,
+	//к которому обращались последний раз
 	unsigned long (*hf)(T key);
-	T* current;
+
 public:
-	// ����������� � �����������, �����������
-	// ������ ������� � ���-�������
-	HashTable(int nbuckets, unsigned long hashf(T key))
-		: numBuckets(nbuckets), hf(hashf), current(nullptr)
+	// конструктор с параметрами, включающими
+	// размер таблицы и хеш-функцию
+	HashTable(int nbuckets, unsigned long hashf(T key)) : numBuckets(nbuckets), hf(hashf)
 	{
 		buckets.resize(numBuckets);
 	}
 
-
-	template <class T>
 	void Insert(const T& key)
 	{
-		int hashval = int(hf(key) % numBuckets);
-		list<T>& lst = buckets[hashval];
-		for (auto it = lst.begin(); it != lst.end(); ++it)
-		{
-			if (*it == key)
-			{
-				*it = key;
-				current = &(*it);
-				return;
-			}
-		}
-		lst.push_back(key);
-		current = &lst.back();
+		unsigned long hashValue = hf(key);
+		int bucketIndex = hashValue % numBuckets;
+		buckets[bucketIndex].InsertAtTail(key); 
 	}
 
-	template <class T>
 	int Find(T& key)
 	{
-		int hashval = int(hf(key) % numBuckets);
-		list<T>& lst = buckets[hashval];
-		for (auto it = lst.begin(); it != lst.end(); ++it)
-		{
-			if (*it == key)
-			{
-				key = *it;
-				current = &(*it);
-				return 1;
-			}
-		}
-		return 0;
+		unsigned long hashValue = hf(key);
+		int bucketIndex = hashValue % numBuckets;
+		return buckets[bucketIndex].Search(key); 
 	}
-	virtual void Delete(const T& key)
+
+	void Delete(const T& key)
 	{
-		int hashval = int(hf(key) % numBuckets);
-		list<T>& lst = buckets[hashval];
-		for (auto it = lst.begin(); it != lst.end(); ++it)
-		{
-			if (*it == key)
-			{
-				lst.erase(it);
-				return;
-			}
-		}
+		unsigned long hashValue = hf(key);
+		int bucketIndex = hashValue % numBuckets;
+		buckets[bucketIndex].Remove(key);
 	}
-	virtual void ClearList(void)
+	void ClearList(void)
 	{
 		for (auto& lst : buckets)
 		{
 			lst.clear();
 		}
 	}
-	void Update(const T& key)
+
+	void Update(const T& oldKey, const T& newKey) 
 	{
-		int hashval = int(hf(key) % numBuckets);
-		list<T>& lst = buckets[hashval];
-		for (auto it = lst.begin(); it != lst.end(); ++it)
-		{
-			if (*it == key)
-			{
-				*it = key;
-				current = &(*it);
-				return;
-			}
+		unsigned long oldHashValue = hf(oldKey);
+		int oldBucketIndex = oldHashValue % numBuckets;
+
+		unsigned long newHashValue = hf(newKey);
+		int newBucketIndex = newHashValue % numBuckets; 
+
+		if (oldBucketIndex == newBucketIndex) {
+			buckets[oldBucketIndex].update(oldKey, newKey); 
+		}
+		else {
+			buckets[oldBucketIndex].Remove(oldKey);
+			buckets[newBucketIndex].InsertAtTail(newKey);
 		}
 	}
 
-	template <class T>
+	//template <class T>
+	//class HashTableIterator {
+	//private:
+	//	// указатель таблицы, подлежащей обходу
+	//	HashTable<T>* hashTable;
+	//	// индекс текущего просматриваемого блока
+	//	//и указатель на связанный список
+	//	int currentBucket;
+	//	list<T>* currBucketPtr;
+	//	// утилита для реализации метода Next
+	//	void SearchNextNode(int cb);
+	//public:
+	//	// конструктор
+	//	HashTablelterator(HashTable<T>& ht);
+	//	// базовые методы итератора
+	//	void Next();
+	//	void Reset();
+	//	T& Data(void);
+	//	// подготовить итератор для сканирования другой таблицы
+	//	void SetList(HashTable<T> &lst);
+	//};
+
+
 	class HashTableIterator {
 	private:
-		HashTable<T>& hashTable;
-		int currentBucket;
-		typename std::list<T>::iterator currentIterator;
+		
 
 	public:
-		HashTableIterator(HashTable<T>& ht)
-			: hashTable(ht), currentBucket(0)
-		{
-			if (hashTable.numBuckets > 0)
-				currentIterator = hashTable.buckets[0].begin();
-		}
-
-		HashTableIterator<T>& operator++() {
-			if (currentBucket >= hashTable.numBuckets)
-				return *this;
-			++currentIterator;
-			while (currentBucket < hashTable.numBuckets && currentIterator == hashTable.buckets[currentBucket].end()) {
-				++currentBucket;
-				if (currentBucket < hashTable.numBuckets)
-					currentIterator = hashTable.buckets[currentBucket].begin();
-			}
-			return *this;
-		}
-
-		HashTableIterator<T> operator++(int) {
-			HashTableIterator<T> temp = *this;
-			++(*this);
-			return temp;
-		}
-
-		bool operator==(const HashTableIterator<T>& it) const {
-			return currentBucket == it.currentBucket && currentIterator == it.currentIterator;
-		}
-
-		bool operator!=(const HashTableIterator<T>& it) const {
-			return !(*this == it);
-		}
-
-		T& operator*() const {
-			return *currentIterator;
-		}
+	
 	};
 
-	HashTableIterator<T> begin() const
-	{
-		return HashTableIterator<T>(*this);
-	}
-
-	HashTableIterator<T> end() const
-	{
-		return HashTableIterator<T>();
-	}
-
-};
+	
+	};
 	

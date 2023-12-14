@@ -14,14 +14,12 @@ int main() {
     HashTable<int> hashTable(10, HashFunc);
 
     // Вставка элементов в хеш-таблицу
-    hashTable.Insert(5);
-    hashTable.Insert(12);
-    hashTable.Insert(7);
-    hashTable.Insert(18);
-    hashTable.Insert(25);
+    hashTable.Insert(1);
+    hashTable.Insert(2);
+    hashTable.Insert(3);
 
     // Поиск элемента в хеш-таблице
-    int key = 8;
+    int key = 3;
     if (hashTable.Find(key)) {
         std::cout << "Элемент найден: " << key << std::endl;
     }
@@ -29,16 +27,11 @@ int main() {
         std::cout << "Элемент не найден" << std::endl;
     }
 
-    // Итерация по хеш-таблице с помощью итератора
-    std::cout << "Элементы хеш-таблицы: ";
-    for (auto it = hashTable.begin(); it != hashTable.end(); ++it) {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
 
-    // Обновление элемента в хеш-таблице
+    cout << endl;
+     // Обновление элемента в хеш-таблице
     int newKey = 12;
-    hashTable.Update(newKey);
+    hashTable.Update(newKey, 5);
 
     // Удаление элемента из хеш-таблицы
     int deleteKey = 5;

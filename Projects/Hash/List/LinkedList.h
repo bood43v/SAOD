@@ -133,6 +133,17 @@ public:
         size--;
     }
 
+    void Update(const T& oldValue, const T& newValue) {
+        ListNode<T>* current = head;
+        while (current != nullptr) {
+            if (current->data == oldValue) {
+                current->data = newValue;
+                return;
+            }
+            current = current->next;
+        }
+    }
+
     /// Очистка списка
     void ClearList() {
         ListNode<T>* current = head;
