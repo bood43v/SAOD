@@ -30,11 +30,13 @@ public:
 	}
 
 	/// Установить next
+	/// Установить Данные
 	void SetData(const T& data_) {
 		data = data_;
 	}
 
 	/// вернуть Data
+	/// вернуть next
 	T Data() {
 		return data;
 	}
