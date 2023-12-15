@@ -14,8 +14,8 @@ int main()
     list1->InsertAtTail(20);
     list1->InsertAtTail(30);
     list1->InsertAfter(30,40);
+    //list1->Update(30,99);
 
-\
     //list1->Remove(10);
     //list1->Remove(40);
     //list1->Remove(5);

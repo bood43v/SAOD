@@ -1,67 +1,111 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <functional>
-#include <list>
 #include <vector>
-/// <summary>
-/// 
-/// </summary>
-/// <typeparam name="T"></typeparam>
+#include <list>
+#include "List/LinkedList.h"
+using namespace std;
+
+//template <class T>
+//class HashTablelterator;
 template <class T>
-class HashTable : public std::list<T> { 
+class HashTable : public LinkedList<T>
+{
 protected:
-    int numBuckets; // Количество корзин в хэш-таблице
-    std::vector<std::list<T>> buckets; // Вектор корзин, содержащих связанные списки элементов
-    std::function<unsigned long(T)> hf; // Указатель на хэш-функцию
-    T* current; // Указатель на текущий элемент
+	// С‡РёСЃР»Рѕ Р±Р»РѕРєРѕРІ; РїСЂРµРґСЃС‚Р°РІР»СЏРµС‚ СЂР°Р·РјРµСЂ С‚Р°Р±Р»РёС†С‹
+	int numBuckets;
+	// С…РµС€-С‚Р°Р±Р»РёС†Р° РµСЃС‚СЊ РјР°СЃСЃРёРІ СЃРІСЏР·Р°РЅРЅС‹С… СЃРїРёСЃРєРѕРІ
+	vector<LinkedList<T>> buckets;
+	// С…РµС€-С„СѓРЅРєС†РёСЏ Рё Р°РґСЂРµСЃ СЌР»РµРјРµРЅС‚Р° РґР°РЅРЅС‹С…,
+	//Рє РєРѕС‚РѕСЂРѕРјСѓ РѕР±СЂР°С‰Р°Р»РёСЃСЊ РїРѕСЃР»РµРґРЅРёР№ СЂР°Р·
+	unsigned long (*hf)(T key);
 
 public:
-    HashTable(int nbuckets, unsigned long hashf(T key)) : numBuckets(nbuckets), hf(hashf) {
-        buckets.resize(numBuckets); // Инициализируем вектор корзин нужным количеством элементов
-    }
+	// РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ СЃ РїР°СЂР°РјРµС‚СЂР°РјРё, РІРєР»СЋС‡Р°СЋС‰РёРјРё
+	// СЂР°Р·РјРµСЂ С‚Р°Р±Р»РёС†С‹ Рё С…РµС€-С„СѓРЅРєС†РёСЋ
+	HashTable(int nbuckets, unsigned long hashf(T key)) : numBuckets(nbuckets), hf(hashf)
+	{
+		buckets.resize(numBuckets);
+	}
 
-    void Insert(const T& key) {
-        unsigned long index = hf(key) % numBuckets; // Вычисляем индекс корзины для вставки элемента
-        buckets[index].push_back(key); // Вставляем элемент в связанный список в соответствующей корзине
-    }
+	void Insert(const T& key)
+	{
+		unsigned long hashValue = hf(key);
+		int bucketIndex = hashValue % numBuckets;
+		buckets[bucketIndex].InsertAtTail(key);
+	}
 
-    int Find(const T& key) {
-        unsigned long index = hf(key) % numBuckets; // Вычисляем индекс корзины для поиска элемента
-        int count = 0; // Счетчик позиции элемента в связанном списке
-        for (const T& element : buckets[index]) { // Итерируемся по элементам связанного списка
-            if (element == key) { // Если найден элемент равный ключу
-                return count; // Возвращаем позицию элемента
-            }
-            count++; // Увеличиваем счетчик позиции
-        }
-        return -1; // Если элемент не найден
-    }
+	bool Find(T& key)
+	{
+		unsigned long hashValue = hf(key);
+		int bucketIndex = hashValue % numBuckets;
+		if (buckets[bucketIndex].Search(key) == nullptr)
+			false;
+		else
+			return true;
+	}
 
-    void Delete(const T& key) {
-        unsigned long index = hf(key) % numBuckets; // Вычисляем индекс корзины для удаления элемента
-        auto it = buckets[index].begin(); // Получаем итератор на начало связанного списка
-        while (it != buckets[index].end()) { // Пока не достигнут конец связанного списка
-            if (*it == key) { // Если найден элемент равный ключу
-                it = buckets[index].erase(it); // Удаляем элемент из связанного списка и обновляем итератор
-            }
-            else {
-                ++it; // Переходим к следующему элементу
-            }
-        }
-    }
+	void Delete(const T& key)
+	{
+		unsigned long hashValue = hf(key);
+		int bucketIndex = hashValue % numBuckets;
+		buckets[bucketIndex].Remove(key);
+	}
 
-    void ClearList() {
-        for (auto& bucket : buckets) { // Итерируемся по корзинам
-            bucket.clear(); // Очищаем связанный список в каждой корзине
-        }
-    }
+	void ClearList(void)
+	{
+		for (auto& lst : buckets)
+		{
+			lst.ClearList();
+		}
+	}
 
-    void Update(const T& key) {
-        unsigned long index = hf(key) % numBuckets; // Вычисляем индекс корзины для обновления элемента
-        for (T& element : buckets[index]) { // Итерируемся по элементам связанного списка
-            if (element == key) { // Если найден элемент равный ключу
-                element = key; // Обновляем элемент с новым ключом
-                return;
-            }
-        }
-    }
+	void Update(const T& oldKey, const T& newKey)
+	{
+		unsigned long oldHashValue = hf(oldKey);
+		int oldBucketIndex = oldHashValue % numBuckets;
+
+		unsigned long newHashValue = hf(newKey);
+		int newBucketIndex = newHashValue % numBuckets;
+
+		if (oldBucketIndex == newBucketIndex) {
+			buckets[oldBucketIndex].Update(oldKey, newKey);
+		}
+		else {
+			buckets[oldBucketIndex].Remove(oldKey);
+			buckets[newBucketIndex].InsertAtTail(newKey);
+		}
+	}
+
+	//template <class T>
+	//class HashTableIterator {
+	//private:
+	//	// СѓРєР°Р·Р°С‚РµР»СЊ С‚Р°Р±Р»РёС†С‹, РїРѕРґР»РµР¶Р°С‰РµР№ РѕР±С…РѕРґСѓ
+	//	HashTable<T>* hashTable;
+	//	// РёРЅРґРµРєСЃ С‚РµРєСѓС‰РµРіРѕ РїСЂРѕСЃРјР°С‚СЂРёРІР°РµРјРѕРіРѕ Р±Р»РѕРєР°
+	//	//Рё СѓРєР°Р·Р°С‚РµР»СЊ РЅР° СЃРІСЏР·Р°РЅРЅС‹Р№ СЃРїРёСЃРѕРє
+	//	int currentBucket;
+	//	list<T>* currBucketPtr;
+	//	// СѓС‚РёР»РёС‚Р° РґР»СЏ СЂРµР°Р»РёР·Р°С†РёРё РјРµС‚РѕРґР° Next
+	//	void SearchNextNode(int cb);
+	//public:
+	//	// РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
+	//	HashTablelterator(HashTable<T>& ht);
+	//	// Р±Р°Р·РѕРІС‹Рµ РјРµС‚РѕРґС‹ РёС‚РµСЂР°С‚РѕСЂР°
+	//	void Next();
+	//	void Reset();
+	//	T& Data(void);
+	//	// РїРѕРґРіРѕС‚РѕРІРёС‚СЊ РёС‚РµСЂР°С‚РѕСЂ РґР»СЏ СЃРєР°РЅРёСЂРѕРІР°РЅРёСЏ РґСЂСѓРіРѕР№ С‚Р°Р±Р»РёС†С‹
+	//	void SetList(HashTable<T> &lst);
+	//};
+
+
+	class HashTableIterator {
+	private:
+
+
+	public:
+
+	};
+
+
 };

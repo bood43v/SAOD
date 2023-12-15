@@ -3,32 +3,42 @@
 #include "HashTable.h"
 
 using namespace std;
-// Пример пользовательской хэш-функции для целых чисел
-unsigned long HashFunction(int key) {
-    return static_cast<unsigned long>(key); // Простая хэш-функция, возвращающая само число
+
+unsigned long HashFunc(int key) {
+    // Пример простой хеш-функции для целых чисел
+    return key % 10;
 }
 
 int main() {
-    HashTable<int> hashTable(10, HashFunction); // Создание экземпляра HashTable с 10 корзинами и пользовательской хэш-функцией
+    setlocale(LC_ALL, "ru");
+    HashTable<int> hashTable(10, HashFunc);
 
-    hashTable.Insert(10);
-    hashTable.Insert(20);
-    hashTable.Insert(30);
+    // Вставка элементов в хеш-таблицу
+    hashTable.Insert(1);
+    hashTable.Insert(2);
+    hashTable.Insert(3);
 
-    std::cout << "Elements in hash table:" << std::endl;
-    for (const int& element : hashTable) {
-        std::cout << element << std::endl; // Вывод элементов хэш-таблицы
+    // Поиск элемента в хеш-таблице
+    int key = 3;
+    if (hashTable.Find(key)) {
+        std::cout << "Элемент найден: " << key << std::endl;
+    }
+    else {
+        std::cout << "Элемент не найден" << std::endl;
     }
 
-    std::cout << "Find '20' at position: " << hashTable.Find(20) << std::endl; // Поиск элемента в хэш-таблице
 
-    hashTable.Delete(20); // Удаление элемента из хэш-таблицы
+    cout << endl;
+     // Обновление элемента в хеш-таблице
+    int newKey = 12;
+    hashTable.Update(newKey, 5);
 
-    std::cout << "Elements in hash table after deletion:" << std::endl;
-    for (const int& element : hashTable) {
-        std::cout << element << std::endl; // Вывод элементов хэш-таблицы после удаления
-    }
+    // Удаление элемента из хеш-таблицы
+    int deleteKey = 5;
+    hashTable.Delete(deleteKey);
+
+    // Очистка хеш-таблицы
+    hashTable.ClearList();
 
     return 0;
 }
-
