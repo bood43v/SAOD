@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include <functional>
 #include "HashTable.h"
 
 using namespace std;
@@ -14,9 +13,13 @@ int main() {
     HashTable<int> hashTable(10, HashFunc);
 
     // Вставка элементов в хеш-таблицу
-    hashTable.Insert(5);
-    hashTable.Insert(15);
+    hashTable.Insert(1);
+    hashTable.Insert(2);
     hashTable.Insert(3);
+    hashTable.Insert(4);
+    hashTable.Insert(5);
+    hashTable.Insert(13);
+    hashTable.Insert(13);
 
     // Поиск элемента в хеш-таблице
     int key = 5;
@@ -30,10 +33,11 @@ int main() {
 
 
     // Удаление элемента из хеш-таблицы
-    hashTable.Delete(3);
+    //hashTable.Delete(3);
 
-    // Обновление элемента в хеш-таблице
-    hashTable.Update(2, 3);
+    //// Обновление элемента в хеш-таблице
+    //hashTable.Update(2, 3);
+    
     // Поиск элемента в хеш-таблице
     key = 15;
     if (hashTable.Find(key)) {
@@ -43,15 +47,18 @@ int main() {
         std::cout << "Элемент не найден" << std::endl;
     }
 
-    /*hashTable.PrintTable();*/
+    HashTable<int> hashTable2(100, HashFunc);
 
-    // Итерация по элементам хеш-таблицы
-    for (auto it = hashTable.begin(); it != hashTable.end(); ++it)
-    {
-        cout << *it << " ";
-        cout << "xd";
-    }
+    hashTable.PrintTable();
 
+    //// Итерация по элементам хеш-таблицы
+    //for (auto it = hashTable.begin(); it != hashTable.end(); ++it)
+    //{
+    //    cout << *it << " ";
+    //    cout << "1";
+    //}
+
+    cout << hashTable.CountElements();
     // Очистка хеш-таблицы
     hashTable.ClearList();
 
