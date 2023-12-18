@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{f03af86d-51b1-4768-aa1c-8f1a07630d54}</ProjectGuid>
-    <RootNamespace>Hash</RootNamespace>
+    <ProjectGuid>{f58c8eb3-60cc-407e-97fe-329434067965}</ProjectGuid>
+    <RootNamespace>ConverterTxtToGraphML</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,12 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Hash.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="HashTable.h" />
-    <ClInclude Include="List\LinkedList.h" />
-    <ClInclude Include="List\ListNode.h" />
+    <ClCompile Include="ConverterTxtToGraphML.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

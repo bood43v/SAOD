@@ -188,52 +188,56 @@ public:
     /// </summary>
     /// <typeparam name="T"></typeparam>
     template<class T>
-    class Iterator {
+    class LinkedListIterator {
     private:
         ListNode<T>* current; // Указатель на текущий узел
 
     public:
         /// Конструктор без параметров
-        Iterator(ListNode<T>* node) : current(node) {}
+        LinkedListIterator(ListNode<T>* node) : current(node) {}
 
         /// Оператор разыменования
         T operator*() const {
             return current->Data();
         }
 
+        ListNode<T>* GetCurrentNode() const {
+            return current;
+        }
+
         /// Оператор префиксного инкремента
         /// *this возвращает ссылку на текущий объект итератора
-        Iterator<T>& operator++() {
+        LinkedListIterator<T>& operator++() {
             current = current->Next();
             return *this;
         }
 
         /// Оператор постфиксного инкремента
         /// temp для сохранения состояния до перехода к следующему
-        Iterator<T> operator++(int) {
-            Iterator<T> temp = *this;
+        LinkedListIterator<T> operator++(int) {
+            LinkedListIterator<T> temp = *this;
             current = current->Next();
             return temp;
         }
 
         /// Оператор "равно"
-        bool operator==(const Iterator<T>& it) const {
+        bool operator==(const LinkedListIterator<T>& it) const {
             return current == it.current;
         }
 
         /// Оператора "не равно"
-        bool operator!=(const Iterator<T>& it) const {
+        bool operator!=(const LinkedListIterator<T>& it) const {
             return current != it.current;
         }
     };
 
     /// Первый элемент списка
-    Iterator<T> begin() const {
-        return Iterator<T>(head);
+    LinkedListIterator<T> begin() const {
+        return LinkedListIterator<T>(head);
     }
 
     /// Элемент, следующий за последним элементом списка
-    Iterator<T> end() const {
-        return Iterator<T>(nullptr);
+    LinkedListIterator<T> end() const {
+        return LinkedListIterator<T>(nullptr);
     }
 };
