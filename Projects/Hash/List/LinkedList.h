@@ -61,7 +61,7 @@ public:
     }
 
     /// Поиск узла с указанным ключом
-    ListNode<T>* Search(const T& key) {
+    ListNode<T>* Search(const T& key) const {
         ListNode<T>* current = head;
 
         while (current != nullptr) {

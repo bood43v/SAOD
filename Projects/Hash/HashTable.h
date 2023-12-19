@@ -38,7 +38,7 @@ public:
 	/// <summary>
 	/// Размер таблицы
 	/// </summary>
-	int Size()
+	int Size() const
 	{
 		return tableSize;
 	}
@@ -64,7 +64,7 @@ public:
 	/// </summary>
 	/// <param name="key"></param>
 	/// <returns></returns>
-	bool Find(const T& key)
+	bool Find(const T& key) const
 	{
 		// вычисление хеша
 		int hashValue = hf(key);
@@ -132,7 +132,7 @@ public:
 	/// Количество элементов в таблице
 	/// </summary>
 	/// <returns></returns>
-	int CountElements()
+	int CountElements() const
 	{
 		int count = 0;
 		/// суммируем размеры списков в таблице
@@ -146,7 +146,7 @@ public:
 	/// <summary>
 	/// Печать таблицы
 	/// </summary>
-	void PrintTable()
+	void PrintTable() const
 	{
 		for (int i = 0; i < tableSize; ++i)
 		{
