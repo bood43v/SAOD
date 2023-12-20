@@ -19,30 +19,32 @@ int main()
     cout << "Number of bananas: " << dict["banana"] << endl;
     cout << "Number of oranges: " << dict["orange"] << endl;
 
-    //// Проверка наличия элемента в словаре
-    //string fruit = "apple";
-    //if (dict.InDictionary(fruit))
-    //{
-    //    cout << fruit << " is in the dictionary." << endl;
-    //}
-    //else
-    //{
-    //    cout << fruit << " is not in the dictionary." << endl;
-    //}
+    // Проверка наличия элемента в словаре
+    string fruit = "apple";
+    if (dict.InDictionary(fruit))
+    {
+        cout << fruit << " is in the dictionary." << endl;
+    }
+    else
+    {
+        cout << fruit << " is not in the dictionary." << endl;
+    }
 
-    //// Удаление элемента из словаря
-    //dict.DeleteKey("banana");
+    // Удаление элемента из словаря
+    dict.DeleteKey("banana");
 
-    //// Проверка наличия удаленного элемента
-    //string deletedFruit = "banana";
-    //if (dict.InDictionary(deletedFruit))
-    //{
-    //    cout << deletedFruit << " is in the dictionary." << endl;
-    //}
-    //else
-    //{
-    //    cout << deletedFruit << " is not in the dictionary." << endl;
-    //}
+    // Проверка наличия удаленного элемента
+    string deletedFruit = "banana";
+    if (dict.InDictionary(deletedFruit))
+    {
+        cout << deletedFruit << " is in the dictionary." << endl;
+    }
+    else
+    {
+        cout << deletedFruit << " is not in the dictionary." << endl;
+    }
 
+    //cout << dict.Search("apple")->Data().GetValue() << endl;
+    
     return 0;
 }

@@ -11,6 +11,10 @@ protected:
 public:
     T value; // словарные данные €вл€ютс€ общедоступными
 
+    T& GetValue() {
+        return value;
+    }
+
     KeyValue(K keyVal, T dataValue) : key(keyVal), value(dataValue) {}
 
     // операторы присваивани€, не измен€ют ключ
@@ -18,31 +22,39 @@ public:
     {
         if (this != &rhs)
         {
+            key = rhs.key;
             value = rhs.value;
         }
         return *this;
     }
 
     // операторы сравнени€, сравнивают два ключа
-    bool operator== (const KeyValue<K, T>& rhs) const
+    bool operator== (const KeyValue<K, T>& other) const
     {
-        return key == rhs.key;
+        return key == other.key;
     }
 
-    bool operator== (const K& keyVal) const
+
+    bool operator< (const KeyValue<K, T>& other) const
     {
-        return key == keyVal;
+        return key < other.key;
     }
 
-    bool operator< (const KeyValue<K, T>& rhs) const
+
+    bool operator> (const KeyValue<K, T>& other) const
     {
-        return key < rhs.key;
+        return key > other.key;
     }
 
-    bool operator< (const K& keyVal) const
-    {
-        return key < keyVal;
-    }
+    //bool operator< (const K& keyVal) const
+    //{
+    //    return key < keyVal;
+    //}
+
+    //bool operator> (const K& keyVal) const
+    //{
+    //    return key > keyVal;
+    //}
 
     // метод доступа к ключу
     K Key() const
