@@ -129,6 +129,12 @@
   <ItemGroup>
     <ClCompile Include="Map.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\AVL\AVLTree.h" />
+    <ClInclude Include="..\AVL\AVLTreeNode.h" />
+    <ClInclude Include="KeyValue.h" />
+    <ClInclude Include="Map.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
