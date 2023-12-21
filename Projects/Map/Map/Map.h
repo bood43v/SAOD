@@ -1,36 +1,50 @@
+/// Класс Map - словарь на основе AVL дерева
+/// @author Будаев Г.Б.
+#pragma once
 #include "../AVL/AVLTree.h"
 #include "KeyValue.h"
+
+/// <summary>
+/// Класс словарь со значением по умолчанию defaultValue, которое задаётся при создании объекта в конструкторе
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <typeparam name="K"></typeparam>
 template <class K, class T>
 class Map : public AVLTree<KeyValue<K, T>>
 {
 private:
-    T defaultValue;
+    T defaultValue; /// значение по умолчанию
 
 public:
-    Map(const T& defaultval) : AVLTree<KeyValue<K,T>>(), defaultValue(defaultval) {}
+    /// <summary>
+    /// конструктор
+    /// </summary>
+    /// <param name="defaultval"></param>
+    Map(const T& defaultValue) : AVLTree<KeyValue<K,T>>(), defaultValue(defaultValue) {}
 
-T& operator[](const K& index)
-{
-    // Определить целевой объект типа KeyValue, содержащий данные задаваемые по умолчанию
-    KeyValue<K, T> targetKey(index, defaultValue);
-
-    // Искать ключ, если не найден, вставить targetKey
-    if (this->Search(targetKey) == nullptr)
+    /// оператор индексирования
+    /// Добавляет пару. 
+    /// "поиск" - Если элемента с таким ключом нет, то добавляется пара ключ/значение по умолчанию
+    T& operator[](const K& index)
     {
-        // Вставить targetKey и обновить корень дерева
-        AVLTree<KeyValue<K, T>>* newRootTree = dynamic_cast<AVLTree<KeyValue<K, T>>*>(this->Root()->Insert(targetKey));
-        if (newRootTree != nullptr)
-        {
-            AVLTreeNode<KeyValue<K, T>>* newRoot = newRootTree->Root();
-            if (newRoot != nullptr)
-                this->SetRoot(newRoot);
+        // определить целевой объект типа KeyValue, содержащий
+        // данные задаваемые по умолчанию
+        KeyValue<K, T> targetKey(index, defaultValue);
+        // искать ключ, если не найден, вставить targetKey
+        if (this->Search(targetKey) == nullptr) {
+            this->Insert(targetKey);
         }
+            
+        /*this->SetCurr(this->Search(targetKey));*/
+        // возвратить ссылку на найденные или вставленные данные
+        return this->Search(targetKey)->DataRef().GetValue();
     }
 
-    // Вернуть ссылку на найденные или вставленные данные
-    return this->Search(targetKey)->Data().GetValue();
-}
-
+    /// <summary>
+    /// проверка, находится ли в словаре значение
+    /// </summary>
+    /// <param name="keyval"></param>
+    /// <returns></returns>
     int InDictionary(const K& keyval)
     {
         // определить целевой объект типа KeyValue, содержащий
@@ -43,9 +57,17 @@ T& operator[](const K& index)
         return retval;
     }
 
+    /// <summary>
+    /// удаление ключа из словаря
+    /// </summary>
+    /// <param name="keyval"></param>
     void DeleteKey(const K& keyval)
     {
         KeyValue<K, T> tmp(keyval, defaultValue);
         this->Remove(tmp);
     }
+
+
+
+    
 };

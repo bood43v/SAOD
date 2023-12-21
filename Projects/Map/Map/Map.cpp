@@ -1,4 +1,8 @@
-﻿#include <iostream>
+﻿/// Файл работы со словарём Map на основе AVL дерева
+/// @author Будаев Г.Б.
+#pragma once
+
+#include <iostream>
 #include <string>
 #include "Map.h"
 
@@ -6,45 +10,63 @@ using namespace std;
 
 int main()
 {
-    // Создание словаря с значением по умолчанию равным 0
-    Map<string, int> dict(0);
+    //Map<string, int> dict(0);
 
-    // Добавление элементов в словарь
-    dict["apple"] = 10;
-    dict["banana"] = 5;
-    dict["orange"] = 7;
+    //dict["a"] = 10;
+    //dict["b"] = 5;
+    //dict["c"] = 7;
 
-    // Использование оператора индексирования для получения значений элементов
-    cout << "Number of apples: " << dict["apple"] << endl;
-    cout << "Number of bananas: " << dict["banana"] << endl;
-    cout << "Number of oranges: " << dict["orange"] << endl;
+    //int x = dict["a"];
+    //cout << x << endl;
 
-    // Проверка наличия элемента в словаре
-    string fruit = "apple";
-    if (dict.InDictionary(fruit))
-    {
-        cout << fruit << " is in the dictionary." << endl;
-    }
-    else
-    {
-        cout << fruit << " is not in the dictionary." << endl;
-    }
+    // получение значений элементов
+    //cout << "Number of a: " << dict["a"] << endl;
+    //cout << "Number of b: " << dict["b"] << endl;
+    //cout << "Number of c: " << dict["c"] << endl;
 
-    // Удаление элемента из словаря
-    dict.DeleteKey("banana");
+    //// проверка наличия элемента в словаре
+    //string letter = "a";
+    //if (dict.InDictionary(letter))
+    //{
+    //    cout << letter << " is in the dictionary" << endl;
+    //}
+    //else
+    //{
+    //    cout << letter << " is not in the dictionary" << endl;
+    //}
 
-    // Проверка наличия удаленного элемента
-    string deletedFruit = "banana";
-    if (dict.InDictionary(deletedFruit))
-    {
-        cout << deletedFruit << " is in the dictionary." << endl;
-    }
-    else
-    {
-        cout << deletedFruit << " is not in the dictionary." << endl;
-    }
+    //// удаление
+    //dict.DeleteKey("b");
 
-    //cout << dict.Search("apple")->Data().GetValue() << endl;
+    //// проверка наличия удаленного элемента
+    //string deleteLetter = "b";
+    //if (dict.InDictionary(deleteLetter))
+    //{
+    //    cout << deleteLetter << " is in the dictionary" << endl;
+    //}
+    //else
+    //{
+    //    cout << deleteLetter << " is not in the dictionary" << endl;
+    //}
+    //// проверка наличия элемента в словаре
+    //letter = "w";
+    //if (dict.InDictionary(letter))
+    //{
+    //    cout << letter << " is in the dictionary" << endl;
+    //}
+    //else
+    //{
+    //    cout << letter << " is not in the dictionary" << endl;
+    //}
+
+    //cout << dict.Size() << endl;
     
+    Map<int, int> dict1(0);
+    dict1[1] = 155;
+    cout << "dict[1]: " << dict1[1] << endl;
+    int num = 3;
+    dict1[3];
+    dict1.Clear();
+    cout << dict1.Size() << endl;
     return 0;
 }

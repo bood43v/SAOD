@@ -3,6 +3,7 @@
 #include "AVLTreeNode.h"
 #include "../../Tree/Tree/BinarySearchTree.h"
 
+/// Класс AVL дерева на основе AVLTreeNode с измененными методами вставки и удаления
 template <class T>
 class AVLTree {
 private:
@@ -19,7 +20,22 @@ public:
     /// <param name="data"></param>
     AVLTree(const T& data) : root(new AVLTreeNode<T>(data)), curr(nullptr) {}
 
-
+    // оператор присваивания
+    template <class T>
+    AVLTree<T>& operator =(const AVLTree<T>& rhs)
+    {
+        // нельзя копировать дерево в само себя
+        if (this == &rhs)
+            return *this;
+        // очистить текущее дерево, скопировать новое дерево в текущий объект
+        this->ClearList();
+        root = CopyTree(rhs->GetRoot());
+        // присвоить текущему указателю значение корня и задать размер дерева
+        this->SetCurr(this->root);
+        //size = tree.size;
+        // возвратить ссылку на текущий объект
+        return *this;
+    }
 
     /// Деструктор
     ~AVLTree() {
@@ -35,6 +51,11 @@ public:
     /// Установить корень
     void SetRoot(AVLTreeNode<T>* newRoot) {
         root = newRoot;
+    }
+
+    /// Установить корень
+    void SetCurr(AVLTreeNode<T>* newRoot) {
+        curr = newRoot;
     }
 
     /// Вернуть корень
@@ -66,6 +87,12 @@ public:
     /// Поиск
     AVLTreeNode<T>* Search(const T& key) const {
         return dynamic_cast<AVLTreeNode<T>*>(root->Search(key));
+    }
+
+    /// Очищение дерева
+    void Clear() {
+        DeleteTree(root);
+        this->SetRoot(nullptr);
     }
 
     /// Глубина

@@ -18,7 +18,7 @@ private:
 public:
 
     /// Конструктор без параметров
-    TreeNode() : 
+    TreeNode() :
         data(NULL), left(nullptr), right(nullptr) {};
 
     /// Конструктор
@@ -84,6 +84,12 @@ public:
         return data;
     }
 
+    /// Вернуть данные
+    T& DataRef()
+    {
+        return data;
+    }
+
     /// Поиск узла в дереве с возвратом указателя на узел, если он есть
     TreeNode<T>* Search(const T& key)
     {
@@ -129,21 +135,21 @@ public:
         while (node != nullptr)
         {
             // если есть левый/правый потомок и он является искомым, то запоминаем родителя и выходим
-            if ((node->Left() != nullptr && key == node->Left()->Data()) || (node->Right() != nullptr && key == node->Right()->Data()) )
+            if ((node->Left() != nullptr && key == node->Left()->Data()) || (node->Right() != nullptr && key == node->Right()->Data()))
             {
                 parent = node;
                 break;
-            }  
+            }
             // иначе двигаемся по дереву влево/вправо
             else
             {
                 if (key < node->Data())
-                   node = node->Left();
+                    node = node->Left();
                 else
-                   node = node->Right();
+                    node = node->Right();
             }
         }
-        
+
         // возвращаем указатель на родителя
         return parent;
     }
@@ -222,7 +228,7 @@ public:
     }
 
     /// Следующий наибольший узел
-    TreeNode<T>* Successor(const T &key) {
+    TreeNode<T>* Successor(const T& key) {
         /// текущий узел
         TreeNode<T>* curr = Search(key);
         /// если пустой
@@ -282,7 +288,7 @@ public:
 
     }
 
-   
+
     /// Удаление узла - возвращаем указатель корень дерева с удаленным узлом
     TreeNode<T>* Remove(TreeNode<T>* root, const T& key) {
         TreeNode<T>* parent;
@@ -346,7 +352,7 @@ public:
     }
 
     /// Обход LNR и вывод в массив
-    void AddToArrayLNR(T arr[], int &i)
+    void AddToArrayLNR(T arr[], int& i)
     {
         if (this != nullptr)
         {
@@ -358,7 +364,7 @@ public:
     }
 
     /// Обход NLR и вывод в массив
-    void AddToArrayNLR(T arr[], int &i)
+    void AddToArrayNLR(T arr[], int& i)
     {
         if (this == nullptr)
             return;
@@ -369,7 +375,7 @@ public:
     }
 
     /// Обход RLN и вывод в массив
-    void AddToArrayRNL(T arr[], int &i)
+    void AddToArrayRNL(T arr[], int& i)
     {
         if (this == nullptr)
             return;
