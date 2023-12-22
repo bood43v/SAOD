@@ -9,64 +9,32 @@
 using namespace std;
 
 int main()
-{
-    //Map<string, int> dict(0);
-
-    //dict["a"] = 10;
-    //dict["b"] = 5;
-    //dict["c"] = 7;
-
-    //int x = dict["a"];
-    //cout << x << endl;
-
-    // получение значений элементов
-    //cout << "Number of a: " << dict["a"] << endl;
-    //cout << "Number of b: " << dict["b"] << endl;
-    //cout << "Number of c: " << dict["c"] << endl;
-
-    //// проверка наличия элемента в словаре
-    //string letter = "a";
-    //if (dict.InDictionary(letter))
-    //{
-    //    cout << letter << " is in the dictionary" << endl;
-    //}
-    //else
-    //{
-    //    cout << letter << " is not in the dictionary" << endl;
-    //}
-
-    //// удаление
-    //dict.DeleteKey("b");
-
-    //// проверка наличия удаленного элемента
-    //string deleteLetter = "b";
-    //if (dict.InDictionary(deleteLetter))
-    //{
-    //    cout << deleteLetter << " is in the dictionary" << endl;
-    //}
-    //else
-    //{
-    //    cout << deleteLetter << " is not in the dictionary" << endl;
-    //}
-    //// проверка наличия элемента в словаре
-    //letter = "w";
-    //if (dict.InDictionary(letter))
-    //{
-    //    cout << letter << " is in the dictionary" << endl;
-    //}
-    //else
-    //{
-    //    cout << letter << " is not in the dictionary" << endl;
-    //}
-
-    //cout << dict.Size() << endl;
+{    
+    Map<int, int> d1(0);
+    d1[1] = 155;
+    d1[2] = 1;
+    d1[4] = 2;
+    d1[5] = 3;
     
-    Map<int, int> dict1(0);
-    dict1[1] = 155;
-    cout << "dict[1]: " << dict1[1] << endl;
-    int num = 3;
-    dict1[3];
-    dict1.Clear();
-    cout << dict1.Size() << endl;
-    return 0;
+    cout << d1[1] << endl;
+    cout << "d1.size = " << d1.Size() << endl << endl;
+
+    Map<int, int> d2(1);
+    d2 = d1;
+    cout << d2[1] << endl;
+    cout << d2[2] << endl;
+    cout << d2[4] << endl;
+    cout << d2[5] << endl;
+    cout << d2[100] << endl;
+    cout << "d2.size = " << d2.Size() << endl << endl;
+
+    cout << d1[1] << endl;
+    cout << "d1.size = " << d1.Size() << endl << endl;
+    //for (typename Map<int, int>::MapIterator<int, int> it = d1.begin(); it != d1.end(); ++it)
+    //{
+    //    KeyValue<int, int>& keyValue = *it;
+    //    int key = keyValue.Key();
+    //    int value = keyValue.value;
+    //    cout << "Key: " << key << ", Value: " << value << endl;
+    //}
 }

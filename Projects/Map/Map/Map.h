@@ -17,11 +17,25 @@ private:
 
 public:
     /// <summary>
-    /// конструктор
+    /// Конструктор
     /// </summary>
     /// <param name="defaultval"></param>
     Map(const T& defaultValue) : AVLTree<KeyValue<K,T>>(), defaultValue(defaultValue) {}
 
+    /// Деструктор. Использует унаследованный Clear
+    ~Map()
+    {
+        this->Clear();
+    }
+
+    // Конструктор перемещения
+    //Map(Map<K,T>& map_moved)
+    //{
+    //    defaultValue = map_moved.defaultValue;
+
+    //    map_moved->Clear();
+    //}
+    
     /// оператор индексирования
     /// Добавляет пару. 
     /// "поиск" - Если элемента с таким ключом нет, то добавляется пара ключ/значение по умолчанию
@@ -41,20 +55,19 @@ public:
     }
 
     /// <summary>
-    /// проверка, находится ли в словаре значение
+    /// проверка, находится ли в словаре значение. Если нет - возврат 0
     /// </summary>
     /// <param name="keyval"></param>
     /// <returns></returns>
-    int InDictionary(const K& keyval)
+    bool InDictionary(const K& keyval) const
     {
         // определить целевой объект типа KeyValue, содержащий
         // данные задаваемые по умолчанию
         KeyValue<K, T> tmp(keyval, defaultValue);
-        int retval = 1;
         // искать tmp на дереве, вернуть результат
         if (!this->Search(tmp))
-            retval = 0;
-        return retval;
+            return false;
+        return true;
     }
 
     /// <summary>
@@ -67,7 +80,42 @@ public:
         this->Remove(tmp);
     }
 
+    /// void Clear(); - унаследован
 
-
+    /// int Size(); - унаследован
     
+
+
+
+
+
+    //template<class K, class T>
+    //class MapIterator {
+    //private:
+    //    typename AVLTree<KeyValue<K, T>>::template Iterator<KeyValue<K, T>> iterator;
+
+    //public:
+    //    MapIterator(typename AVLTree<KeyValue<K, T>>::template Iterator<KeyValue<K, T>> it) : iterator(it) {}
+
+    //    MapIterator& operator++() {
+    //        ++iterator;
+    //        return *this;
+    //    }
+
+    //    bool operator!=(const MapIterator& other) const {
+    //        return iterator != other.iterator;
+    //    }
+
+    //    KeyValue<K, T>& operator*() {
+    //        return iterator;
+    //    }
+    //};
+
+    //MapIterator<K, T> begin() {
+    //    return MapIterator<K, T>(AVLTree<KeyValue<K, T>>::begin());
+    //}
+
+    //MapIterator<K, T> end() {
+    //    return MapIterator<K, T>(AVLTree<KeyValue<K, T>>::end());
+    //}
 };

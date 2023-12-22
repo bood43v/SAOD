@@ -30,9 +30,9 @@ int main()
 
         
 
-        vector<int> way = g1.Dijkstra(4);
+        vector<int> way = g1.Dijkstra(1);
         for (const auto& it : way) {
-            cout << it << " ";
+            cout << it << endl;
         }
     }
 

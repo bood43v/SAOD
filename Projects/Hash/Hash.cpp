@@ -3,6 +3,17 @@
 
 using namespace std;
 
+
+unsigned long HashFunction(const string& key)
+{
+    unsigned long hash = 0;
+    for (char c : key)
+    {
+        hash = hash * 31 + c;
+    }
+    return hash;
+}
+
 unsigned long HashFunc(int key) {
     // Пример простой хеш-функции для целых чисел
     return key % 10;
@@ -61,6 +72,8 @@ int main() {
     cout << hashTable.CountElements();
     // Очистка хеш-таблицы
     hashTable.ClearList();
+
+
 
     return 0;
 }

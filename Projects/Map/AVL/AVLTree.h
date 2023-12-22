@@ -208,6 +208,8 @@ public:
         bool operator!=(const Iterator<T>& it) const {
             return !(*this == it);
         }
+
+
     };
 
     /// Первый элемент списка
