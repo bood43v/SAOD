@@ -12,15 +12,21 @@ using namespace std;
 #include <string>
 #include <sstream>
 #include <list> 
+#include <limits>
+#include <algorithm>
 const int MaxGraphSize = 25;
 
 
 /// <summary>
-/// класс граф с фиксированным максимальным размером.
+/// класс граф с фиксированным максимальным размером и только с положительными весами
 /// > Eсли вставить уже существующее ребро -> Оно перезапишется
+/// 
 /// > При вставке нового ребра в матрицу смежности вставляется только положительное значение. Если отрицательное -> 
 /// -> вставляется противоположное по модулю, но меняется источник ребра. 
-/// Если вес ребра 0 - значит оно отсутсвует.
+/// 
+/// > Если вес ребра 0 - значит оно отсутсвует.
+/// 
+/// > При поиске кратчайшего пути 0 означает отсутствие связи между вершинами или связь с самим собой
 /// </summary>
 /// <typeparam name="T"></typeparam>
 template <class T>
@@ -242,7 +248,9 @@ public:
     /// <param name="weight"></param>
     void InsertEdge(const T& vertex1, const T& vertex2, int weight)
     {
-        if (weight == 0) throw "Вес не может быть нулевым!";
+        //if (vertex1 == vertex2) throw "В этом графе невозможны петли.";
+        if(weight < 0) throw "Вес не может быть отрицательным.";
+        if (weight == 0) throw "Вес не может быть нулевым.";
         int pos1 = GetVertexPos(vertex1);
         int pos2 = GetVertexPos(vertex2);
         if (pos1 != -1 && pos2 != -1)
@@ -536,53 +544,53 @@ public:
         return Iterator<T>(*this, graphSize);
     }
 
-    // поиск кратчайшего пути алгоритмом Дейкстры от начальной вершины до всех остальных вершин в графе
-    vector<int> Dijkstra(int vertex) {
-        // Инициализируем расстояния бесконечностью
-        vector<int> distances(graphSize, numeric_limits<int>::max());
-        // Расстояние до начальной вершины равно 0
-        distances[vertex - 1] = 0;
+    //// поиск кратчайшего пути алгоритмом Дейкстры от начальной вершины до всех остальных вершин в графе
+    //vector<int> Dijkstra(int vertex) {
+    //    // Инициализируем расстояния бесконечностью
+    //    vector<int> distances(graphSize, numeric_limits<int>::max());
+    //    // Расстояние до начальной вершины равно 0
+    //    distances[vertex - 1] = 0;
 
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    //    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
 
-        // Добавляем начальную вершину в приоритетную очередь, make_pair - используется для создания пары (расстояние, вершина)
-        //  и добавления этой пары в приоритетную очередь
-        pq.push(make_pair(0, vertex));
+    //    // Добавляем начальную вершину в приоритетную очередь, make_pair - используется для создания пары (расстояние, вершина)
+    //    //  и добавления этой пары в приоритетную очередь
+    //    pq.push(make_pair(0, vertex));
 
-        //выполняем нужное количество итераций, пока приоритетную очередь не пуста
-        while (!pq.empty()) {
-            //top - используется для получения ссылки на самую верхнюю пару (расстояние, вершина)
-            int currentDistance = pq.top().first;
-            int currentNode = pq.top().second;
-            pq.pop();
+    //    //выполняем нужное количество итераций, пока приоритетную очередь не пуста
+    //    while (!pq.empty()) {
+    //        //top - используется для получения ссылки на самую верхнюю пару (расстояние, вершина)
+    //        int currentDistance = pq.top().first;
+    //        int currentNode = pq.top().second;
+    //        pq.pop();
 
-            if (currentDistance > distances[currentNode]) {
-                continue; // Если текущее расстояние больше, игнорируем вершину
-            }
+    //        if (currentDistance > distances[currentNode]) {
+    //            continue; // Если текущее расстояние больше, игнорируем вершину
+    //        }
 
-            // Проходим по смежным вершинам
-            // начинается цикл, в котором проходим по всем вершинам, смежным с текущей вершиной currentNode. 
-            // numVertices представляет общее количество вершин в графе.
-            for (int neighbor = 0; neighbor < graphSize; ++neighbor) {
-                // получаем вес ребра между текущей вершиной currentNode и смежной вершиной neighbor из матрицы смежности adjMatrix. 
-                // Если вес ребра равен 0, это означает, что между вершинами нет прямого ребра и мы пропускаем эту смежную вершину.
-                int edgeWeight = edge[currentNode][neighbor];
-                if (edgeWeight != 0) {
-                    //вычисляем новое расстояние distance от начальной вершины до смежной вершины через текущую вершину.
-                    // Суммируем текущее
-                    int distance = currentDistance + edgeWeight;
-                    // проверяем, является ли новое расстояние distance меньше, 
-                    // чем уже известное расстояние distances[neighbor] до смежной вершины neighbor.
-                    if (distance < distances[neighbor]) {
-                        distances[neighbor] = distance;
-                        // добавляем пару (distance, neighbor) в приоритетную очередь 
-                        pq.push(make_pair(distance, neighbor));
-                    }
-                }
-            }
-        }
-        return distances;
-    }
+    //        // Проходим по смежным вершинам
+    //        // начинается цикл, в котором проходим по всем вершинам, смежным с текущей вершиной currentNode. 
+    //        // numVertices представляет общее количество вершин в графе.
+    //        for (int neighbor = 0; neighbor < graphSize; ++neighbor) {
+    //            // получаем вес ребра между текущей вершиной currentNode и смежной вершиной neighbor из матрицы смежности adjMatrix. 
+    //            // Если вес ребра равен 0, это означает, что между вершинами нет прямого ребра и мы пропускаем эту смежную вершину.
+    //            int edgeWeight = edge[currentNode][neighbor];
+    //            if (edgeWeight != 0) {
+    //                //вычисляем новое расстояние distance от начальной вершины до смежной вершины через текущую вершину.
+    //                // Суммируем текущее
+    //                int distance = currentDistance + edgeWeight;
+    //                // проверяем, является ли новое расстояние distance меньше, 
+    //                // чем уже известное расстояние distances[neighbor] до смежной вершины neighbor.
+    //                if (distance < distances[neighbor]) {
+    //                    distances[neighbor] = distance;
+    //                    // добавляем пару (distance, neighbor) в приоритетную очередь 
+    //                    pq.push(make_pair(distance, neighbor));
+    //                }
+    //            }
+    //        }
+    //    }
+    //    return distances;
+    //}
 
     /// <summary>
     ///  Печать графа в текстовый файл
@@ -695,18 +703,140 @@ public:
         }
         file.close();
     }
+    
+    /// <summary>
+    /// Поиск кратчайшего пути из вершины startVertex во все остальные алгоритмом Дейкстры
+    /// </summary>
+    /// <param name="startVertex"></param>
+    /// <returns></returns>
+    vector<int> FindShortestDistances(const T& startVertex)
+    {
+        // Инициализация расстояний до вершин "бесконечностью" - максимальным значением типа
+        vector<int> distances(graphSize, numeric_limits<int>::max());
+        // Расстояние до начальной вершины равно 0 - к самому себе
+        int startVertexPos = GetVertexPos(startVertex);
+        distances[startVertexPos] = 0;
+
+        // Очередь с приоритетом для обработки вершин
+        // greater -> очередь по-возрастанию -> наименьшее в начале
+        priority_queue<pair<int, T>, vector<pair<int, T>>, greater<pair<int, T>>> pq;
+
+        // добавляем стартовую вершину в приоритетную очередь
+        pq.push(make_pair(0, startVertex));
+
+        // пока очередь не пуста
+        while (!pq.empty())
+        {
+            // читаем данные из верхней пары
+            T currentVertex = pq.top().second;
+            int currentDistance = pq.top().first;
+            // удаляем её из очереди
+            pq.pop();
+
+            // позиция текущей вершины
+            int currentVertexPos = GetVertexPos(currentVertex);
+
+            // Проверка смежных вершин
+            for (int i = 0; i < graphSize; i++)
+            {
+                // если существует ребро между текущей и смежной (и не с самой собой)
+                if (edge[currentVertexPos][i] != 0 && currentVertexPos != i)
+                {
+                    // значение смежной вершины
+                    T neighborVertex = vertexList[i];
+                    // расстояние до этой смежной вершины с учетом текущего положения
+                    int neighborDistance = currentDistance + edge[currentVertexPos][i];
+
+                    // если это суммарное расстояние меньше того, что в векторе-результате distances -> перезаписываем значение в нем
+                    // и добавляем эту вершину и расстояние до неё в очередь
+                    if (neighborDistance < distances[i])
+                    {
+                        distances[i] = neighborDistance;
+                        pq.push(make_pair(neighborDistance, neighborVertex));
+                    }
+                }
+            }
+        }
+        // если пути нет - заменяем numeric_limits<int>::max()) на 0
+        for (auto& element : distances) {
+            if (element == numeric_limits<int>::max()) element = 0;
+        }
+        //// учет петли - если вес петли меньше 0 -> изменяем в выходном векторе
+        //if (edge[startVertexPos][startVertexPos] < distances[startVertexPos])
+        //    distances[startVertexPos] = edge[startVertexPos][startVertexPos];
+
+        return distances;
+    }
+
+    ///// <summary>
+    ///// Поиск кратчайшего пути из вершины startVertex во все остальные модифицированным алгоритмом Дейкстры
+    ///// </summary>
+    ///// <param name="startVertex"></param>
+    ///// <returns></returns>
+    //vector<int> FindShortestDistances(const T& startVertex)
+    //{
+    //    // Инициализация расстояний до вершин "бесконечностью" - максимальным значением типа
+    //    vector<int> distances(graphSize, numeric_limits<int>::max());
+    //    // Расстояние до начальной вершины равно 0 - к самому себе
+    //    int startVertexPos = GetVertexPos(startVertex);
+    //    distances[startVertexPos] = 0;
+
+    //    // Очередь с приоритетом для обработки вершин
+    //    // greater -> очередь по-возрастанию -> наименьшее в начале
+    //    priority_queue<pair<int, T>, vector<pair<int, T>>, greater<pair<int, T>>> pq;
+
+    //    // добавляем стартовую вершину в приоритетную очередь
+    //    pq.push(make_pair(0, startVertex));
+
+    //    // пока очередь не пуста
+    //    while (!pq.empty())
+    //    {
+    //        // читаем данные из верхней пары
+    //        T currentVertex = pq.top().second;
+    //        int currentDistance = pq.top().first;
+    //        // удаляем её из очереди
+    //        pq.pop();
+
+    //        // позиция текущей вершины
+    //        int currentVertexPos = GetVertexPos(currentVertex);
+
+    //        // Проверка смежных вершин
+    //        for (int i = 0; i < graphSize; i++)
+    //        {
+    //            // если существует ребро между текущей и смежной (и не с самой собой)
+    //            if (edge[currentVertexPos][i] != 0 /*&& currentVertexPos != i*/)
+    //            {
+
+    //                // значение смежной вершины
+    //                T neighborVertex = vertexList[i];
+    //                // расстояние до этой смежной вершины с учетом текущего положения
+    //                int neighborDistance = currentDistance + edge[currentVertexPos][i];
+
+    //                // если это суммарное расстояние меньше того, что в векторе-результате distances -> перезаписываем значение в нем
+    //                // и добавляем эту вершину и расстояние до неё в очередь
+    //                if (neighborDistance < distances[i])
+    //                {
+    //                    distances[i] = neighborDistance;
+    //                    if (currentVertexPos == i)
+    //                        if (edge[currentVertexPos][currentVertexPos] < 0)
+    //                            distances[i] -= edge[currentVertexPos][currentVertexPos];
+    //                    pq.push(make_pair(neighborDistance, neighborVertex));
+    //                }
+    //            }
+    //        }
+    //    }
+    //    // если пути нет - заменяем numeric_limits<int>::max()) на 0
+    //    for (auto& element : distances) {
+    //        if (element == numeric_limits<int>::max()) element = 0;
+    //    }
+    //    // учет петли - если вес петли меньше 0 -> изменяем в выходном векторе
+    //    if (edge[startVertexPos][startVertexPos] < distances[startVertexPos])
+    //        distances[startVertexPos] = edge[startVertexPos][startVertexPos];
+
+    //    return distances;
+    //}
 };
     
-   
-
-
-
-
-
-
-
-
-
 
 
 ///// Реализация класса Graph
@@ -718,14 +848,26 @@ public:
 //#include <vector>
 //#include <queue>
 //#include <iomanip>
+//#include <iostream>
+//#include <fstream>
+//#include <string>
+//#include <sstream>
+//#include <list> 
+//#include <limits>
+//#include <algorithm>
 //const int MaxGraphSize = 25;
 //
 //
 ///// <summary>
-///// класс граф с фиксированным максимальным размером.
+///// класс граф с фиксированным максимальным размером, без возможности создания петель
 ///// > Eсли вставить уже существующее ребро -> Оно перезапишется
+///// 
 ///// > При вставке нового ребра в матрицу смежности вставляется только положительное значение. Если отрицательное -> 
-///// -> вставляется противоположное по модулю, но меняется источник дуги
+///// -> вставляется противоположное по модулю, но меняется источник ребра. 
+///// 
+///// > Если вес ребра 0 - значит оно отсутсвует.
+///// 
+///// > При поиске кратчайшего пути 0 означает отсутствие связи между вершинами или связь с самим собой
 ///// </summary>
 ///// <typeparam name="T"></typeparam>
 //template <class T>
@@ -802,13 +944,7 @@ public:
 //        // заполнение нулями
 //        std::fill(edge[0], edge[0] + MaxGraphSize * MaxGraphSize, 0);
 //
-//        //for (int i = 0; i < MaxGraphSize; i++) /// memfill
-//        //{
-//        //    for (int j = 0; j < MaxGraphSize; j++)
-//        //    {
-//        //        edge[i][j] = 0;
-//        //    }
-//        //}
+//        //std::cout << "Constructor w/o parameters";
 //    }
 //
 //    /// <summary>
@@ -819,15 +955,9 @@ public:
 //        graphSize = 0;
 //        // заполнение нулями
 //        std::fill(edge[0], edge[0] + MaxGraphSize * MaxGraphSize, 0);
-//
+//        // вставка вектора
 //        this->InsertVertex(vertex);
-//        //for (int i = 0; i < MaxGraphSize; i++) /// memfill
-//        //{
-//        //    for (int j = 0; j < MaxGraphSize; j++)
-//        //    {
-//        //        edge[i][j] = 0;
-//        //    }
-//        //}
+//        //std::cout << "Constructor w/ 1 parameter";
 //    }
 //
 //    // деструктор
@@ -853,7 +983,7 @@ public:
 //                edge[i][j] = graph.edge[i][j];
 //            }
 //        }
-//        std::cout << "Copy constructor" << std::endl;
+//        //std::cout << "Copy constructor" << std::endl;
 //    }
 //
 //    /// <summary>
@@ -879,7 +1009,7 @@ public:
 //        // перемещение размера графа
 //        graphSize = graph.graphSize;
 //        graph.graphSize = 0;
-//        std::cout << "Move constructor" << std::endl;
+//        //std::cout << "Move constructor" << std::endl;
 //    }
 //
 //    /// <summary>
@@ -903,7 +1033,7 @@ public:
 //
 //        // копирование размера графа
 //        graphSize = graph.graphSize;
-//
+//        /*std::cout << "Assignment operator" << std::endl;*/
 //        return *this;
 //    }
 //
@@ -914,22 +1044,28 @@ public:
 //    /// <returns></returns>
 //    Graph<T>& operator=(Graph<T>&& graph)
 //    {
-//        // перемещение списка вершин
-//        vertexList = std::move(graph.vertexList);
-//
-//        // перемещение матрицы смежности
-//        for (int i = 0; i < MaxGraphSize; ++i)
+//        // проверка на самоприсваивание
+//        if (this != &graph)
 //        {
-//            for (int j = 0; j < MaxGraphSize; ++j)
+//            // перемещение списка вершин
+//            vertexList = std::move(graph.vertexList);
+//
+//            // перемещение матрицы смежности
+//            for (int i = 0; i < MaxGraphSize; ++i)
 //            {
-//                edge[i][j] = std::move(graph.edge[i][j]);
+//                for (int j = 0; j < MaxGraphSize; ++j)
+//                {
+//                    edge[i][j] = std::move(graph.edge[i][j]);
+//                }
 //            }
+//
+//            // перемещение размера графа
+//            graphSize = graph.graphSize;
+//            graph.graphSize = 0;
+//            /*std::cout << "Move assignment operator" << std::endl;*/
+//            return *this;
 //        }
 //
-//        // перемещение размера графа
-//        graphSize = std::move(graph.graphSize);
-//
-//        return *this;
 //    }
 //
 //    /// <summary>
@@ -953,15 +1089,17 @@ public:
 //    /// <param name="weight"></param>
 //    void InsertEdge(const T& vertex1, const T& vertex2, int weight)
 //    {
-//        if (weight == 0) throw "Вес не может быть нулевым!";
+//        //if (vertex1 == vertex2) throw "В этом графе невозможны петли.";
+//        if (weight == 0) throw "Вес не может быть нулевым.";
 //        int pos1 = GetVertexPos(vertex1);
 //        int pos2 = GetVertexPos(vertex2);
 //        if (pos1 != -1 && pos2 != -1)
 //        {
-//            if (weight >= 0)
-//                edge[pos1][pos2] = weight;
-//            if (weight <= 0)
-//                edge[pos2][pos1] = -weight;
+//            edge[pos1][pos2] = weight;
+//            //if (weight >= 0)
+//            //    
+//            //if (weight <= 0)
+//            //    edge[pos2][pos1] = -weight;
 //        }
 //        //else throw "Как минимум одной из вершин нет!";
 //    }
@@ -1015,20 +1153,20 @@ public:
 //    void PrintAdjacencyMatrix() const
 //    {
 //        // Вывод значений вершин для вертикальной оси
-//        std::cout << "   ";
+//        std::cout << "     ";
 //        for (int i = 0; i < graphSize; i++)
 //        {
-//            std::cout << std::setw(3) << vertexList[i];
+//            std::cout << std::setw(5) << vertexList[i];
 //        }
 //        std::cout << std::endl;
 //
 //        // Вывод значений вершин и значений матрицы смежности
 //        for (int i = 0; i < graphSize; i++)
 //        {
-//            std::cout << std::setw(3) << vertexList[i];
+//            std::cout << std::setw(5) << vertexList[i];
 //            for (int j = 0; j < graphSize; j++)
 //            {
-//                std::cout << std::setw(3) << edge[i][j];
+//                std::cout << std::setw(5) << edge[i][j];
 //            }
 //            std::cout << std::endl;
 //        }
@@ -1063,7 +1201,7 @@ public:
 //
 //
 //    /// <summary>
-//    /// вернуть вес ребра между вершинами
+//    /// вернуть вес ребра между вершинами - если вернулся 0, значит, что ребро отсутствует.
 //    /// </summary>
 //    /// <param name="vertex1"></param>
 //    /// <param name="vertex2"></param>
@@ -1088,7 +1226,7 @@ public:
 //        int edgeCount = 0;
 //        for (int i = 0; i < graphSize; i++)
 //        {
-//            for (int j = i; j < graphSize; j++)
+//            for (int j = 0; j < graphSize; j++)
 //            {
 //                if (edge[i][j] != 0)
 //                {
@@ -1245,7 +1383,322 @@ public:
 //    {
 //        return Iterator<T>(*this, graphSize);
 //    }
+//
+//    //// поиск кратчайшего пути алгоритмом Дейкстры от начальной вершины до всех остальных вершин в графе
+//    //vector<int> Dijkstra(int vertex) {
+//    //    // Инициализируем расстояния бесконечностью
+//    //    vector<int> distances(graphSize, numeric_limits<int>::max());
+//    //    // Расстояние до начальной вершины равно 0
+//    //    distances[vertex - 1] = 0;
+//
+//    //    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+//
+//    //    // Добавляем начальную вершину в приоритетную очередь, make_pair - используется для создания пары (расстояние, вершина)
+//    //    //  и добавления этой пары в приоритетную очередь
+//    //    pq.push(make_pair(0, vertex));
+//
+//    //    //выполняем нужное количество итераций, пока приоритетную очередь не пуста
+//    //    while (!pq.empty()) {
+//    //        //top - используется для получения ссылки на самую верхнюю пару (расстояние, вершина)
+//    //        int currentDistance = pq.top().first;
+//    //        int currentNode = pq.top().second;
+//    //        pq.pop();
+//
+//    //        if (currentDistance > distances[currentNode]) {
+//    //            continue; // Если текущее расстояние больше, игнорируем вершину
+//    //        }
+//
+//    //        // Проходим по смежным вершинам
+//    //        // начинается цикл, в котором проходим по всем вершинам, смежным с текущей вершиной currentNode. 
+//    //        // numVertices представляет общее количество вершин в графе.
+//    //        for (int neighbor = 0; neighbor < graphSize; ++neighbor) {
+//    //            // получаем вес ребра между текущей вершиной currentNode и смежной вершиной neighbor из матрицы смежности adjMatrix. 
+//    //            // Если вес ребра равен 0, это означает, что между вершинами нет прямого ребра и мы пропускаем эту смежную вершину.
+//    //            int edgeWeight = edge[currentNode][neighbor];
+//    //            if (edgeWeight != 0) {
+//    //                //вычисляем новое расстояние distance от начальной вершины до смежной вершины через текущую вершину.
+//    //                // Суммируем текущее
+//    //                int distance = currentDistance + edgeWeight;
+//    //                // проверяем, является ли новое расстояние distance меньше, 
+//    //                // чем уже известное расстояние distances[neighbor] до смежной вершины neighbor.
+//    //                if (distance < distances[neighbor]) {
+//    //                    distances[neighbor] = distance;
+//    //                    // добавляем пару (distance, neighbor) в приоритетную очередь 
+//    //                    pq.push(make_pair(distance, neighbor));
+//    //                }
+//    //            }
+//    //        }
+//    //    }
+//    //    return distances;
+//    //}
+//
+//    /// <summary>
+//    ///  Печать графа в текстовый файл
+//    /// </summary>
+//    /// <param name="filename"></param>
+//    void FillFile(const string& filename)
+//    {
+//        ofstream file(filename);
+//        // проверка на открытие
+//        if (!file.is_open())
+//        {
+//            throw "Ошибка открытия файла";
+//        }
+//
+//
+//        file << "<Количество_вершин> " << NumberOfVertices() << endl;
+//        int i = 0;
+//        for (Graph<int>::Iterator<int> it = begin(); it != end(); ++it)
+//        {
+//            file << "Вершина" << i << " " << *it << endl;
+//            i++;
+//        }
+//
+//        file << "<Количество_ребер> " << NumberOfEdges() << endl;
+//        int edgeCount = 0;// количество ребер
+//        /// проход по вершинам (по матрице)
+//        for (int i = 0; i < NumberOfVertices(); i++)
+//        {
+//            for (int j = 0; j < NumberOfVertices(); j++)
+//            {
+//                // найти вес ребра
+//                int weight = GetWeight(vertexList[i], vertexList[j]);
+//                if (weight != 0)// если вес не нулевой, то печать данных ребра
+//                {
+//                    file << "Ребро" << edgeCount << " " << "Вес" << edgeCount << " " << vertexList[i] << " " << vertexList[j] << " " << weight << endl;
+//                    edgeCount++;
+//                }
+//            }
+//        }
+//        file.close();
+//    }
+//
+//    /// <summary>
+//    /// Чтение графа из файла
+//    /// </summary>
+//    /// <param name="filename"></param>
+//    /// <returns></returns>
+//    void ReadFile(const string& filename)
+//    {
+//        ifstream file(filename);
+//        // проверка на открытие
+//        if (!file.is_open())
+//        {
+//            throw "Ошибка открытия файла";
+//        }
+//
+//        string line;        // для построчного считывания
+//        int vertices = 0;   // количество вершин
+//        int edges = 0;      // количество ребер (для циклов)
+//
+//        // Считываем количество вершин, указанное в первой строке
+//        if (getline(file, line))
+//        {
+//            istringstream iss(line); // чтение данных из строки через пробел
+//            string token;            // текущее "слово"
+//            iss >> token;            // Пропускаем первое "слово" - "<Количество_вершин>"
+//            iss >> vertices;         // vertices = кол-во вершин
+//        }
+//
+//        // Считываем вершины в цикле
+//        for (int i = 0; i < vertices; i++)
+//        {
+//            if (getline(file, line))
+//            {
+//                istringstream iss(line);
+//                string token;
+//                int vertex;
+//                iss >> token; // Пропускаем "Вершина<i>"
+//                iss >> vertex;
+//                InsertVertex(vertex);
+//            }
+//        }
+//
+//        // Считываем количество ребер, указанное в строке после вершин (vertices+1)
+//        if (getline(file, line))
+//        {
+//            istringstream iss(line); // аналогично кол-ву вершин
+//            string token;
+//            iss >> token;            // Пропускаем "<Количество_ребер>"
+//            iss >> edges;
+//        }
+//
+//        // Считываем ребра в цикле
+//        for (int i = 0; i < edges; i++)
+//        {
+//            if (getline(file, line))
+//            {
+//                istringstream iss(line);
+//                string token;
+//                T weight;
+//                int vertex1;
+//                int vertex2;
+//                iss >> token; // Пропускаем "Ребро<i>"
+//                iss >> token; // Пропускаем "Вес<i>"
+//                iss >> vertex1;
+//                iss >> vertex2;
+//                iss >> weight;
+//                InsertEdge(vertex1, vertex2, weight);
+//            }
+//        }
+//        file.close();
+//    }
+//
+//    /// <summary>
+//    /// Поиск кратчайшего пути из вершины startVertex во все остальные модифицированным алгоритмом Дейкстры
+//    /// </summary>
+//    /// <param name="startVertex"></param>
+//    /// <returns></returns>
+//    vector<int> FindShortestDistances(const T& startVertex)
+//    {
+//        // Инициализация расстояний до вершин "бесконечностью" - максимальным значением типа
+//        vector<int> distances(graphSize, numeric_limits<int>::max());
+//        // Расстояние до начальной вершины равно 0 - к самому себе
+//        int startVertexPos = GetVertexPos(startVertex);
+//        distances[startVertexPos] = 0;
+//
+//        // Очередь с приоритетом для обработки вершин
+//        // greater -> очередь по-возрастанию -> наименьшее в начале
+//        priority_queue<pair<int, T>, vector<pair<int, T>>, greater<pair<int, T>>> pq;
+//
+//        // добавляем стартовую вершину в приоритетную очередь
+//        pq.push(make_pair(0, startVertex));
+//
+//        // пока очередь не пуста
+//        while (!pq.empty())
+//        {
+//            // читаем данные из верхней пары
+//            T currentVertex = pq.top().second;
+//            int currentDistance = pq.top().first;
+//            // удаляем её из очереди
+//            pq.pop();
+//
+//            // позиция текущей вершины
+//            int currentVertexPos = GetVertexPos(currentVertex);
+//
+//            // Проверка смежных вершин
+//            for (int i = 0; i < graphSize; i++)
+//            {
+//                // если существует ребро между текущей и смежной (и не с самой собой)
+//                if (edge[currentVertexPos][i] != 0 && currentVertexPos != i)
+//                {
+//                    // значение смежной вершины
+//                    T neighborVertex = vertexList[i];
+//                    // расстояние до этой смежной вершины с учетом текущего положения
+//                    int neighborDistance = currentDistance + edge[currentVertexPos][i];
+//
+//                    // если это суммарное расстояние меньше того, что в векторе-результате distances -> перезаписываем значение в нем
+//                    // и добавляем эту вершину и расстояние до неё в очередь
+//                    if (neighborDistance < distances[i])
+//                    {
+//                        distances[i] = neighborDistance;
+//                        pq.push(make_pair(neighborDistance, neighborVertex));
+//                    }
+//                }
+//            }
+//        }
+//        // если пути нет - заменяем numeric_limits<int>::max()) на 0
+//        for (auto& element : distances) {
+//            if (element == numeric_limits<int>::max()) element = 0;
+//        }
+//        // учет петли - если вес петли меньше 0 -> изменяем в выходном векторе
+//        if (edge[startVertexPos][startVertexPos] < distances[startVertexPos])
+//            distances[startVertexPos] = edge[startVertexPos][startVertexPos];
+//
+//        return distances;
+//    }
+//
+//    ///// <summary>
+//    ///// Поиск кратчайшего пути из вершины startVertex во все остальные модифицированным алгоритмом Дейкстры
+//    ///// </summary>
+//    ///// <param name="startVertex"></param>
+//    ///// <returns></returns>
+//    //vector<int> FindShortestDistances(const T& startVertex)
+//    //{
+//    //    // Инициализация расстояний до вершин "бесконечностью" - максимальным значением типа
+//    //    vector<int> distances(graphSize, numeric_limits<int>::max());
+//    //    // Расстояние до начальной вершины равно 0 - к самому себе
+//    //    int startVertexPos = GetVertexPos(startVertex);
+//    //    distances[startVertexPos] = 0;
+//
+//    //    // Очередь с приоритетом для обработки вершин
+//    //    // greater -> очередь по-возрастанию -> наименьшее в начале
+//    //    priority_queue<pair<int, T>, vector<pair<int, T>>, greater<pair<int, T>>> pq;
+//
+//    //    // добавляем стартовую вершину в приоритетную очередь
+//    //    pq.push(make_pair(0, startVertex));
+//
+//    //    // пока очередь не пуста
+//    //    while (!pq.empty())
+//    //    {
+//    //        // читаем данные из верхней пары
+//    //        T currentVertex = pq.top().second;
+//    //        int currentDistance = pq.top().first;
+//    //        // удаляем её из очереди
+//    //        pq.pop();
+//
+//    //        // позиция текущей вершины
+//    //        int currentVertexPos = GetVertexPos(currentVertex);
+//
+//    //        // Проверка смежных вершин
+//    //        for (int i = 0; i < graphSize; i++)
+//    //        {
+//    //            // если существует ребро между текущей и смежной (и не с самой собой)
+//    //            if (edge[currentVertexPos][i] != 0 /*&& currentVertexPos != i*/)
+//    //            {
+//
+//    //                // значение смежной вершины
+//    //                T neighborVertex = vertexList[i];
+//    //                // расстояние до этой смежной вершины с учетом текущего положения
+//    //                int neighborDistance = currentDistance + edge[currentVertexPos][i];
+//
+//    //                // если это суммарное расстояние меньше того, что в векторе-результате distances -> перезаписываем значение в нем
+//    //                // и добавляем эту вершину и расстояние до неё в очередь
+//    //                if (neighborDistance < distances[i])
+//    //                {
+//    //                    distances[i] = neighborDistance;
+//    //                    if (currentVertexPos == i)
+//    //                        if (edge[currentVertexPos][currentVertexPos] < 0)
+//    //                            distances[i] -= edge[currentVertexPos][currentVertexPos];
+//    //                    pq.push(make_pair(neighborDistance, neighborVertex));
+//    //                }
+//    //            }
+//    //        }
+//    //    }
+//    //    // если пути нет - заменяем numeric_limits<int>::max()) на 0
+//    //    for (auto& element : distances) {
+//    //        if (element == numeric_limits<int>::max()) element = 0;
+//    //    }
+//    //    // учет петли - если вес петли меньше 0 -> изменяем в выходном векторе
+//    //    if (edge[startVertexPos][startVertexPos] < distances[startVertexPos])
+//    //        distances[startVertexPos] = edge[startVertexPos][startVertexPos];
+//
+//    //    return distances;
+//    //}
 //};
+//
+//
+//
+//
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
 
 
 

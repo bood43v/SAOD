@@ -2,38 +2,43 @@
 /// @author Будаев Г.Б.
 #include <iostream>
 #include "Graph.h"
+#include "Test.h"
 
 using namespace std;
-
 
 int main()
 {
     setlocale(LC_ALL, "ru");
     try {
-        Graph<int> g1;
+        // Создание графа
+        Graph<int> graph;
 
-        g1.InsertVertex(1);
-        g1.InsertVertex(2);
-        g1.InsertVertex(3);
-        g1.InsertVertex(4);
-        g1.InsertVertex(5);
-        g1.InsertVertex(6);
-        g1.InsertEdge(1, 2, 5);
-        g1.InsertEdge(1, 1, 5);
-        g1.InsertEdge(1, 4, 2);
-        g1.InsertEdge(2, 3, 7);
-        g1.InsertEdge(1, 5, -20);
-        g1.InsertEdge(5, 1, 44);
+        // Добавление вершин и ребер в граф
+        graph.InsertVertex(0);
+        graph.InsertVertex(1);
+        graph.InsertVertex(2);
+        graph.InsertVertex(3);
+
+        graph.InsertEdge(0, 1, 4);
+        graph.InsertEdge(0, 0, 100);
+        graph.InsertEdge(0, 2, 1);
+        graph.InsertEdge(2, 1, 2);
+        graph.InsertEdge(1, 3, 5);
 
 
-        g1.PrintAdjacencyMatrix();
+
+        graph.PrintAdjacencyMatrix();
 
         
 
-        vector<int> way = g1.Dijkstra(1);
+        vector<int> way = graph.FindShortestDistances(1);
+
+
         for (const auto& it : way) {
             cout << it << endl;
         }
+
+        testFindShortest();
     }
 
     catch (const char* error_message) {

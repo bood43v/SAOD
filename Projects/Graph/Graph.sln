@@ -7,6 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graph", "Graph.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTestGraph", "UnitTestGraph\UnitTestGraph.vcxproj", "{111295CF-DE0D-40E4-B67D-66786A1D22CC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{F5D81900-CBFD-49D8-88B8-7C1D865F6FCF}"
+	ProjectSection(SolutionItems) = preProject
+		Test.h = Test.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
